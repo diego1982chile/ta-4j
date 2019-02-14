@@ -40,6 +40,20 @@ import ta4jexamples.loaders.CsvTradesLoader;
  */
 public class MACDStrategy {
 
+    private static int EMA_50 = 50;
+    private static int EMA_21 = 21;
+    private static int MACD_12 = 12;
+    private static int MACD_26 = 26;
+    private static int EMA_9 = 9;
+
+    public MACDStrategy(int ema50, int ema21, int macd12, int macd26, int ema9) {
+        EMA_50 = ema50;
+        EMA_21 = ema21;
+        MACD_12 = macd12;
+        MACD_26 = macd26;
+        EMA_9 = ema9;
+    }
+
     /**
      * @param series a time series
      * @return a 2-period RSI strategy
@@ -54,13 +68,13 @@ public class MACDStrategy {
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
-        EMAIndicator ema50  = new EMAIndicator(closePrice,50);
-        EMAIndicator ema21  = new EMAIndicator(closePrice,21);
+        EMAIndicator ema50  = new EMAIndicator(closePrice,EMA_50);
+        EMAIndicator ema21  = new EMAIndicator(closePrice,EMA_21);
         EMAIndicator ema3  = new EMAIndicator(closePrice,3);
 
-        MACDIndicator macd = new MACDIndicator(closePrice,12,26);
+        MACDIndicator macd = new MACDIndicator(closePrice,MACD_12,MACD_26);
 
-        EMAIndicator signal = new EMAIndicator(macd,9);
+        EMAIndicator signal = new EMAIndicator(macd,EMA_9);
 
         Rule entryRule = new CrossedDownIndicatorRule(closePrice, ema21)
                 .and(new CrossedDownIndicatorRule(macd, signal))

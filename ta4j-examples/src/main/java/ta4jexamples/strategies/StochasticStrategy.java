@@ -56,15 +56,27 @@ public class StochasticStrategy {
         EMAIndicator ema5  = new EMAIndicator(closePrice,5);
         StochasticOscillatorKIndicator stochasticK = new StochasticOscillatorKIndicator(series, 8);
         StochasticOscillatorDIndicator stochasticD = new StochasticOscillatorDIndicator(stochasticK);
+
+        RSIIndicator r = new RSIIndicator(closePrice, 8);
+        Indicator sr = new StochasticRSIIndicator(r, 8);
+        //Indicator stochasticK = new SMAIndicator(sr, 35);
+        //Indicator stochasticD = new SMAIndicator(stochasticK, 5);
+
         EMAIndicator ema100  = new EMAIndicator(closePrice,100);
         EMAIndicator ema200  = new EMAIndicator(closePrice,200);
 
         Rule entryRule = new OverIndicatorRule(ema100, ema200)
-                .and(new CrossedUpIndicatorRule(stochasticK, stochasticD))
+                //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD))
+                .and(new OverIndicatorRule(stochasticK, stochasticD))
+                .and(new OverIndicatorRule(stochasticK, Decimal.valueOf(20)))
+                //.and(new OverIndicatorRule(stochasticD, Decimal.valueOf(20)))
                 .and(new CrossedUpIndicatorRule(ema5, sma21));
 
         Rule exitRule = new UnderIndicatorRule(ema100, ema200)
-                .and(new CrossedDownIndicatorRule(stochasticK, stochasticD))
+                //.and(new CrossedDownIndicatorRule(stochasticK, stochasticD))
+                .and(new UnderIndicatorRule(stochasticK, stochasticD))
+                .and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(80)))
+                //.and(new UnderIndicatorRule(stochasticD, Decimal.valueOf(80)))
                 .and(new CrossedDownIndicatorRule(ema5, sma21));
 
         return new BaseStrategy("StochasticStrategy", entryRule, exitRule);

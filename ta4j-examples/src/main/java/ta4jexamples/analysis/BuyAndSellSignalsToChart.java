@@ -26,11 +26,19 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.block.ColorBlock;
+import org.jfree.chart.plot.DatasetRenderingOrder;
 import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.CandlestickRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Minute;
+import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.DefaultHighLowDataset;
+import org.jfree.data.xy.OHLCDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 import org.ta4j.core.*;
@@ -40,6 +48,7 @@ import ta4jexamples.strategies.MovingMomentumStrategy;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -80,7 +89,7 @@ public class BuyAndSellSignalsToChart {
             // Buy signal
             double buySignalBarTime = new Minute(Date.from(series.getBar(trade.getEntry().getIndex()).getEndTime().toInstant())).getFirstMillisecond();
             Marker buyMarker = new ValueMarker(buySignalBarTime);
-            buyMarker.setPaint(Color.GREEN);
+            buyMarker.setPaint(Color.BLUE);
             buyMarker.setLabel("B");
             plot.addDomainMarker(buyMarker);
             // Sell signal
@@ -108,6 +117,101 @@ public class BuyAndSellSignalsToChart {
         frame.pack();
         RefineryUtilities.centerFrameOnScreen(frame);
         frame.setVisible(true);
+    }
+
+    public static void plotSignals(TimeSeries series, Strategy strategy) {
+
+        /*
+          Building chart datasets
+         */
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+        dataset.addSeries(buildChartTimeSeries(series, new ClosePriceIndicator(series), "Signals"));
+
+        /*
+          Creating the chart
+         */
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(
+                "Signals", // title
+                "Date", // x-axis label
+                "Price", // y-axis label
+                dataset, // data
+                true, // create legend?
+                true, // generate tooltips?
+                false // generate URLs?
+        );
+        XYPlot plot = (XYPlot) chart.getPlot();
+        DateAxis axis = (DateAxis) plot.getDomainAxis();
+        axis.setDateFormatOverride(new SimpleDateFormat("MM-dd HH:mm"));
+
+        /*
+          Running the strategy and adding the buy and sell signals to plot
+         */
+        addBuySellSignals(series, strategy, plot);
+
+        /*
+          Displaying the chart
+         */
+        displayChart(chart);
+    }
+
+    public static void buildCandleStickChart(TimeSeries series, Strategy strategy) {
+        /**
+         * Creating the OHLC dataset
+         */
+        OHLCDataset ohlcDataset = createOHLCDataset(series);
+
+        /**
+         * Creating the additional dataset
+         */
+        TimeSeriesCollection xyDataset = createAdditionalDataset(series);
+
+        /**
+         * Creating the chart
+         */
+        JFreeChart chart = ChartFactory.createCandlestickChart(
+                "CandleStick",
+                "Time",
+                "USD",
+                ohlcDataset,
+                true);
+        // Candlestick rendering
+        CandlestickRenderer renderer = new CandlestickRenderer();
+        renderer.setAutoWidthMethod(CandlestickRenderer.WIDTHMETHOD_SMALLEST);
+        renderer.setUpPaint(Color.WHITE);
+        renderer.setDownPaint(Color.BLACK);
+        renderer.setDrawVolume(false);
+        renderer.setSeriesPaint(0, Color.DARK_GRAY);
+        //renderer.setSeriesOutlinePaint(0, Color.DARK_GRAY);
+        XYPlot plot = chart.getXYPlot();
+        plot.setDomainGridlinesVisible(true);
+        plot.setDomainMinorGridlinesVisible(true);
+        plot.setBackgroundAlpha(1);
+        //plot.setDomainGridlinePaint(new Color(0xCCCCFF));
+        plot.setDomainGridlinePaint(Color.BLACK);
+        plot.setRenderer(renderer);
+        // Additional dataset
+        int index = 1;
+        plot.setDataset(index, xyDataset);
+        plot.mapDatasetToRangeAxis(index, 0);
+        XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer(true, false);
+        //renderer2.setSeriesPaint(index, Color.BLUE);
+        plot.setRenderer(index, renderer2);
+        // Misc
+        plot.setRangeGridlinePaint(Color.BLACK);
+        plot.setBackgroundPaint(Color.white);
+        NumberAxis numberAxis = (NumberAxis) plot.getRangeAxis();
+        numberAxis.setAutoRangeIncludesZero(false);
+        plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
+
+        /*
+          Running the strategy and adding the buy and sell signals to plot
+        */
+        addBuySellSignals(series, strategy, plot);
+
+        /**
+         * Displaying the chart
+         */
+        displayChart(chart);
     }
 
     public static void main(String[] args) {
@@ -148,5 +252,54 @@ public class BuyAndSellSignalsToChart {
           Displaying the chart
          */
         displayChart(chart);
+    }
+
+    /**
+     * Builds a JFreeChart OHLC dataset from a ta4j time series.
+     * @param series a time series
+     * @return an Open-High-Low-Close dataset
+     */
+    private static OHLCDataset createOHLCDataset(TimeSeries series) {
+
+        final int nbTicks = series.getBarCount();
+
+        Date[] dates = new Date[nbTicks];
+        double[] opens = new double[nbTicks];
+        double[] highs = new double[nbTicks];
+        double[] lows = new double[nbTicks];
+        double[] closes = new double[nbTicks];
+        double[] volumes = new double[nbTicks];
+
+        for (int i = 0; i < nbTicks; i++) {
+            Bar tick = series.getBar(i);
+            dates[i] = Date.from(tick.getEndTime().toInstant());
+            opens[i] = tick.getOpenPrice().toDouble();
+            highs[i] = tick.getMaxPrice().toDouble();
+            lows[i] = tick.getMinPrice().toDouble();
+            closes[i] = tick.getClosePrice().toDouble();
+            volumes[i] = tick.getVolume().toDouble();
+        }
+
+        OHLCDataset dataset = new DefaultHighLowDataset("btc", dates, highs, lows, opens, closes, volumes);
+
+        return dataset;
+    }
+
+    /**
+     * Builds an additional JFreeChart dataset from a ta4j time series.
+     * @param series a time series
+     * @return an additional dataset
+     */
+    private static TimeSeriesCollection createAdditionalDataset(TimeSeries series) {
+        ClosePriceIndicator indicator = new ClosePriceIndicator(series);
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+        org.jfree.data.time.TimeSeries chartTimeSeries = new org.jfree.data.time.TimeSeries("Btc price");
+        for (int i = 0; i < series.getBarCount(); i++) {
+            Bar tick = series.getBar(i);
+
+            chartTimeSeries.add(new Second(Date.from(tick.getEndTime().toInstant())), indicator.getValue(i).toDouble());
+        }
+        dataset.addSeries(chartTimeSeries);
+        return dataset;
     }
 }

@@ -29,8 +29,10 @@ import org.ta4j.core.TimeSeries;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
@@ -43,14 +45,19 @@ import java.util.logging.Logger;
 public class CsvTicksLoader {
 
     static final String SEPARATOR = ";";
-    static final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+
+    static final DateTimeFormatter DATE_FORMATTER = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy.MM.dd")
+            .toFormatter();
+
+    static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
             .appendPattern("yyyy.MM.dd HH:mm:ss")
             .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
             .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
             .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
             .toFormatter();
 
-    static final DateTimeFormatter _formatter = new DateTimeFormatterBuilder()
+    static final DateTimeFormatter _DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
             .appendPattern("yyyy.MM.dd H:mm:ss")
             .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
             .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
@@ -73,11 +80,16 @@ public class CsvTicksLoader {
                 tokens = line.split(SEPARATOR);
                 LocalDateTime time;
 
-                if(tokens[1].length() == 7) {
-                    time = LocalDateTime.parse(tokens[0] + " " + tokens[1], _formatter);
+                if(tokens.length == 8) {
+                    time = LocalDate.parse(tokens[0], DATE_FORMATTER).atStartOfDay();
                 }
                 else {
-                    time = LocalDateTime.parse(tokens[0] + " " + tokens[1], formatter);
+                    if(tokens[1].length() == 7) {
+                        time = LocalDateTime.parse(tokens[0] + " " + tokens[1], _DATE_TIME_FORMATTER);
+                    }
+                    else {
+                        time = LocalDateTime.parse(tokens[0] + " " + tokens[1], DATE_TIME_FORMATTER);
+                    }
                 }
 
                 double open = Double.parseDouble(tokens[2]);

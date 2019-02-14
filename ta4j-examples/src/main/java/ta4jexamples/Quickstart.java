@@ -34,6 +34,7 @@ import org.ta4j.core.trading.rules.CrossedDownIndicatorRule;
 import org.ta4j.core.trading.rules.CrossedUpIndicatorRule;
 import org.ta4j.core.trading.rules.StopGainRule;
 import org.ta4j.core.trading.rules.StopLossRule;
+import ta4jexamples.analysis.BuyAndSellSignalsToChart;
 import ta4jexamples.loaders.CsvTicksLoader;
 import ta4jexamples.loaders.CsvTradesLoader;
 import ta4jexamples.research.MultipleStrategy;
@@ -54,7 +55,7 @@ public class Quickstart {
 
         // Getting a time series (from any provider: CSV, web service, etc.)
         //TimeSeries series = CsvTradesLoader.loadBitstampSeries();
-        TimeSeries series = CsvTicksLoader.load("EURUSD_H1_201801020000_201902111900.csv");
+        TimeSeries series = CsvTicksLoader.load("EURUSD_Daily_201801020000_201812310000.csv");
 
         // Getting the close price of the bars
         Decimal firstClosePrice = series.getBar(0).getClosePrice();
@@ -108,14 +109,16 @@ public class Quickstart {
 
         List<Strategy> strategies = new ArrayList<>();
 
-        //strategies.add(CCICorrectionStrategy.buildStrategy(series));
-        strategies.add(GlobalExtremaStrategy.buildStrategy(series));
-        //strategies.add(MovingMomentumStrategy.buildStrategy(series));
-        //strategies.add(RSI2Strategy.buildStrategy(series));
+        strategies.add(CCICorrectionStrategy.buildStrategy(series));
+        //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
+        strategies.add(MovingMomentumStrategy.buildStrategy(series));
+        strategies.add(RSI2Strategy.buildStrategy(series));
         strategies.add(MACDStrategy.buildStrategy(series));
         //strategies.add(StochasticStrategy.buildStrategy(series));
-        //strategies.add(ParabolicSARStrategy.buildStrategy(series));
+        strategies.add(ParabolicSARStrategy.buildStrategy(series));
         strategies.add(MovingAveragesStrategy.buildStrategy(series));
+        //strategies.add(BagovinoStrategy.buildStrategy(series));
+        strategies.add(FXBootCampStrategy.buildStrategy(series));
 
         MultipleStrategy multipleStrategy = new MultipleStrategy(strategies);
 
@@ -140,10 +143,15 @@ public class Quickstart {
         AnalysisCriterion vsBuyAndHold = new VersusBuyAndHoldCriterion(new TotalProfitCriterion());
         System.out.println("Our profit vs buy-and-hold profit: " + vsBuyAndHold.calculate(series, tradingRecord));
 
+        for (int i = 0; i < tradingRecord.getTrades().size(); ++i) {
+            System.out.println("Trade["+ i +"]: " + tradingRecord.getTrades().get(i).toString());
+        }
+
         for (int i = 0; i < cashFlow.getSize(); ++i) {
             System.out.println("CashFlow["+ i +"]: " + cashFlow.getValue(i));
         }
 
+        BuyAndSellSignalsToChart.buildCandleStickChart(series, multipleStrategy.buildStrategy(series));
 
         // Your turn!
     }

@@ -60,12 +60,18 @@ public class ParabolicSARStrategy {
         Rule entryRule = new OverIndicatorRule(closePrice, sar)
                 .and(new CrossedUpIndicatorRule(ac, Decimal.valueOf(0)))
                 .and(new CrossedUpIndicatorRule(ao, Decimal.valueOf(0)))
-                .and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
+                .and(new OverIndicatorRule(stochasticK, stochasticD))
+                .and(new OverIndicatorRule(stochasticK, Decimal.valueOf(20)));
+                //.and(new OverIndicatorRule(stochasticD, Decimal.valueOf(20)));
+                //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
 
         Rule exitRule = new UnderIndicatorRule(closePrice, sar)
                 .and(new CrossedDownIndicatorRule(ac, Decimal.valueOf(0)))
                 .and(new CrossedDownIndicatorRule(ao, Decimal.valueOf(0)))
-                .and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
+                .and(new UnderIndicatorRule(stochasticK, stochasticD))
+                .and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(80)));
+                //.and(new UnderIndicatorRule(stochasticD, Decimal.valueOf(80)));
+                //.and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
 
         return new BaseStrategy("ParabolicSARStrategy", entryRule, exitRule);
     }
