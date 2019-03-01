@@ -1,0 +1,19 @@
+.classpath
+.project
+.settings/
+.idea/
+nb-configuration.xml
+nbactions.xml
+*.iml
+.DS_Store
+log/
+bin/
+target/
+out/
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
