@@ -80,7 +80,7 @@ public class CsvTicksLoader {
                 tokens = line.split(SEPARATOR);
                 LocalDateTime time;
 
-                if(tokens.length == 8) {
+                if(tokens.length >= 8) {
                     time = LocalDate.parse(tokens[0], DATE_FORMATTER).atStartOfDay();
                 }
                 else {
