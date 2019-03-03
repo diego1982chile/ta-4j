@@ -31,11 +31,8 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
-import org.ta4j.core.Bar;
-import org.ta4j.core.Decimal;
-import org.ta4j.core.Indicator;
-import org.ta4j.core.TimeSeries;
-import org.ta4j.core.indicators.EMAIndicator;
+import org.ta4j.core.*;
+import org.ta4j.core.indicators.*;
 import org.ta4j.core.indicators.bollinger.BollingerBandsLowerIndicator;
 import org.ta4j.core.indicators.bollinger.BollingerBandsMiddleIndicator;
 import org.ta4j.core.indicators.bollinger.BollingerBandsUpperIndicator;
@@ -43,8 +40,9 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.indicators.statistics.StandardDeviationIndicator;
 import ta4jexamples.loaders.CsvBarsLoader;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;import java.util.List;
 
 /**
  * This class builds a graphical chart showing values from indicators.
@@ -83,6 +81,50 @@ public class IndicatorsToChart {
         frame.pack();
         RefineryUtilities.centerFrameOnScreen(frame);
         frame.setVisible(true);
+    }
+
+    public static void displayChart(TimeSeries series, java.util.List<Indicator> indicators) {
+
+        /*
+          Creating indicators
+         */
+        // Close price
+        ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
+
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+
+        /*
+          Building chart dataset
+         */
+        for (Indicator indicator : indicators) {
+            //dataset.addSeries(buildChartTimeSeries(series, closePrice, "EUR/USD"));
+            //dataset.addSeries(buildChartTimeSeries(series, macd, "Macd"));
+            dataset.addSeries(buildChartTimeSeries(series, indicator, indicator.getClass().getSimpleName()));
+        }
+
+        /*
+          Creating the chart
+         */
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(
+                "Title", // title
+                "Date", // x-axis label
+                "Price Per Unit", // y-axis label
+                dataset, // data
+                true, // create legend?
+                true, // generate tooltips?
+                false // generate URLs?
+        );
+        XYPlot plot = (XYPlot) chart.getPlot();
+        // Misc
+        plot.setRangeGridlinePaint(Color.BLACK);
+        plot.setBackgroundPaint(Color.white);
+        DateAxis axis = (DateAxis) plot.getDomainAxis();
+        axis.setDateFormatOverride(new SimpleDateFormat("yyyy-MM-dd"));
+
+        /*
+          Displaying the chart
+         */
+        displayChart(chart);
     }
 
     public static void main(String[] args) {

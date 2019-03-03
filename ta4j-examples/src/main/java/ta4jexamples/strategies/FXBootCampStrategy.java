@@ -64,23 +64,26 @@ public class FXBootCampStrategy {
 
         EMAIndicator ema8 = new EMAIndicator(macd,8);
 
-        StochasticOscillatorKIndicator stochasticK = new StochasticOscillatorKIndicator(series, 8);
-        StochasticOscillatorDIndicator stochasticD = new StochasticOscillatorDIndicator(stochasticK);
+        RSIIndicator r = new RSIIndicator(closePrice, 8);
+        Indicator sr = new StochasticRSIIndicator(r, 8);
+
+        Indicator stochasticK = new SMAIndicator(sr, 35);
+        Indicator stochasticD = new SMAIndicator(stochasticK, 5);
 
 
         Rule entryRule = new OverIndicatorRule(ema21, ema55)
                 .and(new OverIndicatorRule(ema21, ema200))
-                .and(new OverIndicatorRule(ema21, ema200))
-                //.and(new CrossedUpIndicatorRule(ema5, ema8))
-                .and(new CrossedUpIndicatorRule(macd, ema8))
-                .and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
+                //.and(new OverIndicatorRule(ema55, ema200))
+                .and(new CrossedUpIndicatorRule(ema5, sma8));
+                //.and(new CrossedUpIndicatorRule(macd, ema8));
+                //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
 
         Rule exitRule = new UnderIndicatorRule(ema21, ema55)
                 .and(new UnderIndicatorRule(ema21, ema200))
-                .and(new UnderIndicatorRule(ema21, ema200))
-                //.and(new CrossedDownIndicatorRule(ema5, ema8))
-                .and(new CrossedDownIndicatorRule(macd, ema8))
-                .and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
+                //.and(new UnderIndicatorRule(ema55, ema200))
+                .and(new CrossedDownIndicatorRule(ema5, sma8));
+                //.and(new CrossedDownIndicatorRule(macd, ema8));
+                //.and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
 
         return new BaseStrategy("FXBootCampStrategy", entryRule, exitRule);
     }

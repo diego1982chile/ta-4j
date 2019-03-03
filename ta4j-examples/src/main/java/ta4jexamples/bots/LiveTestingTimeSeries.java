@@ -31,10 +31,7 @@ import org.ta4j.core.trading.rules.UnderIndicatorRule;
 import ta4jexamples.loaders.CsvTicksLoader;
 import ta4jexamples.loaders.CsvTradesLoader;
 import ta4jexamples.research.MultipleStrategy;
-import ta4jexamples.strategies.CCICorrectionStrategy;
-import ta4jexamples.strategies.MACDStrategy;
-import ta4jexamples.strategies.MovingAveragesStrategy;
-import ta4jexamples.strategies.RSI2Strategy;
+import ta4jexamples.strategies.*;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -78,15 +75,15 @@ public class LiveTestingTimeSeries {
 
         List<Strategy> strategies = new ArrayList<>();
 
-        strategies.add(CCICorrectionStrategy.buildStrategy(series));
-        //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
+        //strategies.add(CCICorrectionStrategy.buildStrategy(series));
+        strategies.add(GlobalExtremaStrategy.buildStrategy(series));
         //strategies.add(MovingMomentumStrategy.buildStrategy(series));
-        strategies.add(RSI2Strategy.buildStrategy(series));
+        //strategies.add(RSI2Strategy.buildStrategy(series));
         strategies.add(MACDStrategy.buildStrategy(series));
-        //strategies.add(StochasticStrategy.buildStrategy(series));
+        strategies.add(StochasticStrategy.buildStrategy(series));
         //strategies.add(ParabolicSARStrategy.buildStrategy(series));
         strategies.add(MovingAveragesStrategy.buildStrategy(series));
-        //strategies.add(BagovinoStrategy.buildStrategy(series));
+        strategies.add(BagovinoStrategy.buildStrategy(series));
         //strategies.add(FXBootCampStrategy.buildStrategy(series));
 
         MultipleStrategy multipleStrategy = new MultipleStrategy(strategies);
@@ -118,6 +115,9 @@ public class LiveTestingTimeSeries {
         // Initializing the trading history
         TradingRecord tradingRecord = new BaseTradingRecord();
         System.out.println("************************************************************");
+
+        int STEP = 13;
+        int OFFSET = 20;
 
         /*
           We run the strategy for the 50 next bars.
@@ -159,7 +159,12 @@ public class LiveTestingTimeSeries {
         CashFlow cashFlow = new CashFlow(series, tradingRecord);
 
         for (int i = 0; i < 459; ++i) {
-            System.out.println("CashFlow["+ i +"]: " + cashFlow.getValue(i));
+            try {
+                System.out.println("CashFlow["+ i +"]: " + cashFlow.getValue(i));
+            }
+            catch (IndexOutOfBoundsException e) {
+                return;
+            }
         }
     }
 }

@@ -27,10 +27,7 @@ import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
 import org.ta4j.core.indicators.RSIIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
-import org.ta4j.core.trading.rules.CrossedDownIndicatorRule;
-import org.ta4j.core.trading.rules.CrossedUpIndicatorRule;
-import org.ta4j.core.trading.rules.OverIndicatorRule;
-import org.ta4j.core.trading.rules.UnderIndicatorRule;
+import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
 /**
@@ -39,6 +36,22 @@ import ta4jexamples.loaders.CsvTradesLoader;
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
 public class BagovinoStrategy {
+
+    private static int SHORT_EMA = 5;
+    private static int LONG_EMA = 12;
+    private static int RSI = 21;
+
+    public static void setShortEma(int shortEma) {
+        SHORT_EMA = shortEma;
+    }
+
+    public static void setLongEma(int longEma) {
+        LONG_EMA = longEma;
+    }
+
+    public static void setRSI(int RSI) {
+        BagovinoStrategy.RSI = RSI;
+    }
 
     /**
      * @param series a time series
@@ -52,20 +65,22 @@ public class BagovinoStrategy {
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
-        EMAIndicator ema5  = new EMAIndicator(closePrice,5);
-        EMAIndicator ema12  = new EMAIndicator(closePrice,12);
+        EMAIndicator ema5  = new EMAIndicator(closePrice,SHORT_EMA);
+        EMAIndicator ema12  = new EMAIndicator(closePrice,LONG_EMA);
 
-        RSIIndicator rsi = new RSIIndicator(closePrice, 21);
+        RSIIndicator rsi = new RSIIndicator(closePrice, RSI);
 
-        Rule entryRule = new OverIndicatorRule(ema5, ema12).
-                        and(new OverIndicatorRule(closePrice, ema12)).
-                        and(new OverIndicatorRule(closePrice, ema5)).
-                        and(new CrossedUpIndicatorRule(rsi, Decimal.valueOf(50))); // Signal 1
+        Rule entryRule = new CrossedUpIndicatorRule(ema5, ema12).
+                        and(new CrossedUpIndicatorRule(closePrice, ema12)).
+                        and(new CrossedUpIndicatorRule(closePrice, ema5)).
+                        and(new CrossedUpIndicatorRule(rsi, Decimal.valueOf(50))).
+                        and(new IsRisingRule(rsi, 2)); // Signal 1
 
-        Rule exitRule = new UnderIndicatorRule(ema5, ema12).
-                        and(new UnderIndicatorRule(closePrice, ema12)).
-                        and(new UnderIndicatorRule(closePrice, ema5)).
-                        and(new CrossedDownIndicatorRule(rsi, Decimal.valueOf(50)));
+        Rule exitRule = new CrossedDownIndicatorRule(ema5, ema12).
+                        and(new CrossedDownIndicatorRule(closePrice, ema12)).
+                        and(new CrossedDownIndicatorRule(closePrice, ema5)).
+                        and(new CrossedDownIndicatorRule(rsi, Decimal.valueOf(50))).
+                        and(new IsFallingRule(rsi, 2));
 
         return new BaseStrategy("MovingAveragesStrategy", entryRule, exitRule);
     }

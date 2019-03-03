@@ -26,10 +26,7 @@ import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
-import org.ta4j.core.trading.rules.CrossedDownIndicatorRule;
-import org.ta4j.core.trading.rules.CrossedUpIndicatorRule;
-import org.ta4j.core.trading.rules.OverIndicatorRule;
-import org.ta4j.core.trading.rules.UnderIndicatorRule;
+import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
 /**
@@ -38,6 +35,40 @@ import ta4jexamples.loaders.CsvTradesLoader;
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
 public class ParabolicSARStrategy {
+
+    /*
+    private static int SAR_1 = 5;
+    private static int SAR_2 = 20;
+    private static int RSI = 8;
+    private static int K = 17;
+    private static int D = 5;
+    */
+
+    private static int SAR_1 = 97;
+    private static int SAR_2 = 125;
+    private static int RSI = 42;
+    private static int K = 89;
+    private static int D = 6;
+
+    public static void setSar1(int sar1) {
+        SAR_1 = sar1;
+    }
+
+    public static void setSar2(int sar2) {
+        SAR_2 = sar2;
+    }
+
+    public static void setRSI(int RSI) {
+        ParabolicSARStrategy.RSI = RSI;
+    }
+
+    public static void setK(int k) {
+        K = k;
+    }
+
+    public static void setD(int d) {
+        D = d;
+    }
 
     /**
      * @param series a time series
@@ -51,25 +82,33 @@ public class ParabolicSARStrategy {
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
-        ParabolicSarIndicator sar  = new ParabolicSarIndicator(series, Decimal.valueOf(0.05), Decimal.valueOf(0.2));
+        ParabolicSarIndicator sar  = new ParabolicSarIndicator(series, Decimal.valueOf(SAR_1/100), Decimal.valueOf(SAR_2/100));
         AccelerationDecelerationIndicator ac = new AccelerationDecelerationIndicator(series);
         AwesomeOscillatorIndicator ao = new AwesomeOscillatorIndicator(series);
-        StochasticOscillatorKIndicator stochasticK = new StochasticOscillatorKIndicator(series, 5);
-        StochasticOscillatorDIndicator stochasticD = new StochasticOscillatorDIndicator(stochasticK);
+        RSIIndicator r = new RSIIndicator(closePrice, RSI);
+        Indicator sr = new StochasticRSIIndicator(r, RSI);
+
+        Indicator stochasticK = new SMAIndicator(sr, K);
+        Indicator stochasticD = new SMAIndicator(stochasticK, D);
+
 
         Rule entryRule = new OverIndicatorRule(closePrice, sar)
-                .and(new CrossedUpIndicatorRule(ac, Decimal.valueOf(0)))
-                .and(new CrossedUpIndicatorRule(ao, Decimal.valueOf(0)))
-                .and(new OverIndicatorRule(stochasticK, stochasticD))
-                .and(new OverIndicatorRule(stochasticK, Decimal.valueOf(20)));
+                //.and(new CrossedUpIndicatorRule(ac, Decimal.valueOf(0)))
+                //.and(new CrossedUpIndicatorRule(ao, Decimal.valueOf(0)))
+                .and(new IsRisingRule(ac,2))
+                .and(new IsRisingRule(ao,2))
+                .and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
+                //.and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(20)));
                 //.and(new OverIndicatorRule(stochasticD, Decimal.valueOf(20)));
                 //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
 
         Rule exitRule = new UnderIndicatorRule(closePrice, sar)
-                .and(new CrossedDownIndicatorRule(ac, Decimal.valueOf(0)))
-                .and(new CrossedDownIndicatorRule(ao, Decimal.valueOf(0)))
-                .and(new UnderIndicatorRule(stochasticK, stochasticD))
-                .and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(80)));
+                //.and(new CrossedDownIndicatorRule(ac, Decimal.valueOf(0)))
+                //.and(new CrossedDownIndicatorRule(ao, Decimal.valueOf(0)));
+                .and(new IsFallingRule(ac,2))
+                .and(new IsFallingRule(ao,2))
+                .and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
+                //.and(new OverIndicatorRule(stochasticK, Decimal.valueOf(80)));
                 //.and(new UnderIndicatorRule(stochasticD, Decimal.valueOf(80)));
                 //.and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
 

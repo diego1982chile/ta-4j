@@ -28,13 +28,17 @@ import org.ta4j.core.analysis.criteria.AverageProfitableTradesCriterion;
 import org.ta4j.core.analysis.criteria.RewardRiskRatioCriterion;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.analysis.criteria.VersusBuyAndHoldCriterion;
+import org.ta4j.core.indicators.EMAIndicator;
+import org.ta4j.core.indicators.RSIIndicator;
 import org.ta4j.core.indicators.SMAIndicator;
+import org.ta4j.core.indicators.StochasticRSIIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.CrossedDownIndicatorRule;
 import org.ta4j.core.trading.rules.CrossedUpIndicatorRule;
 import org.ta4j.core.trading.rules.StopGainRule;
 import org.ta4j.core.trading.rules.StopLossRule;
 import ta4jexamples.analysis.BuyAndSellSignalsToChart;
+import ta4jexamples.indicators.IndicatorsToChart;
 import ta4jexamples.loaders.CsvTicksLoader;
 import ta4jexamples.loaders.CsvTradesLoader;
 import ta4jexamples.research.MultipleStrategy;
@@ -55,7 +59,7 @@ public class Quickstart {
 
         // Getting a time series (from any provider: CSV, web service, etc.)
         //TimeSeries series = CsvTradesLoader.loadBitstampSeries();
-        TimeSeries series = CsvTicksLoader.load("EURUSD_Daily_201701020000_201712290000.csv");
+        TimeSeries series = CsvTicksLoader.load("EURUSD_Daily_201801020000_201812310000.csv");
 
         // Getting the close price of the bars
         Decimal firstClosePrice = series.getBar(0).getClosePrice();
@@ -109,16 +113,18 @@ public class Quickstart {
 
         List<Strategy> strategies = new ArrayList<>();
 
-        strategies.add(CCICorrectionStrategy.buildStrategy(series));
+        //strategies.add(CCICorrectionStrategy.buildStrategy(series));
         //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
-        //strategies.add(MovingMomentumStrategy.buildStrategy(series));
-        strategies.add(RSI2Strategy.buildStrategy(series));
+        strategies.add(MovingMomentumStrategy.buildStrategy(series));
+        //strategies.add(RSI2Strategy.buildStrategy(series));
         strategies.add(MACDStrategy.buildStrategy(series));
-        //strategies.add(StochasticStrategy.buildStrategy(series));
+        strategies.add(StochasticStrategy.buildStrategy(series));
         //strategies.add(ParabolicSARStrategy.buildStrategy(series));
         strategies.add(MovingAveragesStrategy.buildStrategy(series));
         //strategies.add(BagovinoStrategy.buildStrategy(series));
         //strategies.add(FXBootCampStrategy.buildStrategy(series));
+
+        //0 1 0 1 1 1 1 0 1 1
 
         MultipleStrategy multipleStrategy = new MultipleStrategy(strategies);
 
@@ -151,7 +157,16 @@ public class Quickstart {
             System.out.println("CashFlow["+ i +"]: " + cashFlow.getValue(i));
         }
 
+        RSIIndicator r = new RSIIndicator(closePrice, 5);
+        Indicator sr = new StochasticRSIIndicator(r, 5);
+
+        Indicator stochasticK = new SMAIndicator(sr, 3);
+        Indicator stochasticD = new SMAIndicator(stochasticK, 3);
+
+        //IndicatorsToChart.displayChart(series, Arrays.asList(closePrice));
+
         BuyAndSellSignalsToChart.buildCandleStickChart(series, multipleStrategy.buildStrategy(series));
+        IndicatorsToChart.displayChart(series, Arrays.asList(stochasticK, stochasticD));
 
         // Your turn!
     }

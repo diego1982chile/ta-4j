@@ -27,10 +27,7 @@ import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.indicators.helpers.DifferenceIndicator;
-import org.ta4j.core.trading.rules.CrossedDownIndicatorRule;
-import org.ta4j.core.trading.rules.CrossedUpIndicatorRule;
-import org.ta4j.core.trading.rules.OverIndicatorRule;
-import org.ta4j.core.trading.rules.UnderIndicatorRule;
+import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
 /**
@@ -39,6 +36,52 @@ import ta4jexamples.loaders.CsvTradesLoader;
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
 public class StochasticStrategy {
+
+    /*
+    private static int SMA = 21;
+    private static int EMA = 5;
+    private static int RSI = 8;
+    private static int K = 35;
+    private static int D = 5;
+    */
+
+    private static int SMA = 13;
+    private static int EMA = 26;
+    private static int RSI = 8;
+    private static int K = 17;
+    private static int D = 5;
+    private static int SHORT_EMA = 100;
+    private static int LONG_EMA = 200;
+
+    //74 186 79 19 89 191 1
+
+    public static void setSMA(int SMA) {
+        StochasticStrategy.SMA = SMA;
+    }
+
+    public static void setEMA(int EMA) {
+        StochasticStrategy.EMA = EMA;
+    }
+
+    public static void setRSI(int RSI) {
+        StochasticStrategy.RSI = RSI;
+    }
+
+    public static void setK(int k) {
+        K = k;
+    }
+
+    public static void setD(int d) {
+        D = d;
+    }
+
+    public static void setShortEma(int shortEma) {
+        SHORT_EMA = shortEma;
+    }
+
+    public static void setLongEma(int longEma) {
+        LONG_EMA = longEma;
+    }
 
     /**
      * @param series a time series
@@ -52,32 +95,34 @@ public class StochasticStrategy {
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
-        SMAIndicator sma21  = new SMAIndicator(closePrice,21);
-        EMAIndicator ema5  = new EMAIndicator(closePrice,5);
-        StochasticOscillatorKIndicator stochasticK = new StochasticOscillatorKIndicator(series, 8);
-        StochasticOscillatorDIndicator stochasticD = new StochasticOscillatorDIndicator(stochasticK);
+        SMAIndicator sma21  = new SMAIndicator(closePrice,SMA);
+        EMAIndicator ema5  = new EMAIndicator(closePrice,EMA);
 
-        RSIIndicator r = new RSIIndicator(closePrice, 8);
-        Indicator sr = new StochasticRSIIndicator(r, 8);
-        //Indicator stochasticK = new SMAIndicator(sr, 35);
-        //Indicator stochasticD = new SMAIndicator(stochasticK, 5);
+        RSIIndicator r = new RSIIndicator(closePrice, RSI);
+        Indicator sr = new StochasticRSIIndicator(r, RSI);
 
-        EMAIndicator ema100  = new EMAIndicator(closePrice,100);
-        EMAIndicator ema200  = new EMAIndicator(closePrice,200);
+        Indicator stochasticK = new SMAIndicator(sr, K);
+        Indicator stochasticD = new SMAIndicator(stochasticK, D);
+
+        EMAIndicator ema100  = new EMAIndicator(closePrice,SHORT_EMA);
+        EMAIndicator ema200  = new EMAIndicator(closePrice,LONG_EMA);
 
         Rule entryRule = new OverIndicatorRule(ema100, ema200)
-                //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD))
-                .and(new OverIndicatorRule(stochasticK, stochasticD))
-                .and(new OverIndicatorRule(stochasticK, Decimal.valueOf(20)))
+                .and(new CrossedUpIndicatorRule(stochasticK, stochasticD))
+                //.and(new IsRisingRule(stochasticK, 5))
+                //.and(new IsRisingRule(stochasticD, 5));
+                //.and(new OverIndicatorRule(stochasticK, stochasticD))
+                //.and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(0.2)));
                 //.and(new OverIndicatorRule(stochasticD, Decimal.valueOf(20)))
-                .and(new CrossedUpIndicatorRule(ema5, sma21));
+                .and(new OverIndicatorRule(ema5, sma21));
 
         Rule exitRule = new UnderIndicatorRule(ema100, ema200)
-                //.and(new CrossedDownIndicatorRule(stochasticK, stochasticD))
-                .and(new UnderIndicatorRule(stochasticK, stochasticD))
-                .and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(80)))
+                .and(new CrossedDownIndicatorRule(stochasticK, stochasticD))
+                //.and(new IsFallingRule(stochasticK, 5))
+                //.and(new IsFallingRule(stochasticD, 5));
+                //.and(new OverIndicatorRule(stochasticK, Decimal.valueOf(0.8)));
                 //.and(new UnderIndicatorRule(stochasticD, Decimal.valueOf(80)))
-                .and(new CrossedDownIndicatorRule(ema5, sma21));
+                .and(new UnderIndicatorRule(ema5, sma21));
 
         return new BaseStrategy("StochasticStrategy", entryRule, exitRule);
     }
