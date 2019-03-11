@@ -59,7 +59,11 @@ public class MultipleStrategy {
         }
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
+<<<<<<< HEAD
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(10));
+=======
+        Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(15));
+>>>>>>> a109a182f20f9eb98b2e764b18c4e80d0959b14c
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(10));
 
         entryRule = entryRule.xor(stopLoss).xor(stopGain);

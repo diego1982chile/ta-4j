@@ -119,7 +119,11 @@ public class Quickstart {
         //strategies.add(RSI2Strategy.buildStrategy(series));
         strategies.add(MACDStrategy.buildStrategy(series));
         strategies.add(StochasticStrategy.buildStrategy(series));
+<<<<<<< HEAD
         strategies.add(ParabolicSARStrategy.buildStrategy(series));
+=======
+        //strategies.add(ParabolicSARStrategy.buildStrategy(series));
+>>>>>>> a109a182f20f9eb98b2e764b18c4e80d0959b14c
         strategies.add(MovingAveragesStrategy.buildStrategy(series));
         //strategies.add(BagovinoStrategy.buildStrategy(series));
         //strategies.add(FXBootCampStrategy.buildStrategy(series));

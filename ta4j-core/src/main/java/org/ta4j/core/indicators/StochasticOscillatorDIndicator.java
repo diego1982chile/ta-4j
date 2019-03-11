@@ -38,10 +38,13 @@ public class StochasticOscillatorDIndicator extends CachedIndicator<Decimal> {
         this(new SMAIndicator(k, 3));
     }
 
+<<<<<<< HEAD
     public StochasticOscillatorDIndicator(StochasticOscillatorKIndicator k, int timeFrame) {
         this(new SMAIndicator(k, timeFrame));
     }
 
+=======
+>>>>>>> a109a182f20f9eb98b2e764b18c4e80d0959b14c
     public StochasticOscillatorDIndicator(Indicator<Decimal> indicator) {
         super(indicator);
         this.indicator = indicator;
