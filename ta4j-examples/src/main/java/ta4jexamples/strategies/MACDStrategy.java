@@ -47,6 +47,9 @@ public class MACDStrategy {
     private static int MACD_2 = 26;
     private static int SIGNAL_EMA = 9;
 
+    private static int SHORT_EMA_TREND = 100;
+    private static int LONG_EMA_TREND = 200;
+
     /*
     private static int LONG_EMA = 18;
     private static int SHORT_EMA = 32;
@@ -114,17 +117,36 @@ public class MACDStrategy {
                 //.and(new OverIndicatorRule(macd, zeroLine));
         */
 
-        Rule entryRule = new CrossedUpIndicatorRule(ema21, ema50)
+        Rule entryRule = new CrossedUpIndicatorRule(closePrice, ema3)
                 .and(new OverIndicatorRule(macd, signal))
-                .and(new OverIndicatorRule(closePrice, ema21))
-                .and(new OverIndicatorRule(closePrice, ema50));
-                //.and(new CrossedUpIndicatorRule(macd, zeroLine));
+                .and(new OverIndicatorRule(ema3, ema21))
+                .and(new OverIndicatorRule(ema3, ema50))
+                .and(new IsRisingRule(ema50, 5))
+                .and(new IsRisingRule(ema21, 5))
+                /*.and(new IsRisingRule(macd, 5))
+                .and(new IsRisingRule(signal, 5))*/
+                //.and(new UnderIndicatorRule(macd, Decimal.valueOf(0.005)))
+                .and(new OverIndicatorRule(macd, Decimal.valueOf(0)))
+                .and(new OverIndicatorRule(signal, Decimal.valueOf(0)));
 
-        Rule exitRule = new CrossedDownIndicatorRule(ema21, ema50)
+
+        Rule exitRule = new CrossedDownIndicatorRule(closePrice, ema3)
                 .and(new UnderIndicatorRule(macd, signal))
-                .and(new UnderIndicatorRule(closePrice, ema21))
-                .and(new UnderIndicatorRule(closePrice, ema50));
-                //.and(new CrossedDownIndicatorRule(macd, zeroLine));
+                .and(new UnderIndicatorRule(ema3, ema21))
+                .and(new UnderIndicatorRule(ema3, ema50))
+                .and(new IsFallingRule(ema50, 5))
+                .and(new IsFallingRule(ema21, 5))
+                /*.and(new IsFallingRule(macd, 5))
+                .and(new IsFallingRule(signal, 5))*/
+                //.and(new OverIndicatorRule(macd, Decimal.valueOf(-0.005)))
+                .and(new UnderIndicatorRule(macd, Decimal.valueOf(0)))
+                .and(new UnderIndicatorRule(signal, Decimal.valueOf(0)));
+
+
+        Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
+        Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
+
+        exitRule = exitRule.xor(stopGain).xor(stopLoss);
 
         /*
         Rule exitRule = new UnderIndicatorRule(closePrice, ema21)

@@ -28,10 +28,7 @@ import org.ta4j.core.indicators.*;
 import org.ta4j.core.indicators.bollinger.BollingerBandWidthIndicator;
 import org.ta4j.core.indicators.bollinger.BollingerBandsMiddleIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
-import org.ta4j.core.trading.rules.CrossedDownIndicatorRule;
-import org.ta4j.core.trading.rules.CrossedUpIndicatorRule;
-import org.ta4j.core.trading.rules.OverIndicatorRule;
-import org.ta4j.core.trading.rules.UnderIndicatorRule;
+import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
 /**
@@ -74,9 +71,9 @@ public class FXBootCampStrategy {
         Rule entryRule = new OverIndicatorRule(ema21, ema55)
                 .and(new OverIndicatorRule(ema21, ema200))
                 //.and(new OverIndicatorRule(ema55, ema200))
-                .and(new CrossedUpIndicatorRule(ema5, sma8));
-                //.and(new CrossedUpIndicatorRule(macd, ema8));
-                //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
+                .and(new OverIndicatorRule(ema5, sma8))
+                .and(new OverIndicatorRule(macd, ema8))
+                .and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
 
         Rule exitRule = new UnderIndicatorRule(ema21, ema55)
                 .and(new UnderIndicatorRule(ema21, ema200))
@@ -84,6 +81,11 @@ public class FXBootCampStrategy {
                 .and(new CrossedDownIndicatorRule(ema5, sma8));
                 //.and(new CrossedDownIndicatorRule(macd, ema8));
                 //.and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
+
+        Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
+        Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
+
+        exitRule = exitRule.xor(stopGain).xor(stopLoss);
 
         return new BaseStrategy("FXBootCampStrategy", entryRule, exitRule);
     }

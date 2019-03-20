@@ -94,6 +94,11 @@ public class MovingAveragesStrategy {
                         new CrossedDownIndicatorRule(ema5, ema21).
                         and(new CrossedDownIndicatorRule(ema14, ema21));
 
+        Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
+        Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
+
+        exitRule = exitRule.xor(stopGain).xor(stopLoss);
+
         return new BaseStrategy("MovingAveragesStrategy", entryRule, exitRule);
     }
 

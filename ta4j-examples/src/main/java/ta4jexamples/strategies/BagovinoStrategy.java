@@ -37,15 +37,15 @@ import ta4jexamples.loaders.CsvTradesLoader;
  */
 public class BagovinoStrategy {
 
-    /*
     private static int SHORT_EMA = 5;
     private static int LONG_EMA = 12;
     private static int RSI = 21;
-    */
 
+    /*
     private static int SHORT_EMA = 10;
     private static int LONG_EMA = 12;
     private static int RSI = 81;
+    */
 
     public static void setShortEma(int shortEma) {
         SHORT_EMA = shortEma;
@@ -76,17 +76,22 @@ public class BagovinoStrategy {
 
         RSIIndicator rsi = new RSIIndicator(closePrice, RSI);
 
-        Rule entryRule = new CrossedUpIndicatorRule(ema5, ema12).
-                        and(new CrossedUpIndicatorRule(closePrice, ema12)).
-                        and(new CrossedUpIndicatorRule(closePrice, ema5)).
+        Rule entryRule = new OverIndicatorRule(ema5, ema12).
+                        and(new OverIndicatorRule(closePrice, ema12)).
+                        and(new OverIndicatorRule(closePrice, ema5)).
                         and(new CrossedUpIndicatorRule(rsi, Decimal.valueOf(50))).
-                        and(new IsRisingRule(rsi, 2)); // Signal 1
+                        and(new IsRisingRule(rsi, 3)); // Signal 1
 
-        Rule exitRule = new CrossedDownIndicatorRule(ema5, ema12).
-                        and(new CrossedDownIndicatorRule(closePrice, ema12)).
-                        and(new CrossedDownIndicatorRule(closePrice, ema5)).
+        Rule exitRule = new UnderIndicatorRule(ema5, ema12).
+                        and(new UnderIndicatorRule(closePrice, ema12)).
+                        and(new UnderIndicatorRule(closePrice, ema5)).
                         and(new CrossedDownIndicatorRule(rsi, Decimal.valueOf(50))).
-                        and(new IsFallingRule(rsi, 2));
+                        and(new IsFallingRule(rsi, 3));
+
+        Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
+        Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
+
+        exitRule = exitRule.xor(stopGain).xor(stopLoss);
 
         return new BaseStrategy("MovingAveragesStrategy", entryRule, exitRule);
     }

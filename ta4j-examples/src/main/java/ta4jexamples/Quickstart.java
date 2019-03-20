@@ -57,7 +57,7 @@ public class Quickstart {
 
         // Getting a time series (from any provider: CSV, web service, etc.)
         //TimeSeries series = CsvTradesLoader.loadBitstampSeries();
-        TimeSeries series = CsvTicksLoader.load("test_2016.csv");
+        TimeSeries series = CsvTicksLoader.load("2016_D.csv");
 
         // Getting the close price of the bars
         Decimal firstClosePrice = series.getBar(0).getClosePrice();
@@ -111,28 +111,26 @@ public class Quickstart {
 
         List<Strategy> strategies = new ArrayList<>();
 
-        List<Strategy> _strategies = new ArrayList<>();
-
         //strategies.add(CCICorrectionStrategy.buildStrategy(series));
         //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
         //strategies.add(MovingMomentumStrategy.buildStrategy(series));
-        //strategies.add(RSI2Strategy.buildStrategy(series));
-        strategies.add(MACDStrategy.buildStrategy(series));
+        strategies.add(RSI2Strategy.buildStrategy(series));
+        //strategies.add(MACDStrategy.buildStrategy(series));
         //strategies.add(StochasticStrategy.buildStrategy(series));
         //strategies.add(ParabolicSARStrategy.buildStrategy(series));
         //strategies.add(MovingAveragesStrategy.buildStrategy(series));
         //strategies.add(BagovinoStrategy.buildStrategy(series));
         //strategies.add(FXBootCampStrategy.buildStrategy(series));
 
-        _strategies.add(MACDDualStrategy.buildStrategy(series));
-
         //0 1 0 1 1 1 1 0 1 1
 
         MultipleStrategy multipleStrategy = new MultipleStrategy(strategies);
 
-        TradingRecord tradingRecord = seriesManager.run(multipleStrategy.buildStrategy(series));
+        //TradingRecord tradingRecord = seriesManager.run(multipleStrategy.buildStrategy(series), Order.OrderType.SELL);
 
-        TradingRecord _tradingRecord = seriesManager.run(multipleStrategy.buildStrategy(series), Order.OrderType.SELL);
+        TradingRecord tradingRecord = seriesManager.run(multipleStrategy.buildStrategy(series), Order.OrderType.BUY);
+
+        //TradingRecord _tradingRecord = seriesManager.run(multipleStrategy.buildStrategy(series), Order.OrderType.SELL);
 
         System.out.println("Number of trades for our strategy: " + tradingRecord.getTradeCount());
 
@@ -157,20 +155,17 @@ public class Quickstart {
             System.out.println("Trade["+ i +"]: " + tradingRecord.getTrades().get(i).toString());
         }
 
-        for (int i = 0; i < _tradingRecord.getTrades().size(); ++i) {
-            System.out.println("_Trade["+ i +"]: " + _tradingRecord.getTrades().get(i).toString());
-        }
 
         for (int i = 0; i < cashFlow.getSize(); ++i) {
             System.out.println("CashFlow["+ i +"]: " + cashFlow.getValue(i));
         }
-
 
         MACDIndicator macd = new MACDIndicator(closePrice,12,26);
 
         SMAIndicator signal = new SMAIndicator(macd,9);
         EMAIndicator ema50  = new EMAIndicator(closePrice,50);
         EMAIndicator ema21  = new EMAIndicator(closePrice,21);
+        EMAIndicator ema3  = new EMAIndicator(closePrice,3);
 
         /*
         SMAIndicator sma21  = new SMAIndicator(closePrice,21);
@@ -190,7 +185,7 @@ public class Quickstart {
 
         BuyAndSellSignalsToChart.buildCandleStickChart(series, multipleStrategy.buildStrategy(series));
         IndicatorsToChart.displayChart(series, Arrays.asList(macd, signal));
-        IndicatorsToChart.displayChart(series, Arrays.asList(closePrice, ema21, ema50));
+        IndicatorsToChart.displayChart(series, Arrays.asList(closePrice, ema21, ema50, ema3));
         //IndicatorsToChart.displayChart(series, Arrays.asList(closePrice, sma21, ema5, ema100, ema200));
         //IndicatorsToChart.displayChart(series, Arrays.asList(stochasticK, stochasticD));
 

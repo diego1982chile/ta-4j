@@ -27,10 +27,7 @@ import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.RSIIndicator;
 import org.ta4j.core.indicators.SMAIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
-import org.ta4j.core.trading.rules.CrossedDownIndicatorRule;
-import org.ta4j.core.trading.rules.CrossedUpIndicatorRule;
-import org.ta4j.core.trading.rules.OverIndicatorRule;
-import org.ta4j.core.trading.rules.UnderIndicatorRule;
+import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
 /**
@@ -69,8 +66,11 @@ public class RSI2Strategy {
         Rule exitRule = new UnderIndicatorRule(shortSma, longSma) // Trend
                 .and(new CrossedUpIndicatorRule(rsi, Decimal.valueOf(95))) // Signal 1
                 .and(new UnderIndicatorRule(shortSma, closePrice)); // Signal 2
-        
-        // TODO: Finalize the strategy
+
+        Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
+        Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
+
+        exitRule = exitRule.xor(stopGain).xor(stopLoss);
         
         return new BaseStrategy("RSI2Strategy", entryRule, exitRule);
     }
