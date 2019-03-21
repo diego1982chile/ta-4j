@@ -26,6 +26,8 @@ import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.helpers.*;
 import org.ta4j.core.trading.rules.OverIndicatorRule;
+import org.ta4j.core.trading.rules.StopGainRule;
+import org.ta4j.core.trading.rules.StopLossRule;
 import org.ta4j.core.trading.rules.UnderIndicatorRule;
 import ta4jexamples.loaders.CsvTradesLoader;
 
@@ -62,6 +64,11 @@ public class GlobalExtremaStrategy {
         // Going short if the close price goes above the max price
         MultiplierIndicator upWeek = new MultiplierIndicator(weekMaxPrice, Decimal.valueOf("0.996"));
         Rule sellingRule = new OverIndicatorRule(closePrices, upWeek);
+
+        Rule stopLoss = new StopLossRule(closePrices, Decimal.valueOf(1));
+        Rule stopGain = new StopGainRule(closePrices, Decimal.valueOf(1));
+
+        sellingRule = sellingRule.xor(stopGain).xor(stopLoss);
 
         return new BaseStrategy("GlobalExtremaStrategy", buyingRule, sellingRule);
     }

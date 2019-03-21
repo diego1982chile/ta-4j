@@ -43,14 +43,14 @@ public class ParabolicSARStrategy {
     private static int D = 5;
 
     /*
-    private static int SAR_1 = 196;
-    private static int SAR_2 = 98;
-    private static int RSI = 46;
-    private static int K = 28;
-    private static int D = 23;
+    private static int SAR_1 = 78;
+    private static int SAR_2 = 103;
+    private static int RSI = 83;
+    private static int K = 3;
+    private static int D = 2;
     */
 
-    //196 98 46 28 23
+    //78 103 83 3 2
 
     public static void setSar1(int sar1) {
         SAR_1 = sar1;

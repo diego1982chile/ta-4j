@@ -25,7 +25,10 @@ package ta4jexamples.strategies;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.CCIIndicator;
+import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.OverIndicatorRule;
+import org.ta4j.core.trading.rules.StopGainRule;
+import org.ta4j.core.trading.rules.StopLossRule;
 import org.ta4j.core.trading.rules.UnderIndicatorRule;
 import ta4jexamples.loaders.CsvTradesLoader;
 
@@ -56,6 +59,13 @@ public class CCICorrectionStrategy {
         
         Rule exitRule = new UnderIndicatorRule(longCci, minus100) // Bear trend
                 .and(new OverIndicatorRule(shortCci, plus100)); // Signal
+
+        ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
+
+        Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
+        Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
+
+        exitRule = exitRule.xor(stopGain).xor(stopLoss);
         
         Strategy strategy = new BaseStrategy("CCICorrectionStrategy", entryRule, exitRule);
         strategy.setUnstablePeriod(5);

@@ -40,7 +40,6 @@ import ta4jexamples.loaders.CsvTicksLoader;
 import ta4jexamples.loaders.CsvTradesLoader;
 import ta4jexamples.research.MultipleStrategy;
 import ta4jexamples.strategies.*;
-import ta4jexamples.strategies.dual.MACDDualStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +56,7 @@ public class Quickstart {
 
         // Getting a time series (from any provider: CSV, web service, etc.)
         //TimeSeries series = CsvTradesLoader.loadBitstampSeries();
-        TimeSeries series = CsvTicksLoader.load("2016_D.csv");
+        TimeSeries series = CsvTicksLoader.load("2014_D.csv");
 
         // Getting the close price of the bars
         Decimal firstClosePrice = series.getBar(0).getClosePrice();
@@ -112,17 +111,18 @@ public class Quickstart {
         List<Strategy> strategies = new ArrayList<>();
 
         //strategies.add(CCICorrectionStrategy.buildStrategy(series));
-        //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
-        //strategies.add(MovingMomentumStrategy.buildStrategy(series));
-        strategies.add(RSI2Strategy.buildStrategy(series));
+        strategies.add(GlobalExtremaStrategy.buildStrategy(series));
+        strategies.add(MovingMomentumStrategy.buildStrategy(series));
+        //strategies.add(RSI2Strategy.buildStrategy(series));
         //strategies.add(MACDStrategy.buildStrategy(series));
         //strategies.add(StochasticStrategy.buildStrategy(series));
         //strategies.add(ParabolicSARStrategy.buildStrategy(series));
         //strategies.add(MovingAveragesStrategy.buildStrategy(series));
         //strategies.add(BagovinoStrategy.buildStrategy(series));
         //strategies.add(FXBootCampStrategy.buildStrategy(series));
+        //strategies.add(TunnelStrategy.buildStrategy(series));
 
-        //0 1 0 1 1 1 1 0 1 1
+        //0 1 1 0 0 0 1 0 1 1 1
 
         MultipleStrategy multipleStrategy = new MultipleStrategy(strategies);
 
@@ -184,8 +184,8 @@ public class Quickstart {
         //IndicatorsToChart.displayChart(series, Arrays.asList(closePrice));
 
         BuyAndSellSignalsToChart.buildCandleStickChart(series, multipleStrategy.buildStrategy(series));
-        IndicatorsToChart.displayChart(series, Arrays.asList(macd, signal));
-        IndicatorsToChart.displayChart(series, Arrays.asList(closePrice, ema21, ema50, ema3));
+        //IndicatorsToChart.displayChart(series, Arrays.asList(macd, signal));
+        //IndicatorsToChart.displayChart(series, Arrays.asList(closePrice, ema21, ema50, ema3));
         //IndicatorsToChart.displayChart(series, Arrays.asList(closePrice, sma21, ema5, ema100, ema200));
         //IndicatorsToChart.displayChart(series, Arrays.asList(stochasticK, stochasticD));
 

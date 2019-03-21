@@ -24,9 +24,10 @@ package ta4jexamples.strategies;
 
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
-import org.ta4j.core.indicators.EMAIndicator;
-import org.ta4j.core.indicators.RSIIndicator;
+import org.ta4j.core.indicators.*;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
+import org.ta4j.core.indicators.helpers.MaxPriceIndicator;
+import org.ta4j.core.indicators.helpers.MinPriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
@@ -35,30 +36,39 @@ import ta4jexamples.loaders.CsvTradesLoader;
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class BagovinoStrategy {
+public class TunnelStrategy {
 
+    /*
     private static int SHORT_EMA = 5;
     private static int LONG_EMA = 12;
     private static int RSI = 21;
-
-    /*
-    private static int SHORT_EMA = 161;
-    private static int LONG_EMA = 169;
-    private static int RSI = 17;
     */
 
-    //161 169 17
+    private static int PERIOD = 50;
 
-    public static void setShortEma(int shortEma) {
-        SHORT_EMA = shortEma;
+    private static int MACD_1 = 12;
+    private static int MACD_2 = 26;
+    private static int SIGNAL_EMA = 9;
+    private static int TP_SIGNAL_EMA = 3;
+
+    public static void setPERIOD(int PERIOD) {
+        TunnelStrategy.PERIOD = PERIOD;
     }
 
-    public static void setLongEma(int longEma) {
-        LONG_EMA = longEma;
+    public static void setMacd1(int macd1) {
+        MACD_1 = macd1;
     }
 
-    public static void setRSI(int RSI) {
-        BagovinoStrategy.RSI = RSI;
+    public static void setMacd2(int macd2) {
+        MACD_2 = macd2;
+    }
+
+    public static void setSignalEma(int signalEma) {
+        SIGNAL_EMA = signalEma;
+    }
+
+    public static void setTpSignalEma(int tpSignalEma) {
+        TP_SIGNAL_EMA = tpSignalEma;
     }
 
     /**
@@ -72,23 +82,25 @@ public class BagovinoStrategy {
         }
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
+        MaxPriceIndicator maxPrice = new MaxPriceIndicator(series);
+        MinPriceIndicator minPrice = new MinPriceIndicator(series);
 
-        EMAIndicator ema5  = new EMAIndicator(closePrice,SHORT_EMA);
-        EMAIndicator ema12  = new EMAIndicator(closePrice,LONG_EMA);
+        WMAIndicator highWMA  = new WMAIndicator(maxPrice, PERIOD);
+        WMAIndicator lowWMA  = new WMAIndicator(minPrice,PERIOD);
 
-        RSIIndicator rsi = new RSIIndicator(closePrice, RSI);
+        MACDIndicator macd = new MACDIndicator(closePrice,MACD_1,MACD_2);
 
-        Rule entryRule = new OverIndicatorRule(ema5, ema12).
-                        and(new OverIndicatorRule(closePrice, ema12)).
-                        and(new OverIndicatorRule(closePrice, ema5)).
-                        and(new CrossedUpIndicatorRule(rsi, Decimal.valueOf(50))).
-                        and(new IsRisingRule(rsi, 3)); // Signal 1
+        SMAIndicator signal = new SMAIndicator(macd,SIGNAL_EMA);
 
-        Rule exitRule = new UnderIndicatorRule(ema5, ema12).
-                        and(new UnderIndicatorRule(closePrice, ema12)).
-                        and(new UnderIndicatorRule(closePrice, ema5)).
-                        and(new CrossedDownIndicatorRule(rsi, Decimal.valueOf(50))).
-                        and(new IsFallingRule(rsi, 3));
+        SMAIndicator tpSignal = new SMAIndicator(macd,TP_SIGNAL_EMA);
+
+        Rule entryRule = new CrossedUpIndicatorRule(closePrice, highWMA)
+                        .and(new OverIndicatorRule(macd, tpSignal))
+                        .and(new OverIndicatorRule(tpSignal, signal));
+
+        Rule exitRule = new CrossedDownIndicatorRule(closePrice, lowWMA)
+                        .and(new UnderIndicatorRule(macd, tpSignal))
+                        .and(new UnderIndicatorRule(tpSignal, signal));
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));

@@ -24,10 +24,7 @@ package ta4jexamples.strategies;
 
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
-import org.ta4j.core.indicators.EMAIndicator;
-import org.ta4j.core.indicators.MACDIndicator;
-import org.ta4j.core.indicators.RSIIndicator;
-import org.ta4j.core.indicators.SMAIndicator;
+import org.ta4j.core.indicators.*;
 import org.ta4j.core.indicators.helpers.*;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
@@ -47,17 +44,24 @@ public class MACDStrategy {
     private static int MACD_2 = 26;
     private static int SIGNAL_EMA = 9;
 
-    private static int SHORT_EMA_TREND = 100;
-    private static int LONG_EMA_TREND = 200;
+    private static int TP_SIGNAL_EMA = 3;
+    private static int ATR = 12;
+    private static int x = 6;
 
     /*
-    private static int LONG_EMA = 18;
-    private static int SHORT_EMA = 32;
-    private static int SHORTER_EMA = 140;
-    private static int MACD_1 = 5;
-    private static int MACD_2 = 6;
-    private static int SIGNAL_EMA = 41;
+    private static int LONG_EMA = 82;
+    private static int SHORT_EMA = 22;
+    private static int SHORTER_EMA = 1;
+    private static int MACD_1 = 94;
+    private static int MACD_2 = 154;
+    private static int SIGNAL_EMA = 194;
+    private static int TP_SIGNAL_EMA = 155;
+    private static int ATR = 22;
+    private static int x = 70;
     */
+
+    //140 74 7 2 8 158 62 6 129
+    //82 22 1 94 154 194 155 22 70
 
     //18 32 140 5 6 41
 
@@ -86,6 +90,18 @@ public class MACDStrategy {
         SIGNAL_EMA = signalEma;
     }
 
+    public static void setTpSignalEma(int tpSignalEma) {
+        TP_SIGNAL_EMA = tpSignalEma;
+    }
+
+    public static void setATR(int ATR) {
+        MACDStrategy.ATR = ATR;
+    }
+
+    public static void setX(int x) {
+        MACDStrategy.x = x;
+    }
+
     /**
      * @param series a time series
      * @return a 2-period RSI strategy
@@ -108,6 +124,10 @@ public class MACDStrategy {
 
         SMAIndicator signal = new SMAIndicator(macd,SIGNAL_EMA);
 
+        SMAIndicator tpSignal = new SMAIndicator(macd,TP_SIGNAL_EMA);
+
+        ATRIndicator atr = new ATRIndicator(series, ATR);
+
         /*
         Rule entryRule = new OverIndicatorRule(closePrice, ema21)
                 .and(new OverIndicatorRule(macd, signal))
@@ -117,36 +137,50 @@ public class MACDStrategy {
                 //.and(new OverIndicatorRule(macd, zeroLine));
         */
 
-        Rule entryRule = new CrossedUpIndicatorRule(closePrice, ema3)
-                .and(new OverIndicatorRule(macd, signal))
+        Rule entryRule = //new CrossedUpIndicatorRule(closePrice, ema3)
+                new CrossedUpIndicatorRule(macd, signal)
                 .and(new OverIndicatorRule(ema3, ema21))
                 .and(new OverIndicatorRule(ema3, ema50))
-                .and(new IsRisingRule(ema50, 5))
-                .and(new IsRisingRule(ema21, 5))
+                //.and(new IsRisingRule(ema50, 5))
+                //.and(new IsRisingRule(ema21, 5));
+                .and(new OverIndicatorRule(macd, signal))
+                .and(new OverIndicatorRule(macd, tpSignal));
+                //.and(new OverIndicatorRule(tpSignal, signal));
                 /*.and(new IsRisingRule(macd, 5))
                 .and(new IsRisingRule(signal, 5))*/
                 //.and(new UnderIndicatorRule(macd, Decimal.valueOf(0.005)))
-                .and(new OverIndicatorRule(macd, Decimal.valueOf(0)))
-                .and(new OverIndicatorRule(signal, Decimal.valueOf(0)));
+                //.and(new OverIndicatorRule(macd, Decimal.valueOf(0)))
+                //.and(new OverIndicatorRule(signal, Decimal.valueOf(0)));
 
 
-        Rule exitRule = new CrossedDownIndicatorRule(closePrice, ema3)
-                .and(new UnderIndicatorRule(macd, signal))
-                .and(new UnderIndicatorRule(ema3, ema21))
-                .and(new UnderIndicatorRule(ema3, ema50))
-                .and(new IsFallingRule(ema50, 5))
-                .and(new IsFallingRule(ema21, 5))
-                /*.and(new IsFallingRule(macd, 5))
-                .and(new IsFallingRule(signal, 5))*/
-                //.and(new OverIndicatorRule(macd, Decimal.valueOf(-0.005)))
-                .and(new UnderIndicatorRule(macd, Decimal.valueOf(0)))
-                .and(new UnderIndicatorRule(signal, Decimal.valueOf(0)));
+        Rule exitRule;
+
+        exitRule = //new CrossedDownIndicatorRule(closePrice, ema3)
+                    new CrossedDownIndicatorRule(macd, signal)
+                    .and(new UnderIndicatorRule(macd, signal))
+                    .and(new UnderIndicatorRule(ema3, ema21))
+                    .and(new UnderIndicatorRule(ema3, ema50))
+                    //.and(new IsFallingRule(ema50, 5))
+                    //.and(new IsFallingRule(ema21, 5))
+                    //.and(new IsFallingRule(macd, 5))
+                    //.and(new IsFallingRule(signal, 5))
+                    .and(new UnderIndicatorRule(macd, signal))
+                    .and(new UnderIndicatorRule(macd, tpSignal));
+                    //.and(new OverIndicatorRule(macd, Decimal.valueOf(-0.005)))
+                    //.and(new UnderIndicatorRule(macd, Decimal.valueOf(0)))
+                    //.and(new UnderIndicatorRule(signal, Decimal.valueOf(0)));
 
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
+        Rule tpRule = new CrossedDownIndicatorRule(macd, tpSignal);
+        Rule atrRule = new CrossedDownIndicatorRule(closePrice, new DifferenceIndicator(closePrice, new MultiplierIndicator(atr, Decimal.valueOf(x))));
 
-        exitRule = exitRule.xor(stopGain).xor(stopLoss);
+        exitRule = tpRule;
+
+        exitRule = exitRule.xor(atrRule).xor(stopGain).xor(stopLoss);
+
+        //exitRule = exitRule.xor(stopLoss);
 
         /*
         Rule exitRule = new UnderIndicatorRule(closePrice, ema21)

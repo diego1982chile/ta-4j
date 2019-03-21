@@ -39,19 +39,19 @@ import ta4jexamples.loaders.CsvTradesLoader;
  */
 public class MovingAveragesStrategy {
 
-    /*
     private static int SHORTER_EMA = 5;
     private static int SHORT_EMA = 14;
     private static int LONG_EMA = 21;
     private static int LONGER_EMA = 50;
+
+    /*
+    private static int SHORTER_EMA = 107;
+    private static int SHORT_EMA = 128;
+    private static int LONG_EMA = 2;
+    private static int LONGER_EMA = 93;
     */
 
-    private static int SHORTER_EMA = 4;
-    private static int SHORT_EMA = 1;
-    private static int LONG_EMA = 41;
-    private static int LONGER_EMA = 141;
-
-    //4 1 41 141
+    //107 128 2 93
 
     public static void setShorterEma(int shorterEma) {
         SHORTER_EMA = shorterEma;
