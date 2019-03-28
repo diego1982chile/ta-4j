@@ -43,8 +43,15 @@ import java.util.List;
  */
 public class CCICorrectionStrategy implements ISolution {
 
+    /*
     private static int LONG_CCI = 47;
     private static int SHORT_CCI = 45;
+    */
+
+    private static int LONG_CCI = 82;
+    private static int SHORT_CCI = 4;
+
+    //82 4
 
     public static int getLongCci() {
         return LONG_CCI;

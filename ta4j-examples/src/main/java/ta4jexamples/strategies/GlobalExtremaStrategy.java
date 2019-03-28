@@ -40,7 +40,9 @@ import java.util.List;
 public class GlobalExtremaStrategy implements ISolution {
 
     // We assume that there were at least one trade every 5 minutes during the whole week
-    private static int NB_BARS_PER_WEEK = 12 * 24 * 7;
+    //private static int NB_BARS_PER_WEEK = 12 * 24 * 7;
+
+    private static int NB_BARS_PER_WEEK = 4;
 
     public static int getNbBarsPerWeek() {
         return NB_BARS_PER_WEEK;

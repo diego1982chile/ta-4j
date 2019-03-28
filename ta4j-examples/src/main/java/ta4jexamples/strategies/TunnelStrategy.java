@@ -51,10 +51,12 @@ public class TunnelStrategy implements ISolution {
 
     private static int PERIOD = 6;
 
-    private static int MACD_1 = 12;
-    private static int MACD_2 = 26;
-    private static int SIGNAL_EMA = 9;
-    private static int TP_SIGNAL_EMA = 3;
+    private static int MACD_1 = 65;
+    private static int MACD_2 = 133;
+    private static int SIGNAL_EMA = 150;
+    private static int TP_SIGNAL_EMA = 191;
+
+    //6 65 133 150 191
 
     public static void setPERIOD(int PERIOD) {
         TunnelStrategy.PERIOD = PERIOD;

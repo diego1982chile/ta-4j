@@ -22,6 +22,7 @@
  */
 package ta4jexamples.strategies;
 
+import cl.dsoto.trading.model.Execution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -29,12 +30,80 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.List;
+
 /**
  * 2-Period RSI Strategy
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class WinslowStrategy {
+public class WinslowStrategy implements ISolution {
+
+    /*
+    private static int EMA_800 = 800;
+    private static int EMA_200 = 200;
+    private static int EMA_144 = 144;
+    private static int EMA_62 = 62;
+    private static int MACD_1 = 12;
+    private static int MACD_2 = 26;
+    private static int SIGNAL = 9;
+    private static int STOCHASTIC_R = 9;
+    private static int STOCHASTIC_K = 14;
+    private static int STOCHASTIC_D = 3;
+    */
+
+    private static int EMA_800 = 150;
+    private static int EMA_200 = 188;
+    private static int EMA_144 = 142;
+    private static int EMA_62 = 4;
+    private static int MACD_1 = 3;
+    private static int MACD_2 = 99;
+    private static int SIGNAL = 162;
+    private static int STOCHASTIC_R = 74;
+    private static int STOCHASTIC_K = 100;
+    private static int STOCHASTIC_D = 135;
+
+    //150 188 142 4 3 99 162 74 100 135
+
+    public static void setEma800(int ema800) {
+        EMA_800 = ema800;
+    }
+
+    public static void setEma200(int ema200) {
+        EMA_200 = ema200;
+    }
+
+    public static void setEma144(int ema144) {
+        EMA_144 = ema144;
+    }
+
+    public static void setEma62(int ema62) {
+        EMA_62 = ema62;
+    }
+
+    public static void setMacd1(int macd1) {
+        MACD_1 = macd1;
+    }
+
+    public static void setMacd2(int macd2) {
+        MACD_2 = macd2;
+    }
+
+    public static void setSIGNAL(int SIGNAL) {
+        WinslowStrategy.SIGNAL = SIGNAL;
+    }
+
+    public static void setStochasticR(int stochasticR) {
+        STOCHASTIC_R = stochasticR;
+    }
+
+    public static void setStochasticK(int stochasticK) {
+        STOCHASTIC_K = stochasticK;
+    }
+
+    public static void setStochasticD(int stochasticD) {
+        STOCHASTIC_D = stochasticD;
+    }
 
     /**
      * @param series a time series
@@ -48,22 +117,22 @@ public class WinslowStrategy {
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
-        SMAIndicator ema800  = new SMAIndicator(closePrice,800);
+        SMAIndicator ema800  = new SMAIndicator(closePrice,EMA_800);
 
-        SMAIndicator ema200  = new SMAIndicator(closePrice,200);
+        SMAIndicator ema200  = new SMAIndicator(closePrice,EMA_200);
 
-        EMAIndicator ema144  = new EMAIndicator(closePrice,144);
-        EMAIndicator ema62  = new EMAIndicator(closePrice,62);
+        EMAIndicator ema144  = new EMAIndicator(closePrice,EMA_144);
+        EMAIndicator ema62  = new EMAIndicator(closePrice,EMA_62);
 
-        MACDIndicator macd = new MACDIndicator(closePrice,12,26);
+        MACDIndicator macd = new MACDIndicator(closePrice,MACD_1,MACD_2);
 
-        EMAIndicator signal = new EMAIndicator(macd,9);
+        EMAIndicator signal = new EMAIndicator(macd,SIGNAL);
 
-        RSIIndicator r = new RSIIndicator(closePrice, 9);
-        Indicator sr = new StochasticRSIIndicator(r, 9);
+        RSIIndicator r = new RSIIndicator(closePrice, STOCHASTIC_R);
+        Indicator sr = new StochasticRSIIndicator(r, STOCHASTIC_R);
 
-        Indicator stochasticK = new SMAIndicator(sr, 14);
-        Indicator stochasticD = new SMAIndicator(stochasticK, 3);
+        Indicator stochasticK = new SMAIndicator(sr, STOCHASTIC_K);
+        Indicator stochasticD = new SMAIndicator(stochasticK, STOCHASTIC_D);
 
 
         Rule yuma = new CrossedUpIndicatorRule(closePrice, ema62)
@@ -117,6 +186,36 @@ public class WinslowStrategy {
 
     String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void mapFrom(Execution execution) throws Exception {
+
+        List solution = null;
+
+        if(!execution.getSolutions().isEmpty()) {
+            solution = execution.getSolutions().get(0).getSolution();
+        }
+
+        if(solution == null) {
+            throw new Exception("No existen soluciones registradas para esta estrategia");
+        }
+
+        setEma800((int) solution.get(0));
+        setEma200((int) solution.get(1));
+        setEma144((int) solution.get(2));
+        setEma62((int) solution.get(3));
+        setMacd1((int) solution.get(4));
+        setMacd2((int) solution.get(5));
+        setSIGNAL((int) solution.get(6));
+        setStochasticR((int) solution.get(7));
+        setStochasticK((int) solution.get(8));
+        setStochasticD((int) solution.get(9));
+    }
+
+    @Override
+    public int getVariables() {
+        return this.getClass().getDeclaredFields().length;
     }
 
 }

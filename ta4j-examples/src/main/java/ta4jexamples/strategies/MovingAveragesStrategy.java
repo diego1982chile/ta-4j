@@ -49,13 +49,14 @@ public class MovingAveragesStrategy implements ISolution {
     private static int LONGER_EMA = 50;
     */
 
-    private static int SHORTER_EMA = 164;
-    private static int SHORT_EMA = 159;
-    private static int LONG_EMA = 87;
-    private static int LONGER_EMA = 148;
+    private static int SHORTER_EMA = 70;
+    private static int SHORT_EMA = 19;
+    private static int LONG_EMA = 1;
+    private static int LONGER_EMA = 12;
 
     //70 24 1 88
     //164 159 87 148
+    //70 19 1 12
 
     public static void setShorterEma(int shorterEma) {
         SHORTER_EMA = shorterEma;

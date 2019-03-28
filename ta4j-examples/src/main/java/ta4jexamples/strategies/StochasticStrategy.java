@@ -50,19 +50,21 @@ public class StochasticStrategy implements ISolution {
     private static int LONG_EMA = 200;
     */
 
-    private static int SMA = 1;
-    private static int EMA = 11;
-    private static int RSI = 188;
-    private static int K = 2;
-    private static int D = 3;
-    private static int SHORT_EMA = 104;
-    private static int LONG_EMA = 114;
+    private static int SMA = 54;
+    private static int EMA = 16;
+    private static int RSI = 154;
+    private static int K = 116;
+    private static int D = 10;
+    private static int SHORT_EMA = 199;
+    private static int LONG_EMA = 44;
 
     //59 1 69 49 67 124 64
 
     //74 186 79 19 89 191 1
 
     //1 11 188 2 3 104 114
+
+    //54 16 154 116 10 199 44
 
     public static void setSMA(int SMA) {
         StochasticStrategy.SMA = SMA;

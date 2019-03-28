@@ -58,7 +58,7 @@ public class Quickstart {
 
         // Getting a time series (from any provider: CSV, web service, etc.)
         //TimeSeries series = CsvTradesLoader.loadBitstampSeries();
-        TimeSeries series = CsvTicksLoader.load("2018_D.csv");
+        TimeSeries series = CsvTicksLoader.load("2010_D.csv");
 
         // Getting the close price of the bars
         Decimal firstClosePrice = series.getBar(0).getClosePrice();
@@ -114,20 +114,20 @@ public class Quickstart {
 
         //strategies.add(CCICorrectionStrategy.buildStrategy(series));
         //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
-        //strategies.add(MovingMomentumStrategy.buildStrategy(series));
-        strategies.add(RSI2Strategy.buildStrategy(series));
+        strategies.add(MovingMomentumStrategy.buildStrategy(series));
+        //strategies.add(RSI2Strategy.buildStrategy(series));
         //strategies.add(MACDStrategy.buildStrategy(series));
-        //strategies.add(StochasticStrategy.buildStrategy(series));
+        strategies.add(StochasticStrategy.buildStrategy(series));
         //strategies.add(ParabolicSARStrategy.buildStrategy(series));
-        //strategies.add(MovingAveragesStrategy.buildStrategy(series));
+        strategies.add(MovingAveragesStrategy.buildStrategy(series));
         //strategies.add(BagovinoStrategy.buildStrategy(series));
         //strategies.add(FXBootCampStrategy.buildStrategy(series));
-        //strategies.add(TunnelStrategy.buildStrategy(series));
-        //strategies.add(WinslowStrategy.buildStrategy(series));
+        strategies.add(TunnelStrategy.buildStrategy(series));
+        strategies.add(WinslowStrategy.buildStrategy(series));
 
         //strategies.add(FibonacciStrategy.buildStrategy(series));
 
-        //0 1 1 0 0 0 1 0 1 1 1
+        //0 0 1 0 0 1 0 1 0 0 1 1
 
         MultipleStrategy multipleStrategy = new MultipleStrategy(strategies);
 
@@ -165,6 +165,7 @@ public class Quickstart {
             System.out.println("CashFlow["+ i +"]: " + cashFlow.getValue(i));
         }
 
+        /*
         SMAIndicator ema800  = new SMAIndicator(closePrice,800);
 
         SMAIndicator ema200  = new SMAIndicator(closePrice,200);
@@ -181,10 +182,11 @@ public class Quickstart {
 
         Indicator stochasticK = new SMAIndicator(sr, 14);
         Indicator stochasticD = new SMAIndicator(stochasticK, 3);
+        */
 
-        IndicatorsToChart.displayChart(series, Arrays.asList(closePrice, ema800, ema200, ema144, ema62));
+        //IndicatorsToChart.displayChart(series, Arrays.asList(closePrice, ema800, ema200, ema144, ema62));
 
-        IndicatorsToChart.displayChart(series, Arrays.asList(stochasticK, stochasticD));
+        //IndicatorsToChart.displayChart(series, Arrays.asList(stochasticK, stochasticD));
 
         BuyAndSellSignalsToChart.buildCandleStickChart(series, multipleStrategy.buildStrategy(series));
         //IndicatorsToChart.displayChart(series, Arrays.asList(macd, signal));

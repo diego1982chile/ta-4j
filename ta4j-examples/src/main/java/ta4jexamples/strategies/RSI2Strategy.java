@@ -42,11 +42,21 @@ import java.util.List;
  */
 public class RSI2Strategy implements ISolution {
 
+    /*
     private static int RSI = 14;
 
     private static int EMA = 21;
     private static int SMA_1 = 7;
     private static int SMA_2 = 4;
+    */
+
+    private static int RSI = 185;
+
+    private static int EMA = 63;
+    private static int SMA_1 = 10;
+    private static int SMA_2 = 145;
+
+    //185 63 10 145
 
     public static int getRSI() {
         return RSI;

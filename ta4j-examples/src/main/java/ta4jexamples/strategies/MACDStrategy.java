@@ -53,16 +53,17 @@ public class MACDStrategy implements ISolution {
     private static int x = 6;
     */
 
-    private static int LONG_EMA = 82;
-    private static int SHORT_EMA = 82;
-    private static int SHORTER_EMA = 63;
+    private static int LONG_EMA = 45;
+    private static int SHORT_EMA = 45;
+    private static int SHORTER_EMA = 6;
     private static int MACD_1 = 1;
-    private static int MACD_2 = 24;
-    private static int SIGNAL_EMA = 19;
-    private static int TP_SIGNAL_EMA = 18;
-    private static int ATR = 170;
-    private static int x = 184;
+    private static int MACD_2 = 2;
+    private static int SIGNAL_EMA = 88;
+    private static int TP_SIGNAL_EMA = 37;
+    private static int ATR = 150;
+    private static int x = 67;
 
+    //45 45 6 1 2 88 37 150 67
     //140 74 7 2 8 158 62 6 129
     //82 22 1 94 154 194 155 22 70
     //82 82 63 1 24 19 18 170 184

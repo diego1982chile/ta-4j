@@ -42,6 +42,7 @@ import java.util.List;
  */
 public class MovingMomentumStrategy implements ISolution {
 
+    /*
     private static int SHORT_EMA = 9;
     private static int LONG_EMA = 26;
 
@@ -49,6 +50,17 @@ public class MovingMomentumStrategy implements ISolution {
     private static int MACD_1 = 9;
     private static int MACD_2 = 26;
     private static int SIGNAL_EMA = 18;
+    */
+
+    private static int SHORT_EMA = 168;
+    private static int LONG_EMA = 116;
+
+    private static int STOCHASTIC = 8;
+    private static int MACD_1 = 46;
+    private static int MACD_2 = 159;
+    private static int SIGNAL_EMA = 3;
+
+    //168 116 8 46 159 3
 
     public static int getShortEma() {
         return SHORT_EMA;

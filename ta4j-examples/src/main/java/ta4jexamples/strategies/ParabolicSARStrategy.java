@@ -47,14 +47,15 @@ public class ParabolicSARStrategy implements ISolution {
     private static int D = 5;
     */
 
-    private static int SAR_1 = 4;
-    private static int SAR_2 = 150;
-    private static int RSI = 39;
-    private static int K = 4;
-    private static int D = 26;
+    private static int SAR_1 = 112;
+    private static int SAR_2 = 174;
+    private static int RSI = 193;
+    private static int K = 30;
+    private static int D = 50;
 
     //124 64 32 13 2
     //4 150 39 4 26
+    //112 174 193 30 50
 
     public static void setSar1(int sar1) {
         SAR_1 = sar1;

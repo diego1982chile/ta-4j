@@ -47,12 +47,13 @@ public class BagovinoStrategy implements ISolution {
     private static int RSI = 21;
     */
 
-    private static int SHORT_EMA = 47;
-    private static int LONG_EMA = 45;
-    private static int RSI = 172;
+    private static int SHORT_EMA = 64;
+    private static int LONG_EMA = 16;
+    private static int RSI = 33;
 
     //63 11 35
     //47 45 172
+    //64 16 33
 
     public static void setShortEma(int shortEma) {
         SHORT_EMA = shortEma;
@@ -100,7 +101,7 @@ public class BagovinoStrategy implements ISolution {
 
         exitRule = exitRule.xor(stopGain).xor(stopLoss);
 
-        return new BaseStrategy("MovingAveragesStrategy", entryRule, exitRule);
+        return new BaseStrategy("BagovinoStrategy", entryRule, exitRule);
     }
 
     public static void main(String[] args) {

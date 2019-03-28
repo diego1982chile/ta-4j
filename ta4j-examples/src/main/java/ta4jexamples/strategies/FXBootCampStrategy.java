@@ -41,6 +41,7 @@ import java.util.List;
  */
 public class FXBootCampStrategy implements ISolution {
 
+    /*
     private static int EMA_5 = 5;
     private static int SMA_8 = 8;
     private static int EMA_21 = 21;
@@ -49,8 +50,24 @@ public class FXBootCampStrategy implements ISolution {
     private static int MACD_1 = 21;
     private static int MACD_2 = 55;
     private static int EMA_8 = 8;
+    private static int STOCHASTIC_R = 8;
     private static int STOCHASTIC_K = 35;
     private static int STOCHASTIC_D = 5;
+    */
+
+    private static int EMA_5 = 34;
+    private static int SMA_8 = 123;
+    private static int EMA_21 = 116;
+    private static int EMA_55 = 101;
+    private static int EMA_200 = 35;
+    private static int MACD_1 = 4;
+    private static int MACD_2 = 159;
+    private static int EMA_8 = 164;
+    private static int STOCHASTIC_R = 90;
+    private static int STOCHASTIC_K = 160;
+    private static int STOCHASTIC_D = 5;
+
+    //34 123 116 101 35 4 159 164 90 160 5
 
     public static int getEma5() {
         return EMA_5;
@@ -116,6 +133,14 @@ public class FXBootCampStrategy implements ISolution {
         EMA_8 = ema8;
     }
 
+    public static int getStochasticR() {
+        return STOCHASTIC_R;
+    }
+
+    public static void setStochasticR(int stochasticR) {
+        STOCHASTIC_R = stochasticR;
+    }
+
     public static int getStochasticK() {
         return STOCHASTIC_K;
     }
@@ -144,22 +169,22 @@ public class FXBootCampStrategy implements ISolution {
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
-        EMAIndicator ema5  = new EMAIndicator(closePrice,5);
-        SMAIndicator sma8  = new SMAIndicator(closePrice,8);
+        EMAIndicator ema5  = new EMAIndicator(closePrice,EMA_5);
+        SMAIndicator sma8  = new SMAIndicator(closePrice,SMA_8);
 
-        EMAIndicator ema21  = new EMAIndicator(closePrice,21);
-        EMAIndicator ema55  = new EMAIndicator(closePrice,55);
-        EMAIndicator ema200  = new EMAIndicator(closePrice,200);
+        EMAIndicator ema21  = new EMAIndicator(closePrice,EMA_21);
+        EMAIndicator ema55  = new EMAIndicator(closePrice,EMA_55);
+        EMAIndicator ema200  = new EMAIndicator(closePrice,EMA_200);
 
-        MACDIndicator macd = new MACDIndicator(closePrice,21,55);
+        MACDIndicator macd = new MACDIndicator(closePrice,MACD_1, MACD_2);
 
-        EMAIndicator ema8 = new EMAIndicator(macd,8);
+        EMAIndicator ema8 = new EMAIndicator(macd,EMA_8);
 
-        RSIIndicator r = new RSIIndicator(closePrice, 8);
-        Indicator sr = new StochasticRSIIndicator(r, 8);
+        RSIIndicator r = new RSIIndicator(closePrice, STOCHASTIC_R);
+        Indicator sr = new StochasticRSIIndicator(r, STOCHASTIC_R);
 
-        Indicator stochasticK = new SMAIndicator(sr, 35);
-        Indicator stochasticD = new SMAIndicator(stochasticK, 5);
+        Indicator stochasticK = new SMAIndicator(sr, STOCHASTIC_K);
+        Indicator stochasticD = new SMAIndicator(stochasticK, STOCHASTIC_D);
 
 
         Rule entryRule = new OverIndicatorRule(ema21, ema55)
@@ -226,8 +251,9 @@ public class FXBootCampStrategy implements ISolution {
         setMacd1((int) solution.get(5));
         setMacd2((int) solution.get(6));
         setEma8((int) solution.get(7));
-        setStochasticK((int) solution.get(8));
-        setStochasticD((int) solution.get(8));
+        setStochasticR((int) solution.get(8));
+        setStochasticK((int) solution.get(9));
+        setStochasticD((int) solution.get(10));
     }
 
     @Override
