@@ -22,6 +22,7 @@
  */
 package ta4jexamples.strategies;
 
+import cl.dsoto.trading.model.Execution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -31,13 +32,71 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.List;
+
 /**
  * Moving momentum strategy.
  * <p></p>
  * @see <a href="http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:moving_momentum">
  *     http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:moving_momentum</a>
  */
-public class MovingMomentumStrategy {
+public class MovingMomentumStrategy implements ISolution {
+
+    private static int SHORT_EMA = 9;
+    private static int LONG_EMA = 26;
+
+    private static int STOCHASTIC = 14;
+    private static int MACD_1 = 9;
+    private static int MACD_2 = 26;
+    private static int SIGNAL_EMA = 18;
+
+    public static int getShortEma() {
+        return SHORT_EMA;
+    }
+
+    public static void setShortEma(int shortEma) {
+        SHORT_EMA = shortEma;
+    }
+
+    public static int getLongEma() {
+        return LONG_EMA;
+    }
+
+    public static void setLongEma(int longEma) {
+        LONG_EMA = longEma;
+    }
+
+    public static int getSTOCHASTIC() {
+        return STOCHASTIC;
+    }
+
+    public static void setSTOCHASTIC(int STOCHASTIC) {
+        MovingMomentumStrategy.STOCHASTIC = STOCHASTIC;
+    }
+
+    public static int getMacd1() {
+        return MACD_1;
+    }
+
+    public static void setMacd1(int macd1) {
+        MACD_1 = macd1;
+    }
+
+    public static int getMacd2() {
+        return MACD_2;
+    }
+
+    public static void setMacd2(int macd2) {
+        MACD_2 = macd2;
+    }
+
+    public static int getSignalEma() {
+        return SIGNAL_EMA;
+    }
+
+    public static void setSignalEma(int signalEma) {
+        SIGNAL_EMA = signalEma;
+    }
 
     /**
      * @param series a time series
@@ -52,13 +111,13 @@ public class MovingMomentumStrategy {
         
         // The bias is bullish when the shorter-moving average moves above the longer moving average.
         // The bias is bearish when the shorter-moving average moves below the longer moving average.
-        EMAIndicator shortEma = new EMAIndicator(closePrice, 9);
-        EMAIndicator longEma = new EMAIndicator(closePrice, 26);
+        EMAIndicator shortEma = new EMAIndicator(closePrice, SHORT_EMA);
+        EMAIndicator longEma = new EMAIndicator(closePrice, LONG_EMA);
 
-        StochasticOscillatorKIndicator stochasticOscillK = new StochasticOscillatorKIndicator(series, 14);
+        StochasticOscillatorKIndicator stochasticOscillK = new StochasticOscillatorKIndicator(series, STOCHASTIC);
 
-        MACDIndicator macd = new MACDIndicator(closePrice, 9, 26);
-        EMAIndicator emaMacd = new EMAIndicator(macd, 18);
+        MACDIndicator macd = new MACDIndicator(closePrice, MACD_1, MACD_2);
+        EMAIndicator emaMacd = new EMAIndicator(macd, SIGNAL_EMA);
         
         // Entry rule
         Rule entryRule = new OverIndicatorRule(shortEma, longEma) // Trend
@@ -97,5 +156,31 @@ public class MovingMomentumStrategy {
 
     String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void mapFrom(Execution execution) throws Exception {
+
+        List solution = null;
+
+        if(!execution.getSolutions().isEmpty()) {
+            solution = execution.getSolutions().get(0).getSolution();
+        }
+
+        if(solution == null) {
+            throw new Exception("No existen soluciones registradas para esta estrategia");
+        }
+
+        setShortEma((int) solution.get(0));
+        setLongEma((int) solution.get(1));
+        setSTOCHASTIC((int) solution.get(2));
+        setMacd1((int) solution.get(3));
+        setMacd2((int) solution.get(4));
+        setSignalEma((int) solution.get(5));
+    }
+
+    @Override
+    public int getVariables() {
+        return this.getClass().getDeclaredFields().length;
     }
 }

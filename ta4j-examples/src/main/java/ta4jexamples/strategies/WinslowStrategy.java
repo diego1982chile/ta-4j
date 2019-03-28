@@ -22,49 +22,19 @@
  */
 package ta4jexamples.strategies;
 
-import cl.dsoto.trading.model.Execution;
-import cl.dsoto.trading.model.Problem;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
-import org.ta4j.core.indicators.EMAIndicator;
-import org.ta4j.core.indicators.RSIIndicator;
+import org.ta4j.core.indicators.*;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
-
-import java.util.List;
 
 /**
  * 2-Period RSI Strategy
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class BagovinoStrategy implements ISolution {
-
-    /*
-    private static int SHORT_EMA = 5;
-    private static int LONG_EMA = 12;
-    private static int RSI = 21;
-    */
-
-    private static int SHORT_EMA = 47;
-    private static int LONG_EMA = 45;
-    private static int RSI = 172;
-
-    //63 11 35
-    //47 45 172
-
-    public static void setShortEma(int shortEma) {
-        SHORT_EMA = shortEma;
-    }
-
-    public static void setLongEma(int longEma) {
-        LONG_EMA = longEma;
-    }
-
-    public static void setRSI(int RSI) {
-        BagovinoStrategy.RSI = RSI;
-    }
+public class WinslowStrategy {
 
     /**
      * @param series a time series
@@ -78,29 +48,54 @@ public class BagovinoStrategy implements ISolution {
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
 
-        EMAIndicator ema5  = new EMAIndicator(closePrice,SHORT_EMA);
-        EMAIndicator ema12  = new EMAIndicator(closePrice,LONG_EMA);
+        SMAIndicator ema800  = new SMAIndicator(closePrice,800);
 
-        RSIIndicator rsi = new RSIIndicator(closePrice, RSI);
+        SMAIndicator ema200  = new SMAIndicator(closePrice,200);
 
-        Rule entryRule = new OverIndicatorRule(ema5, ema12).
-                        and(new OverIndicatorRule(closePrice, ema12)).
-                        and(new OverIndicatorRule(closePrice, ema5)).
-                        and(new CrossedUpIndicatorRule(rsi, Decimal.valueOf(50))).
-                        and(new IsRisingRule(rsi, 3)); // Signal 1
+        EMAIndicator ema144  = new EMAIndicator(closePrice,144);
+        EMAIndicator ema62  = new EMAIndicator(closePrice,62);
 
-        Rule exitRule = new UnderIndicatorRule(ema5, ema12).
-                        and(new UnderIndicatorRule(closePrice, ema12)).
-                        and(new UnderIndicatorRule(closePrice, ema5)).
-                        and(new CrossedDownIndicatorRule(rsi, Decimal.valueOf(50))).
-                        and(new IsFallingRule(rsi, 3));
+        MACDIndicator macd = new MACDIndicator(closePrice,12,26);
+
+        EMAIndicator signal = new EMAIndicator(macd,9);
+
+        RSIIndicator r = new RSIIndicator(closePrice, 9);
+        Indicator sr = new StochasticRSIIndicator(r, 9);
+
+        Indicator stochasticK = new SMAIndicator(sr, 14);
+        Indicator stochasticD = new SMAIndicator(stochasticK, 3);
+
+
+        Rule yuma = new CrossedUpIndicatorRule(closePrice, ema62)
+                .and(new OverIndicatorRule(ema200, ema144))
+                .and(new OverIndicatorRule(ema144, ema62))
+                .and(new OverIndicatorRule(ema200, ema62))
+                //.and(new OverIndicatorRule(ema800, ema200));
+                //.and(new OverIndicatorRule(ema800, ema144))
+                //.and(new OverIndicatorRule(ema800, ema62))
+                //.and(new OverIndicatorRule(stochasticK, stochasticD))
+                .and(new OverIndicatorRule(stochasticK, Decimal.valueOf(0.40)));
+
+        Rule tucson = new BooleanRule(true);
+
+        Rule flagStaff = new BooleanRule(true);
+
+        Rule exitRule = new IsEqualRule(closePrice, ema200)
+                .and(new OverIndicatorRule(ema200, ema144))
+                .and(new OverIndicatorRule(ema144, ema62))
+                .and(new OverIndicatorRule(ema200, ema62))
+                .and(new OverIndicatorRule(ema800, ema200))
+                .and(new OverIndicatorRule(ema800, ema144))
+                .and(new OverIndicatorRule(ema800, ema62));
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
 
+        Rule entryRule = yuma.xor(tucson).xor(flagStaff);
+
         exitRule = exitRule.xor(stopGain).xor(stopLoss);
 
-        return new BaseStrategy("MovingAveragesStrategy", entryRule, exitRule);
+        return new BaseStrategy("WinslowStrategy", entryRule, exitRule);
     }
 
     public static void main(String[] args) {
@@ -124,26 +119,4 @@ public class BagovinoStrategy implements ISolution {
         return this.getClass().getSimpleName();
     }
 
-    @Override
-    public void mapFrom(Execution execution) throws Exception {
-
-        List solution = null;
-
-        if(!execution.getSolutions().isEmpty()) {
-             solution = execution.getSolutions().get(0).getSolution();
-        }
-
-        if(solution == null) {
-            throw new Exception("No existen soluciones registradas para esta estrategia");
-        }
-
-        setShortEma((int) solution.get(0));
-        setLongEma((int) solution.get(1));
-        setRSI((int) solution.get(2));
-    }
-
-    @Override
-    public int getVariables() {
-        return this.getClass().getDeclaredFields().length;
-    }
 }

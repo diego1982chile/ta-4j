@@ -22,6 +22,7 @@
  */
 package ta4jexamples.strategies;
 
+import cl.dsoto.trading.model.Execution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -30,13 +31,16 @@ import org.ta4j.core.indicators.helpers.DifferenceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.List;
+
 /**
  * 2-Period RSI Strategy
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class StochasticStrategy {
+public class StochasticStrategy implements ISolution {
 
+    /*
     private static int SMA = 21;
     private static int EMA = 5;
     private static int RSI = 8;
@@ -44,20 +48,21 @@ public class StochasticStrategy {
     private static int D = 5;
     private static int SHORT_EMA = 100;
     private static int LONG_EMA = 200;
-
-    /*
-    private static int SMA = 2;
-    private static int EMA = 114;
-    private static int RSI = 23;
-    private static int K = 17;
-    private static int D = 24;
-    private static int SHORT_EMA = 81;
-    private static int LONG_EMA = 92;
     */
 
-    //2 114 23 17 24 81 92
+    private static int SMA = 1;
+    private static int EMA = 11;
+    private static int RSI = 188;
+    private static int K = 2;
+    private static int D = 3;
+    private static int SHORT_EMA = 104;
+    private static int LONG_EMA = 114;
+
+    //59 1 69 49 67 124 64
 
     //74 186 79 19 89 191 1
+
+    //1 11 188 2 3 104 114
 
     public static void setSMA(int SMA) {
         StochasticStrategy.SMA = SMA;
@@ -154,6 +159,33 @@ public class StochasticStrategy {
 
     String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void mapFrom(Execution execution) throws Exception {
+
+        List solution = null;
+
+        if(!execution.getSolutions().isEmpty()) {
+            solution = execution.getSolutions().get(0).getSolution();
+        }
+
+        if(solution == null) {
+            throw new Exception("No existen soluciones registradas para esta estrategia");
+        }
+
+        setSMA((int) solution.get(0));
+        setEMA((int) solution.get(1));
+        setRSI((int) solution.get(2));
+        setK((int) solution.get(3));
+        setD((int) solution.get(4));
+        setShortEma((int) solution.get(5));
+        setLongEma((int) solution.get(6));
+    }
+
+    @Override
+    public int getVariables() {
+        return this.getClass().getDeclaredFields().length;
     }
 
 }

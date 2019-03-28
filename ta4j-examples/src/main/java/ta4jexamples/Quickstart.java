@@ -22,6 +22,8 @@
  */
 package ta4jexamples;
 
+import cl.dsoto.trading.cdi.ServiceLocator;
+import cl.dsoto.trading.components.ProblemManager;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.CashFlow;
 import org.ta4j.core.analysis.criteria.AverageProfitableTradesCriterion;
@@ -56,7 +58,7 @@ public class Quickstart {
 
         // Getting a time series (from any provider: CSV, web service, etc.)
         //TimeSeries series = CsvTradesLoader.loadBitstampSeries();
-        TimeSeries series = CsvTicksLoader.load("2014_D.csv");
+        TimeSeries series = CsvTicksLoader.load("2018_D.csv");
 
         // Getting the close price of the bars
         Decimal firstClosePrice = series.getBar(0).getClosePrice();
@@ -74,7 +76,7 @@ public class Quickstart {
         // Getting a longer SMA (e.g. over the 30 last bars)
         SMAIndicator longSma = new SMAIndicator(closePrice, 30);
 
-
+        ProblemManager problemManager = (ProblemManager) ServiceLocator.getInstance().getService(ProblemManager.class);
         // Ok, now let's building our trading rules!
 
         // Buying rules
@@ -111,9 +113,9 @@ public class Quickstart {
         List<Strategy> strategies = new ArrayList<>();
 
         //strategies.add(CCICorrectionStrategy.buildStrategy(series));
-        strategies.add(GlobalExtremaStrategy.buildStrategy(series));
-        strategies.add(MovingMomentumStrategy.buildStrategy(series));
-        //strategies.add(RSI2Strategy.buildStrategy(series));
+        //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
+        //strategies.add(MovingMomentumStrategy.buildStrategy(series));
+        strategies.add(RSI2Strategy.buildStrategy(series));
         //strategies.add(MACDStrategy.buildStrategy(series));
         //strategies.add(StochasticStrategy.buildStrategy(series));
         //strategies.add(ParabolicSARStrategy.buildStrategy(series));
@@ -121,6 +123,9 @@ public class Quickstart {
         //strategies.add(BagovinoStrategy.buildStrategy(series));
         //strategies.add(FXBootCampStrategy.buildStrategy(series));
         //strategies.add(TunnelStrategy.buildStrategy(series));
+        //strategies.add(WinslowStrategy.buildStrategy(series));
+
+        //strategies.add(FibonacciStrategy.buildStrategy(series));
 
         //0 1 1 0 0 0 1 0 1 1 1
 
@@ -160,28 +165,26 @@ public class Quickstart {
             System.out.println("CashFlow["+ i +"]: " + cashFlow.getValue(i));
         }
 
+        SMAIndicator ema800  = new SMAIndicator(closePrice,800);
+
+        SMAIndicator ema200  = new SMAIndicator(closePrice,200);
+
+        EMAIndicator ema144  = new EMAIndicator(closePrice,144);
+        EMAIndicator ema62  = new EMAIndicator(closePrice,62);
+
         MACDIndicator macd = new MACDIndicator(closePrice,12,26);
 
-        SMAIndicator signal = new SMAIndicator(macd,9);
-        EMAIndicator ema50  = new EMAIndicator(closePrice,50);
-        EMAIndicator ema21  = new EMAIndicator(closePrice,21);
-        EMAIndicator ema3  = new EMAIndicator(closePrice,3);
+        EMAIndicator signal = new EMAIndicator(macd,9);
 
-        /*
-        SMAIndicator sma21  = new SMAIndicator(closePrice,21);
-        EMAIndicator ema5  = new EMAIndicator(closePrice,5);
+        RSIIndicator r = new RSIIndicator(closePrice, 9);
+        Indicator sr = new StochasticRSIIndicator(r, 9);
 
-        RSIIndicator r = new RSIIndicator(closePrice, 8);
-        Indicator sr = new StochasticRSIIndicator(r, 8);
+        Indicator stochasticK = new SMAIndicator(sr, 14);
+        Indicator stochasticD = new SMAIndicator(stochasticK, 3);
 
-        Indicator stochasticK = new SMAIndicator(sr, 35);
-        Indicator stochasticD = new SMAIndicator(stochasticK, 5);
+        IndicatorsToChart.displayChart(series, Arrays.asList(closePrice, ema800, ema200, ema144, ema62));
 
-        EMAIndicator ema100  = new EMAIndicator(closePrice,100);
-        EMAIndicator ema200  = new EMAIndicator(closePrice,200);
-        */
-
-        //IndicatorsToChart.displayChart(series, Arrays.asList(closePrice));
+        IndicatorsToChart.displayChart(series, Arrays.asList(stochasticK, stochasticD));
 
         BuyAndSellSignalsToChart.buildCandleStickChart(series, multipleStrategy.buildStrategy(series));
         //IndicatorsToChart.displayChart(series, Arrays.asList(macd, signal));

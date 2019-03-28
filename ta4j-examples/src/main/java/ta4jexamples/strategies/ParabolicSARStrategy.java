@@ -22,6 +22,7 @@
  */
 package ta4jexamples.strategies;
 
+import cl.dsoto.trading.model.Execution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -29,28 +30,31 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.List;
+
 /**
  * 2-Period RSI Strategy
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class ParabolicSARStrategy {
+public class ParabolicSARStrategy implements ISolution {
 
+    /*
     private static int SAR_1 = 5;
     private static int SAR_2 = 20;
     private static int RSI = 8;
     private static int K = 17;
     private static int D = 5;
-
-    /*
-    private static int SAR_1 = 78;
-    private static int SAR_2 = 103;
-    private static int RSI = 83;
-    private static int K = 3;
-    private static int D = 2;
     */
 
-    //78 103 83 3 2
+    private static int SAR_1 = 4;
+    private static int SAR_2 = 150;
+    private static int RSI = 39;
+    private static int K = 4;
+    private static int D = 26;
+
+    //124 64 32 13 2
+    //4 150 39 4 26
 
     public static void setSar1(int sar1) {
         SAR_1 = sar1;
@@ -141,6 +145,31 @@ public class ParabolicSARStrategy {
 
     String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void mapFrom(Execution execution) throws Exception {
+
+        List solution = null;
+
+        if(!execution.getSolutions().isEmpty()) {
+            solution = execution.getSolutions().get(0).getSolution();
+        }
+
+        if(solution == null) {
+            throw new Exception("No existen soluciones registradas para esta estrategia");
+        }
+
+        setSar1((int) solution.get(0));
+        setSar2((int) solution.get(1));
+        setRSI((int) solution.get(2));
+        setK((int) solution.get(3));
+        setD((int) solution.get(4));
+    }
+
+    @Override
+    public int getVariables() {
+        return this.getClass().getDeclaredFields().length;
     }
 
 }

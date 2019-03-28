@@ -22,6 +22,7 @@
  */
 package ta4jexamples.strategies;
 
+import cl.dsoto.trading.model.Execution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -31,12 +32,14 @@ import org.ta4j.core.indicators.helpers.MinPriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.List;
+
 /**
  * 2-Period RSI Strategy
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class TunnelStrategy {
+public class TunnelStrategy implements ISolution {
 
     /*
     private static int SHORT_EMA = 5;
@@ -44,7 +47,9 @@ public class TunnelStrategy {
     private static int RSI = 21;
     */
 
-    private static int PERIOD = 50;
+    //private static int PERIOD = 50;
+
+    private static int PERIOD = 6;
 
     private static int MACD_1 = 12;
     private static int MACD_2 = 26;
@@ -107,7 +112,7 @@ public class TunnelStrategy {
 
         exitRule = exitRule.xor(stopGain).xor(stopLoss);
 
-        return new BaseStrategy("MovingAveragesStrategy", entryRule, exitRule);
+        return new BaseStrategy("TunnelStrategy", entryRule, exitRule);
     }
 
     public static void main(String[] args) {
@@ -129,6 +134,31 @@ public class TunnelStrategy {
 
     String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void mapFrom(Execution execution) throws Exception {
+
+        List solution = null;
+
+        if(!execution.getSolutions().isEmpty()) {
+            solution = execution.getSolutions().get(0).getSolution();
+        }
+
+        if(solution == null) {
+            throw new Exception("No existen soluciones registradas para esta estrategia");
+        }
+
+        setPERIOD((int) solution.get(0));
+        setMacd1((int) solution.get(1));
+        setMacd2((int) solution.get(2));
+        setSignalEma((int) solution.get(3));
+        setTpSignalEma((int) solution.get(4));
+    }
+
+    @Override
+    public int getVariables() {
+        return this.getClass().getDeclaredFields().length;
     }
 
 }

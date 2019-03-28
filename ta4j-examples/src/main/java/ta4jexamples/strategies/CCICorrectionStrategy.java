@@ -22,6 +22,7 @@
  */
 package ta4jexamples.strategies;
 
+import cl.dsoto.trading.model.Execution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.CCIIndicator;
@@ -32,13 +33,34 @@ import org.ta4j.core.trading.rules.StopLossRule;
 import org.ta4j.core.trading.rules.UnderIndicatorRule;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.List;
+
 /**
  * CCI Correction Strategy
  * <p></p>
  * @see <a href="http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:cci_correction">
  *     http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:cci_correction</a>
  */
-public class CCICorrectionStrategy {
+public class CCICorrectionStrategy implements ISolution {
+
+    private static int LONG_CCI = 47;
+    private static int SHORT_CCI = 45;
+
+    public static int getLongCci() {
+        return LONG_CCI;
+    }
+
+    public static void setLongCci(int longCci) {
+        LONG_CCI = longCci;
+    }
+
+    public static int getShortCci() {
+        return SHORT_CCI;
+    }
+
+    public static void setShortCci(int shortCci) {
+        SHORT_CCI = shortCci;
+    }
 
     /**
      * @param series a time series
@@ -49,8 +71,8 @@ public class CCICorrectionStrategy {
             throw new IllegalArgumentException("Series cannot be null");
         }
 
-        CCIIndicator longCci = new CCIIndicator(series, 200);
-        CCIIndicator shortCci = new CCIIndicator(series, 5);
+        CCIIndicator longCci = new CCIIndicator(series, LONG_CCI);
+        CCIIndicator shortCci = new CCIIndicator(series, SHORT_CCI);
         Decimal plus100 = Decimal.HUNDRED;
         Decimal minus100 = Decimal.valueOf(-100);
         
@@ -91,5 +113,27 @@ public class CCICorrectionStrategy {
 
     String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void mapFrom(Execution execution) throws Exception {
+
+        List solution = null;
+
+        if(!execution.getSolutions().isEmpty()) {
+            solution = execution.getSolutions().get(0).getSolution();
+        }
+
+        if(solution == null) {
+            throw new Exception("No existen soluciones registradas para esta estrategia");
+        }
+
+        setLongCci((int) solution.get(0));
+        setShortCci((int) solution.get(1));
+    }
+
+    @Override
+    public int getVariables() {
+        return this.getClass().getDeclaredFields().length;
     }
 }

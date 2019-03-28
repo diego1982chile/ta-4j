@@ -22,6 +22,7 @@
  */
 package ta4jexamples.strategies;
 
+import cl.dsoto.trading.model.Execution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -30,13 +31,16 @@ import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.List;
+
 /**
  * 2-Period RSI Strategy
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class MACDStrategy {
+public class MACDStrategy implements ISolution {
 
+    /*
     private static int LONG_EMA = 50;
     private static int SHORT_EMA = 21;
     private static int SHORTER_EMA = 3;
@@ -47,21 +51,21 @@ public class MACDStrategy {
     private static int TP_SIGNAL_EMA = 3;
     private static int ATR = 12;
     private static int x = 6;
-
-    /*
-    private static int LONG_EMA = 82;
-    private static int SHORT_EMA = 22;
-    private static int SHORTER_EMA = 1;
-    private static int MACD_1 = 94;
-    private static int MACD_2 = 154;
-    private static int SIGNAL_EMA = 194;
-    private static int TP_SIGNAL_EMA = 155;
-    private static int ATR = 22;
-    private static int x = 70;
     */
+
+    private static int LONG_EMA = 82;
+    private static int SHORT_EMA = 82;
+    private static int SHORTER_EMA = 63;
+    private static int MACD_1 = 1;
+    private static int MACD_2 = 24;
+    private static int SIGNAL_EMA = 19;
+    private static int TP_SIGNAL_EMA = 18;
+    private static int ATR = 170;
+    private static int x = 184;
 
     //140 74 7 2 8 158 62 6 129
     //82 22 1 94 154 194 155 22 70
+    //82 82 63 1 24 19 18 170 184
 
     //18 32 140 5 6 41
 
@@ -231,4 +235,32 @@ public class MACDStrategy {
         return this.getClass().getSimpleName();
     }
 
+    @Override
+    public void mapFrom(Execution execution) throws Exception {
+
+        List solution = null;
+
+        if(!execution.getSolutions().isEmpty()) {
+            solution = execution.getSolutions().get(0).getSolution();
+        }
+
+        if(solution == null) {
+            throw new Exception("No existen soluciones registradas para esta estrategia");
+        }
+
+        setLongEma((int) solution.get(0));
+        setShortEma((int) solution.get(1));
+        setShorterEma((int) solution.get(2));
+        setMacd1((int) solution.get(3));
+        setMacd2((int) solution.get(4));
+        setSignalEma((int) solution.get(5));
+        setTpSignalEma((int) solution.get(6));
+        setATR((int) solution.get(7));
+        setX((int) solution.get(8));
+    }
+
+    @Override
+    public int getVariables() {
+        return this.getClass().getDeclaredFields().length;
+    }
 }

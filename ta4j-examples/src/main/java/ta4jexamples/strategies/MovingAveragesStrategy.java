@@ -22,6 +22,7 @@
  */
 package ta4jexamples.strategies;
 
+import cl.dsoto.trading.model.Execution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -32,26 +33,29 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.List;
+
 /**
  * 2-Period RSI Strategy
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class MovingAveragesStrategy {
+public class MovingAveragesStrategy implements ISolution {
 
+    /*
     private static int SHORTER_EMA = 5;
     private static int SHORT_EMA = 14;
     private static int LONG_EMA = 21;
     private static int LONGER_EMA = 50;
-
-    /*
-    private static int SHORTER_EMA = 107;
-    private static int SHORT_EMA = 128;
-    private static int LONG_EMA = 2;
-    private static int LONGER_EMA = 93;
     */
 
-    //107 128 2 93
+    private static int SHORTER_EMA = 164;
+    private static int SHORT_EMA = 159;
+    private static int LONG_EMA = 87;
+    private static int LONGER_EMA = 148;
+
+    //70 24 1 88
+    //164 159 87 148
 
     public static void setShorterEma(int shorterEma) {
         SHORTER_EMA = shorterEma;
@@ -121,6 +125,31 @@ public class MovingAveragesStrategy {
 
     String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void mapFrom(Execution execution) throws Exception {
+
+        List solution = null;
+
+        if(!execution.getSolutions().isEmpty()) {
+            solution = execution.getSolutions().get(0).getSolution();
+        }
+
+        if(solution == null) {
+            throw new Exception("No existen soluciones registradas para esta estrategia");
+        }
+
+        setShorterEma((int) solution.get(0));
+        setShortEma((int) solution.get(1));
+        setShorterEma((int) solution.get(2));
+        setLongEma((int) solution.get(3));
+        setLongerEma((int) solution.get(4));
+    }
+
+    @Override
+    public int getVariables() {
+        return this.getClass().getDeclaredFields().length;
     }
 
 }

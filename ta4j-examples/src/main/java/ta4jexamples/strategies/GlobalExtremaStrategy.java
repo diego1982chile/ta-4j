@@ -22,6 +22,7 @@
  */
 package ta4jexamples.strategies;
 
+import cl.dsoto.trading.model.Execution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.helpers.*;
@@ -31,13 +32,23 @@ import org.ta4j.core.trading.rules.StopLossRule;
 import org.ta4j.core.trading.rules.UnderIndicatorRule;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.List;
+
 /**
  * Strategies which compares current price to global extrema over a week.
  */
-public class GlobalExtremaStrategy {
+public class GlobalExtremaStrategy implements ISolution {
 
     // We assume that there were at least one trade every 5 minutes during the whole week
-    private static final int NB_BARS_PER_WEEK = 12 * 24 * 7;
+    private static int NB_BARS_PER_WEEK = 12 * 24 * 7;
+
+    public static int getNbBarsPerWeek() {
+        return NB_BARS_PER_WEEK;
+    }
+
+    public static void setNbBarsPerWeek(int nbBarsPerWeek) {
+        NB_BARS_PER_WEEK = nbBarsPerWeek;
+    }
 
     /**
      * @param series a time series
@@ -92,5 +103,26 @@ public class GlobalExtremaStrategy {
 
     String getName() {
         return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public void mapFrom(Execution execution) throws Exception {
+
+        List solution = null;
+
+        if(!execution.getSolutions().isEmpty()) {
+            solution = execution.getSolutions().get(0).getSolution();
+        }
+
+        if(solution == null) {
+            throw new Exception("No existen soluciones registradas para esta estrategia");
+        }
+
+        setNbBarsPerWeek((int) solution.get(0));
+    }
+
+    @Override
+    public int getVariables() {
+        return this.getClass().getDeclaredFields().length;
     }
 }

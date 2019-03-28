@@ -51,7 +51,9 @@ public class FibonacciReversalIndicator extends RecursiveCachedIndicator<Decimal
     public enum FibonacciFactor {
         Factor1(Decimal.valueOf(0.382)),
         Factor2(Decimal.valueOf(0.618)),
-        Factor3(Decimal.ONE);
+        Factor3(Decimal.ONE),
+        Factor4(Decimal.valueOf(1.272)),
+        Factor5(Decimal.valueOf(1.618));
 
         private final Decimal factor;
 
