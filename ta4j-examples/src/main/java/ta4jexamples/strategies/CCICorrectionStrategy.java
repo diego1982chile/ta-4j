@@ -22,7 +22,7 @@
  */
 package ta4jexamples.strategies;
 
-import cl.dsoto.trading.model.Execution;
+import cl.dsoto.trading.model.Optimization;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.CCIIndicator;
@@ -41,7 +41,7 @@ import java.util.List;
  * @see <a href="http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:cci_correction">
  *     http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:cci_correction</a>
  */
-public class CCICorrectionStrategy implements ISolution {
+public class CCICorrectionStrategy {
 
     /*
     private static int LONG_CCI = 47;
@@ -122,13 +122,12 @@ public class CCICorrectionStrategy implements ISolution {
         return this.getClass().getSimpleName();
     }
 
-    @Override
-    public void mapFrom(Execution execution) throws Exception {
+    public static void mapFrom(Optimization optimization) throws Exception {
 
         List solution = null;
 
-        if(!execution.getSolutions().isEmpty()) {
-            solution = execution.getSolutions().get(0).getSolution();
+        if(!optimization.getSolutions().isEmpty()) {
+            solution = optimization.getSolutions().get(0).getSolution();
         }
 
         if(solution == null) {
@@ -139,8 +138,4 @@ public class CCICorrectionStrategy implements ISolution {
         setShortCci((int) solution.get(1));
     }
 
-    @Override
-    public int getVariables() {
-        return this.getClass().getDeclaredFields().length;
-    }
 }

@@ -22,7 +22,7 @@
  */
 package ta4jexamples.strategies;
 
-import cl.dsoto.trading.model.Execution;
+import cl.dsoto.trading.model.Optimization;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -39,7 +39,7 @@ import java.util.List;
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class FXBootCampStrategy implements ISolution {
+public class FXBootCampStrategy {
 
     /*
     private static int EMA_5 = 5;
@@ -230,13 +230,12 @@ public class FXBootCampStrategy implements ISolution {
         return this.getClass().getSimpleName();
     }
 
-    @Override
-    public void mapFrom(Execution execution) throws Exception {
+    public static void mapFrom(Optimization optimization) throws Exception {
 
         List solution = null;
 
-        if(!execution.getSolutions().isEmpty()) {
-            solution = execution.getSolutions().get(0).getSolution();
+        if(!optimization.getSolutions().isEmpty()) {
+            solution = optimization.getSolutions().get(0).getSolution();
         }
 
         if(solution == null) {
@@ -256,7 +255,6 @@ public class FXBootCampStrategy implements ISolution {
         setStochasticD((int) solution.get(10));
     }
 
-    @Override
     public int getVariables() {
         return this.getClass().getDeclaredFields().length;
     }

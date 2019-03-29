@@ -22,7 +22,7 @@
  */
 package ta4jexamples.strategies;
 
-import cl.dsoto.trading.model.Execution;
+import cl.dsoto.trading.model.Optimization;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.helpers.*;
@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * Strategies which compares current price to global extrema over a week.
  */
-public class GlobalExtremaStrategy implements ISolution {
+public class GlobalExtremaStrategy {
 
     // We assume that there were at least one trade every 5 minutes during the whole week
     //private static int NB_BARS_PER_WEEK = 12 * 24 * 7;
@@ -107,13 +107,12 @@ public class GlobalExtremaStrategy implements ISolution {
         return this.getClass().getSimpleName();
     }
 
-    @Override
-    public void mapFrom(Execution execution) throws Exception {
+    public static void mapFrom(Optimization optimization) throws Exception {
 
         List solution = null;
 
-        if(!execution.getSolutions().isEmpty()) {
-            solution = execution.getSolutions().get(0).getSolution();
+        if(!optimization.getSolutions().isEmpty()) {
+            solution = optimization.getSolutions().get(0).getSolution();
         }
 
         if(solution == null) {
@@ -123,7 +122,6 @@ public class GlobalExtremaStrategy implements ISolution {
         setNbBarsPerWeek((int) solution.get(0));
     }
 
-    @Override
     public int getVariables() {
         return this.getClass().getDeclaredFields().length;
     }

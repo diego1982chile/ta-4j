@@ -22,7 +22,7 @@
  */
 package ta4jexamples.strategies;
 
-import cl.dsoto.trading.model.Execution;
+import cl.dsoto.trading.model.Optimization;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -40,7 +40,7 @@ import java.util.List;
  * @see <a href="http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:moving_momentum">
  *     http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:moving_momentum</a>
  */
-public class MovingMomentumStrategy implements ISolution {
+public class MovingMomentumStrategy {
 
     /*
     private static int SHORT_EMA = 9;
@@ -170,13 +170,12 @@ public class MovingMomentumStrategy implements ISolution {
         return this.getClass().getSimpleName();
     }
 
-    @Override
-    public void mapFrom(Execution execution) throws Exception {
+    public static void mapFrom(Optimization optimization) throws Exception {
 
         List solution = null;
 
-        if(!execution.getSolutions().isEmpty()) {
-            solution = execution.getSolutions().get(0).getSolution();
+        if(!optimization.getSolutions().isEmpty()) {
+            solution = optimization.getSolutions().get(0).getSolution();
         }
 
         if(solution == null) {
@@ -191,7 +190,6 @@ public class MovingMomentumStrategy implements ISolution {
         setSignalEma((int) solution.get(5));
     }
 
-    @Override
     public int getVariables() {
         return this.getClass().getDeclaredFields().length;
     }

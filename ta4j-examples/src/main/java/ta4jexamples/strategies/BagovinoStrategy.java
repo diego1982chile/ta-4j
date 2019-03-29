@@ -22,7 +22,7 @@
  */
 package ta4jexamples.strategies;
 
-import cl.dsoto.trading.model.Execution;
+import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Problem;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
@@ -39,7 +39,7 @@ import java.util.List;
  * <p>
  * @see // http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:rsi2
  */
-public class BagovinoStrategy implements ISolution {
+public class BagovinoStrategy {
 
     /*
     private static int SHORT_EMA = 5;
@@ -125,13 +125,12 @@ public class BagovinoStrategy implements ISolution {
         return this.getClass().getSimpleName();
     }
 
-    @Override
-    public void mapFrom(Execution execution) throws Exception {
+    public static void mapFrom(Optimization optimization) throws Exception {
 
         List solution = null;
 
-        if(!execution.getSolutions().isEmpty()) {
-             solution = execution.getSolutions().get(0).getSolution();
+        if(!optimization.getSolutions().isEmpty()) {
+             solution = optimization.getSolutions().get(0).getSolution();
         }
 
         if(solution == null) {
@@ -143,7 +142,6 @@ public class BagovinoStrategy implements ISolution {
         setRSI((int) solution.get(2));
     }
 
-    @Override
     public int getVariables() {
         return this.getClass().getDeclaredFields().length;
     }
