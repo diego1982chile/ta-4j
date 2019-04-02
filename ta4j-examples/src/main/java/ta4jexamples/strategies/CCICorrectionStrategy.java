@@ -23,6 +23,7 @@
 package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
+import cl.dsoto.trading.model.Solution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.CCIIndicator;
@@ -124,18 +125,15 @@ public class CCICorrectionStrategy {
 
     public static void mapFrom(Optimization optimization) throws Exception {
 
-        List solution = null;
-
-        if(!optimization.getSolutions().isEmpty()) {
-            solution = optimization.getSolutions().get(0).getSolution();
-        }
-
-        if(solution == null) {
+        if(optimization.getSolutions().isEmpty()) {
             throw new Exception("No existen soluciones registradas para esta estrategia");
         }
 
-        setLongCci((int) solution.get(0));
-        setShortCci((int) solution.get(1));
+        for (Solution solution : optimization.getSolutions()) {
+            setLongCci((int) solution.getValues().get(0));
+            setShortCci((int) solution.getValues().get(1));
+        }
+
     }
 
 }

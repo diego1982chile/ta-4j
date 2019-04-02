@@ -23,7 +23,7 @@
 package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
-import cl.dsoto.trading.model.Problem;
+import cl.dsoto.trading.model.Solution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -127,19 +127,15 @@ public class BagovinoStrategy {
 
     public static void mapFrom(Optimization optimization) throws Exception {
 
-        List solution = null;
-
-        if(!optimization.getSolutions().isEmpty()) {
-             solution = optimization.getSolutions().get(0).getSolution();
-        }
-
-        if(solution == null) {
+        if(optimization.getSolutions().isEmpty()) {
             throw new Exception("No existen soluciones registradas para esta estrategia");
         }
 
-        setShortEma((int) solution.get(0));
-        setLongEma((int) solution.get(1));
-        setRSI((int) solution.get(2));
+        for (Solution solution : optimization.getSolutions()) {
+            setShortEma((int) solution.getValues().get(0));
+            setLongEma((int) solution.getValues().get(1));
+            setRSI((int) solution.getValues().get(2));
+        }
     }
 
     public int getVariables() {

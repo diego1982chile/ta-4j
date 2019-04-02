@@ -23,6 +23,7 @@
 package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
+import cl.dsoto.trading.model.Solution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -130,21 +131,17 @@ public class MovingAveragesStrategy {
 
     public static void mapFrom(Optimization optimization) throws Exception {
 
-        List solution = null;
-
-        if(!optimization.getSolutions().isEmpty()) {
-            solution = optimization.getSolutions().get(0).getSolution();
-        }
-
-        if(solution == null) {
+        if(optimization.getSolutions().isEmpty()) {
             throw new Exception("No existen soluciones registradas para esta estrategia");
         }
 
-        setShorterEma((int) solution.get(0));
-        setShortEma((int) solution.get(1));
-        setShorterEma((int) solution.get(2));
-        setLongEma((int) solution.get(3));
-        setLongerEma((int) solution.get(4));
+        for (Solution solution : optimization.getSolutions()) {
+            setShorterEma((int) solution.getValues().get(0));
+            setShortEma((int) solution.getValues().get(1));
+            setLongEma((int) solution.getValues().get(2));
+            setLongerEma((int) solution.getValues().get(3));
+        }
+
     }
 
     public int getVariables() {

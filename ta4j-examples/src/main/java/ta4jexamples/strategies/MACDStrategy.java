@@ -23,6 +23,7 @@
 package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
+import cl.dsoto.trading.model.Solution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -238,25 +239,21 @@ public class MACDStrategy {
 
     public static void mapFrom(Optimization optimization) throws Exception {
 
-        List solution = null;
-
-        if(!optimization.getSolutions().isEmpty()) {
-            solution = optimization.getSolutions().get(0).getSolution();
-        }
-
-        if(solution == null) {
+        if(optimization.getSolutions().isEmpty()) {
             throw new Exception("No existen soluciones registradas para esta estrategia");
         }
 
-        setLongEma((int) solution.get(0));
-        setShortEma((int) solution.get(1));
-        setShorterEma((int) solution.get(2));
-        setMacd1((int) solution.get(3));
-        setMacd2((int) solution.get(4));
-        setSignalEma((int) solution.get(5));
-        setTpSignalEma((int) solution.get(6));
-        setATR((int) solution.get(7));
-        setX((int) solution.get(8));
+        for (Solution solution : optimization.getSolutions()) {
+            setLongEma((int) solution.getValues().get(0));
+            setShortEma((int) solution.getValues().get(1));
+            setShorterEma((int) solution.getValues().get(2));
+            setMacd1((int) solution.getValues().get(3));
+            setMacd2((int) solution.getValues().get(4));
+            setSignalEma((int) solution.getValues().get(5));
+            setTpSignalEma((int) solution.getValues().get(6));
+            setATR((int) solution.getValues().get(7));
+            setX((int) solution.getValues().get(8));
+        }
     }
 
     public int getVariables() {

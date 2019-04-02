@@ -23,6 +23,7 @@
 package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
+import cl.dsoto.trading.model.Solution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -232,27 +233,24 @@ public class FXBootCampStrategy {
 
     public static void mapFrom(Optimization optimization) throws Exception {
 
-        List solution = null;
-
-        if(!optimization.getSolutions().isEmpty()) {
-            solution = optimization.getSolutions().get(0).getSolution();
-        }
-
-        if(solution == null) {
+        if(optimization.getSolutions().isEmpty()) {
             throw new Exception("No existen soluciones registradas para esta estrategia");
         }
 
-        setEma5((int) solution.get(0));
-        setSma8((int) solution.get(1));
-        setEma21((int) solution.get(2));
-        setEma55((int) solution.get(3));
-        setEma200((int) solution.get(4));
-        setMacd1((int) solution.get(5));
-        setMacd2((int) solution.get(6));
-        setEma8((int) solution.get(7));
-        setStochasticR((int) solution.get(8));
-        setStochasticK((int) solution.get(9));
-        setStochasticD((int) solution.get(10));
+        for (Solution solution : optimization.getSolutions()) {
+            setEma5((int) solution.getValues().get(0));
+            setSma8((int) solution.getValues().get(1));
+            setEma21((int) solution.getValues().get(2));
+            setEma55((int) solution.getValues().get(3));
+            setEma200((int) solution.getValues().get(4));
+            setMacd1((int) solution.getValues().get(5));
+            setMacd2((int) solution.getValues().get(6));
+            setEma8((int) solution.getValues().get(7));
+            setStochasticR((int) solution.getValues().get(8));
+            setStochasticK((int) solution.getValues().get(9));
+            setStochasticD((int) solution.getValues().get(10));
+        }
+
     }
 
     public int getVariables() {

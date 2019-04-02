@@ -22,8 +22,6 @@
  */
 package ta4jexamples;
 
-import cl.dsoto.trading.cdi.ServiceLocator;
-import cl.dsoto.trading.components.ProblemManager;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.CashFlow;
 import org.ta4j.core.analysis.criteria.AverageProfitableTradesCriterion;
@@ -76,7 +74,6 @@ public class Quickstart {
         // Getting a longer SMA (e.g. over the 30 last bars)
         SMAIndicator longSma = new SMAIndicator(closePrice, 30);
 
-        ProblemManager problemManager = (ProblemManager) ServiceLocator.getInstance().getService(ProblemManager.class);
         // Ok, now let's building our trading rules!
 
         // Buying rules

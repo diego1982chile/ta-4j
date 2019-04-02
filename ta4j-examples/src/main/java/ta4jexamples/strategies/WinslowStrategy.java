@@ -23,6 +23,7 @@
 package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
+import cl.dsoto.trading.model.Solution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -190,26 +191,23 @@ public class WinslowStrategy {
 
     public static void mapFrom(Optimization optimization) throws Exception {
 
-        List solution = null;
-
-        if(!optimization.getSolutions().isEmpty()) {
-            solution = optimization.getSolutions().get(0).getSolution();
-        }
-
-        if(solution == null) {
+        if(optimization.getSolutions().isEmpty()) {
             throw new Exception("No existen soluciones registradas para esta estrategia");
         }
 
-        setEma800((int) solution.get(0));
-        setEma200((int) solution.get(1));
-        setEma144((int) solution.get(2));
-        setEma62((int) solution.get(3));
-        setMacd1((int) solution.get(4));
-        setMacd2((int) solution.get(5));
-        setSIGNAL((int) solution.get(6));
-        setStochasticR((int) solution.get(7));
-        setStochasticK((int) solution.get(8));
-        setStochasticD((int) solution.get(9));
+        for (Solution solution : optimization.getSolutions()) {
+            setEma800((int) solution.getValues().get(0));
+            setEma200((int) solution.getValues().get(1));
+            setEma144((int) solution.getValues().get(2));
+            setEma62((int) solution.getValues().get(3));
+            setMacd1((int) solution.getValues().get(4));
+            setMacd2((int) solution.getValues().get(5));
+            setSIGNAL((int) solution.getValues().get(6));
+            setStochasticR((int) solution.getValues().get(7));
+            setStochasticK((int) solution.getValues().get(8));
+            setStochasticD((int) solution.getValues().get(9));
+        }
+
     }
 
     public int getVariables() {

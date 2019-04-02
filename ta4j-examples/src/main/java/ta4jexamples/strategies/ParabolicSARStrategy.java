@@ -23,6 +23,7 @@
 package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
+import cl.dsoto.trading.model.Solution;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -150,21 +151,17 @@ public class ParabolicSARStrategy {
 
     public static void mapFrom(Optimization optimization) throws Exception {
 
-        List solution = null;
-
-        if(!optimization.getSolutions().isEmpty()) {
-            solution = optimization.getSolutions().get(0).getSolution();
-        }
-
-        if(solution == null) {
+        if(optimization.getSolutions().isEmpty()) {
             throw new Exception("No existen soluciones registradas para esta estrategia");
         }
 
-        setSar1((int) solution.get(0));
-        setSar2((int) solution.get(1));
-        setRSI((int) solution.get(2));
-        setK((int) solution.get(3));
-        setD((int) solution.get(4));
+        for (Solution solution : optimization.getSolutions()) {
+            setSar1((int) solution.getValues().get(0));
+            setSar2((int) solution.getValues().get(1));
+            setRSI((int) solution.getValues().get(2));
+            setK((int) solution.getValues().get(3));
+            setD((int) solution.getValues().get(4));
+        }
     }
 
     public int getVariables() {
