@@ -109,22 +109,32 @@ public class Quickstart {
 
         List<Strategy> strategies = new ArrayList<>();
 
-        //strategies.add(CCICorrectionStrategy.buildStrategy(series));
+        strategies.add(CCICorrectionStrategy.buildStrategy(series));
         //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
         strategies.add(MovingMomentumStrategy.buildStrategy(series));
-        //strategies.add(RSI2Strategy.buildStrategy(series));
-        //strategies.add(MACDStrategy.buildStrategy(series));
-        strategies.add(StochasticStrategy.buildStrategy(series));
-        //strategies.add(ParabolicSARStrategy.buildStrategy(series));
-        strategies.add(MovingAveragesStrategy.buildStrategy(series));
+        strategies.add(RSI2Strategy.buildStrategy(series));
+        strategies.add(MACDStrategy.buildStrategy(series));
+        //strategies.add(StochasticStrategy.buildStrategy(series));
+        strategies.add(ParabolicSARStrategy.buildStrategy(series));
+        //strategies.add(MovingAveragesStrategy.buildStrategy(series));
         //strategies.add(BagovinoStrategy.buildStrategy(series));
-        //strategies.add(FXBootCampStrategy.buildStrategy(series));
-        strategies.add(TunnelStrategy.buildStrategy(series));
+        strategies.add(FXBootCampStrategy.buildStrategy(series));
+        //strategies.add(TunnelStrategy.buildStrategy(series));
         strategies.add(WinslowStrategy.buildStrategy(series));
 
         //strategies.add(FibonacciStrategy.buildStrategy(series));
 
-        //0 0 1 0 0 1 0 1 0 0 1 1
+        /*
+        "[true, false, true, true, true, false, true, false, false, true, false, true]"
+        "[true, false, true, true, true, true, false, true, false, false, false, true]"
+        "[true, true, true, true, true, true, true, false, false, true, false, true]"
+        "[true, true, true, true, true, false, true, false, false, false, false, true]"
+        "[false, false, true, true, true, true, false, true, false, true, false, true]"
+        "[true, true, true, true, true, true, false, false, false, true, false, false]"
+        "[true, false, true, false, true, false, true, true, true, false, false, true]"
+        "[false, false, false, true, true, false, true, false, false, true, false, true]"
+        "[true, false, true, false, false, false, false, true, false, true, false, true]"
+        */
 
         MultipleStrategy multipleStrategy = new MultipleStrategy(strategies);
 
