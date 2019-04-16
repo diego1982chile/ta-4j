@@ -24,6 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.CCIIndicator;
@@ -34,6 +36,7 @@ import org.ta4j.core.trading.rules.StopLossRule;
 import org.ta4j.core.trading.rules.UnderIndicatorRule;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -134,6 +137,16 @@ public class CCICorrectionStrategy {
             setShortCci((int) solution.getValues().get(1));
         }
 
+    }
+
+    public static List<Pair<String, Integer>> getParameters() {
+
+        List<Pair<String, Integer>> parameters = new ArrayList<>();
+
+        parameters.add(new ImmutablePair<String, Integer>("LONG_CCI", getLongCci()));
+        parameters.add(new ImmutablePair<String, Integer>("SHORT_CCI", getShortCci()));
+
+        return parameters;
     }
 
 }

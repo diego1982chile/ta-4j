@@ -24,6 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -32,6 +34,7 @@ import org.ta4j.core.indicators.helpers.DifferenceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +69,35 @@ public class StochasticStrategy {
     //1 11 188 2 3 104 114
 
     //54 16 154 116 10 199 44
+
+
+    public static int getSMA() {
+        return SMA;
+    }
+
+    public static int getEMA() {
+        return EMA;
+    }
+
+    public static int getRSI() {
+        return RSI;
+    }
+
+    public static int getK() {
+        return K;
+    }
+
+    public static int getD() {
+        return D;
+    }
+
+    public static int getShortEma() {
+        return SHORT_EMA;
+    }
+
+    public static int getLongEma() {
+        return LONG_EMA;
+    }
 
     public static void setSMA(int SMA) {
         StochasticStrategy.SMA = SMA;
@@ -179,6 +211,21 @@ public class StochasticStrategy {
             setShortEma((int) solution.getValues().get(5));
             setLongEma((int) solution.getValues().get(6));
         }
+    }
+
+    public static List<Pair<String, Integer>> getParameters() {
+
+        List<Pair<String, Integer>> parameters = new ArrayList<>();
+
+        parameters.add(new ImmutablePair<String, Integer>("SMA", getSMA()));
+        parameters.add(new ImmutablePair<String, Integer>("EMA", getEMA()));
+        parameters.add(new ImmutablePair<String, Integer>("RSI", getRSI()));
+        parameters.add(new ImmutablePair<String, Integer>("K", getK()));
+        parameters.add(new ImmutablePair<String, Integer>("D", getD()));
+        parameters.add(new ImmutablePair<String, Integer>("SHORT_EMA", getShortEma()));
+        parameters.add(new ImmutablePair<String, Integer>("LONG_EMA", getLongEma()));
+
+        return parameters;
     }
 
     public int getVariables() {

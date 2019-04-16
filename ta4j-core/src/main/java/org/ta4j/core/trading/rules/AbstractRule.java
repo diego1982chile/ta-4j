@@ -26,10 +26,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ta4j.core.Rule;
 
+import java.io.Serializable;
+
 /**
  * An abstract trading {@link Rule rule}.
  */
-public abstract class AbstractRule implements Rule {
+public abstract class AbstractRule implements Rule, Serializable {
 
     /** The logger */
     protected final Logger log = LoggerFactory.getLogger(getClass());

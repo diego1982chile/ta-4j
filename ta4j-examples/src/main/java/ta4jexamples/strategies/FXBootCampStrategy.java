@@ -24,6 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -33,6 +35,7 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -252,6 +255,26 @@ public class FXBootCampStrategy {
         }
 
     }
+
+    public static List<Pair<String, Integer>> getParameters() {
+
+        List<Pair<String, Integer>> parameters = new ArrayList<>();
+
+        parameters.add(new ImmutablePair<String, Integer>("EMA_5", getEma5()));
+        parameters.add(new ImmutablePair<String, Integer>("SMA_8", getSma8()));
+        parameters.add(new ImmutablePair<String, Integer>("EMA_21", getEma21()));
+        parameters.add(new ImmutablePair<String, Integer>("EMA_55", getEma55()));
+        parameters.add(new ImmutablePair<String, Integer>("EMA_200", getEma200()));
+        parameters.add(new ImmutablePair<String, Integer>("MACD_1", getMacd1()));
+        parameters.add(new ImmutablePair<String, Integer>("MACD_2", getMacd2()));
+        parameters.add(new ImmutablePair<String, Integer>("EMA_8", getEma8()));
+        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC_R", getStochasticR()));
+        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC_K", getStochasticK()));
+        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC_D", getStochasticD()));
+
+        return parameters;
+    }
+
 
     public int getVariables() {
         return this.getClass().getDeclaredFields().length;

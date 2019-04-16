@@ -24,6 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -31,6 +33,7 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,6 +60,27 @@ public class ParabolicSARStrategy {
     //124 64 32 13 2
     //4 150 39 4 26
     //112 174 193 30 50
+
+
+    public static int getSar1() {
+        return SAR_1;
+    }
+
+    public static int getSar2() {
+        return SAR_2;
+    }
+
+    public static int getRSI() {
+        return RSI;
+    }
+
+    public static int getK() {
+        return K;
+    }
+
+    public static int getD() {
+        return D;
+    }
 
     public static void setSar1(int sar1) {
         SAR_1 = sar1;
@@ -162,6 +186,19 @@ public class ParabolicSARStrategy {
             setK((int) solution.getValues().get(3));
             setD((int) solution.getValues().get(4));
         }
+    }
+
+    public static List<Pair<String, Integer>> getParameters() {
+
+        List<Pair<String, Integer>> parameters = new ArrayList<>();
+
+        parameters.add(new ImmutablePair<String, Integer>("SAR_1", getSar1()));
+        parameters.add(new ImmutablePair<String, Integer>("SAR_2", getSar2()));
+        parameters.add(new ImmutablePair<String, Integer>("RSI", getRSI()));
+        parameters.add(new ImmutablePair<String, Integer>("K", getK()));
+        parameters.add(new ImmutablePair<String, Integer>("D", getD()));
+
+        return parameters;
     }
 
     public int getVariables() {

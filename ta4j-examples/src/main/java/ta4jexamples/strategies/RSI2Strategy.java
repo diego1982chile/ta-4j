@@ -24,6 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -33,6 +35,7 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -165,6 +168,18 @@ public class RSI2Strategy {
             setSma1((int) solution.getValues().get(2));
             setSma2((int) solution.getValues().get(3));
         }
+    }
+
+    public static List<Pair<String, Integer>> getParameters() {
+
+        List<Pair<String, Integer>> parameters = new ArrayList<>();
+
+        parameters.add(new ImmutablePair<String, Integer>("RSI", getRSI()));
+        parameters.add(new ImmutablePair<String, Integer>("EMA", getEMA()));
+        parameters.add(new ImmutablePair<String, Integer>("SMA_1", getSma1()));
+        parameters.add(new ImmutablePair<String, Integer>("SMA_2", getSma2()));
+
+        return parameters;
     }
 
     public int getVariables() {

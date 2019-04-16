@@ -24,6 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -32,6 +34,8 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +70,19 @@ public class BagovinoStrategy {
     public static void setRSI(int RSI) {
         BagovinoStrategy.RSI = RSI;
     }
+
+    public static int getShortEma() {
+        return SHORT_EMA;
+    }
+
+    public static int getLongEma() {
+        return LONG_EMA;
+    }
+
+    public static int getRSI() {
+        return RSI;
+    }
+
 
     /**
      * @param series a time series
@@ -140,5 +157,16 @@ public class BagovinoStrategy {
 
     public int getVariables() {
         return this.getClass().getDeclaredFields().length;
+    }
+
+    public static List<Pair<String, Integer>> getParameters() {
+
+        List<Pair<String, Integer>> parameters = new ArrayList<>();
+
+        parameters.add(new ImmutablePair<String, Integer>("SHORT_EMA", getShortEma()));
+        parameters.add(new ImmutablePair<String, Integer>("LONG_EMA", getLongEma()));
+        parameters.add(new ImmutablePair<String, Integer>("RSI", getRSI()));
+
+        return parameters;
     }
 }

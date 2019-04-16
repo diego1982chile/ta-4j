@@ -24,6 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -33,6 +35,7 @@ import org.ta4j.core.indicators.helpers.MinPriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,6 +61,27 @@ public class TunnelStrategy {
     private static int TP_SIGNAL_EMA = 191;
 
     //6 65 133 150 191
+
+
+    public static int getPERIOD() {
+        return PERIOD;
+    }
+
+    public static int getMacd1() {
+        return MACD_1;
+    }
+
+    public static int getMacd2() {
+        return MACD_2;
+    }
+
+    public static int getSignalEma() {
+        return SIGNAL_EMA;
+    }
+
+    public static int getTpSignalEma() {
+        return TP_SIGNAL_EMA;
+    }
 
     public static void setPERIOD(int PERIOD) {
         TunnelStrategy.PERIOD = PERIOD;
@@ -152,6 +176,19 @@ public class TunnelStrategy {
             setSignalEma((int) solution.getValues().get(3));
             setTpSignalEma((int) solution.getValues().get(4));
         }
+    }
+
+    public static List<Pair<String, Integer>> getParameters() {
+
+        List<Pair<String, Integer>> parameters = new ArrayList<>();
+
+        parameters.add(new ImmutablePair<String, Integer>("PERIOD", getPERIOD()));
+        parameters.add(new ImmutablePair<String, Integer>("MACD_1", getMacd1()));
+        parameters.add(new ImmutablePair<String, Integer>("MACD_2", getMacd2()));
+        parameters.add(new ImmutablePair<String, Integer>("SIGNAL_EMA", getSignalEma()));
+        parameters.add(new ImmutablePair<String, Integer>("TP_SIGNAL_EMA", getTpSignalEma()));
+
+        return parameters;
     }
 
     public int getVariables() {

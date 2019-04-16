@@ -22,14 +22,18 @@
  */
 package org.ta4j.core;
 
+import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Serializable;
+import java.util.List;
 
 
 /**
  * Base implementation of a {@link Strategy}.
  */
-public class BaseStrategy implements Strategy {
+public class BaseStrategy implements Strategy, Serializable {
 
     /** The logger */
     protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -192,4 +196,5 @@ public class BaseStrategy implements Strategy {
     protected void traceShouldExit(int index, boolean exit) {
         log.trace(">>> {}#shouldExit({}): {}", className, index, exit);
     }
+
 }

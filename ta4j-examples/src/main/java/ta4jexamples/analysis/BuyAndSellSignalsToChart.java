@@ -119,42 +119,7 @@ public class BuyAndSellSignalsToChart {
         frame.setVisible(true);
     }
 
-    public static void plotSignals(TimeSeries series, Strategy strategy) {
-
-        /*
-          Building chart datasets
-         */
-        TimeSeriesCollection dataset = new TimeSeriesCollection();
-        dataset.addSeries(buildChartTimeSeries(series, new ClosePriceIndicator(series), "Signals"));
-
-        /*
-          Creating the chart
-         */
-        JFreeChart chart = ChartFactory.createTimeSeriesChart(
-                "Signals", // title
-                "Date", // x-axis label
-                "Price", // y-axis label
-                dataset, // data
-                true, // create legend?
-                true, // generate tooltips?
-                false // generate URLs?
-        );
-        XYPlot plot = (XYPlot) chart.getPlot();
-        DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("MM-dd HH:mm"));
-
-        /*
-          Running the strategy and adding the buy and sell signals to plot
-         */
-        addBuySellSignals(series, strategy, plot);
-
-        /*
-          Displaying the chart
-         */
-        displayChart(chart);
-    }
-
-    public static void buildCandleStickChart(TimeSeries series, Strategy strategy) {
+    public static JFreeChart buildCandleStickChart(TimeSeries series, Strategy strategy) {
         /**
          * Creating the OHLC dataset
          */
@@ -168,50 +133,55 @@ public class BuyAndSellSignalsToChart {
         /**
          * Creating the chart
          */
-        JFreeChart chart = ChartFactory.createCandlestickChart(
-                "CandleStick",
-                "Time",
-                "USD",
-                ohlcDataset,
-                true);
+        JFreeChart chart = ChartFactory.createCandlestickChart("", "Time", "USD", ohlcDataset, true);
         // Candlestick rendering
         CandlestickRenderer renderer = new CandlestickRenderer();
         renderer.setAutoWidthMethod(CandlestickRenderer.WIDTHMETHOD_SMALLEST);
-        renderer.setUpPaint(Color.WHITE);
-        renderer.setDownPaint(Color.BLACK);
+        renderer.setDownPaint(Color.RED);
+        renderer.setUpPaint(Color.GREEN);
+
         renderer.setDrawVolume(false);
-        renderer.setSeriesPaint(0, Color.DARK_GRAY);
-        //renderer.setSeriesOutlinePaint(0, Color.DARK_GRAY);
+        //renderer.setSeriesPaint(0, Color.GRAY);
+        renderer.setSeriesOutlinePaint(0, Color.GRAY);
+
         XYPlot plot = chart.getXYPlot();
         plot.setDomainGridlinesVisible(true);
         plot.setDomainMinorGridlinesVisible(true);
         plot.setBackgroundAlpha(1);
+
         //plot.setDomainGridlinePaint(new Color(0xCCCCFF));
-        plot.setDomainGridlinePaint(Color.BLACK);
+        //plot.setDomainGridlinePaint(Color.BLACK);
         plot.setRenderer(renderer);
         // Additional dataset
+
         int index = 1;
         plot.setDataset(index, xyDataset);
         plot.mapDatasetToRangeAxis(index, 0);
-        XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer(true, false);
-        //renderer2.setSeriesPaint(index, Color.BLUE);
+        XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer(false, false);
+        renderer2.setSeriesPaint(0, Color.LIGHT_GRAY);
         plot.setRenderer(index, renderer2);
         // Misc
-        plot.setRangeGridlinePaint(Color.BLACK);
-        plot.setBackgroundPaint(Color.white);
+
+        //plot.setRangeGridlinePaint(Color.BLACK);
+        //plot.setBackgroundPaint(Color.white);
         NumberAxis numberAxis = (NumberAxis) plot.getRangeAxis();
         numberAxis.setAutoRangeIncludesZero(false);
+
         plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 
-        /*
-          Running the strategy and adding the buy and sell signals to plot
-        */
+        chart.getXYPlot().setRenderer(new MyCandlestickRenderer());
+
+
+        //Running the strategy and adding the buy and sell signals to plot
+
         addBuySellSignals(series, strategy, plot);
 
         /**
          * Displaying the chart
          */
         displayChart(chart);
+
+        return chart;
     }
 
     public static void main(String[] args) {
@@ -273,11 +243,11 @@ public class BuyAndSellSignalsToChart {
         for (int i = 0; i < nbTicks; i++) {
             Bar tick = series.getBar(i);
             dates[i] = Date.from(tick.getEndTime().toInstant());
-            opens[i] = tick.getOpenPrice().toDouble();
-            highs[i] = tick.getMaxPrice().toDouble();
-            lows[i] = tick.getMinPrice().toDouble();
-            closes[i] = tick.getClosePrice().toDouble();
-            volumes[i] = tick.getVolume().toDouble();
+            opens[i] = tick.getOpenPrice().doubleValue();
+            highs[i] = tick.getMaxPrice().doubleValue();
+            lows[i] = tick.getMinPrice().doubleValue();
+            closes[i] = tick.getClosePrice().doubleValue();
+            volumes[i] = tick.getVolume().doubleValue();
         }
 
         OHLCDataset dataset = new DefaultHighLowDataset("btc", dates, highs, lows, opens, closes, volumes);

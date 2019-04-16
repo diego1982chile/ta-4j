@@ -24,6 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -31,6 +33,7 @@ import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -65,6 +68,46 @@ public class WinslowStrategy {
     private static int STOCHASTIC_D = 135;
 
     //150 188 142 4 3 99 162 74 100 135
+
+    public static int getEma800() {
+        return EMA_800;
+    }
+
+    public static int getEma200() {
+        return EMA_200;
+    }
+
+    public static int getEma144() {
+        return EMA_144;
+    }
+
+    public static int getEma62() {
+        return EMA_62;
+    }
+
+    public static int getMacd1() {
+        return MACD_1;
+    }
+
+    public static int getMacd2() {
+        return MACD_2;
+    }
+
+    public static int getSIGNAL() {
+        return SIGNAL;
+    }
+
+    public static int getStochasticR() {
+        return STOCHASTIC_R;
+    }
+
+    public static int getStochasticK() {
+        return STOCHASTIC_K;
+    }
+
+    public static int getStochasticD() {
+        return STOCHASTIC_D;
+    }
 
     public static void setEma800(int ema800) {
         EMA_800 = ema800;
@@ -208,6 +251,24 @@ public class WinslowStrategy {
             setStochasticD((int) solution.getValues().get(9));
         }
 
+    }
+
+    public static List<Pair<String, Integer>> getParameters() {
+
+        List<Pair<String, Integer>> parameters = new ArrayList<>();
+
+        parameters.add(new ImmutablePair<String, Integer>("EMA_800", getEma800()));
+        parameters.add(new ImmutablePair<String, Integer>("EMA_200", getEma200()));
+        parameters.add(new ImmutablePair<String, Integer>("EMA_144", getEma144()));
+        parameters.add(new ImmutablePair<String, Integer>("EMA_62", getEma62()));
+        parameters.add(new ImmutablePair<String, Integer>("MACD_1", getMacd1()));
+        parameters.add(new ImmutablePair<String, Integer>("MACD_2", getMacd2()));
+        parameters.add(new ImmutablePair<String, Integer>("SIGNAL", getSIGNAL()));
+        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC_R", getStochasticR()));
+        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC_K", getStochasticK()));
+        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC_D", getStochasticD()));
+
+        return parameters;
     }
 
     public int getVariables() {

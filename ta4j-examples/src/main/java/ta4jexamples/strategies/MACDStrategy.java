@@ -24,6 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -32,6 +34,7 @@ import org.ta4j.core.trading.rules.*;
 import ta4jexamples.loaders.CsvTradesLoader;
 import ta4jexamples.loaders.CsvTradesLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +54,7 @@ public class MACDStrategy {
 
     private static int TP_SIGNAL_EMA = 3;
     private static int ATR = 12;
+
     private static int x = 6;
     */
 
@@ -70,6 +74,42 @@ public class MACDStrategy {
     //82 82 63 1 24 19 18 170 184
 
     //18 32 140 5 6 41
+
+    public static int getLongEma() {
+        return LONG_EMA;
+    }
+
+    public static int getShortEma() {
+        return SHORT_EMA;
+    }
+
+    public static int getShorterEma() {
+        return SHORTER_EMA;
+    }
+
+    public static int getMacd1() {
+        return MACD_1;
+    }
+
+    public static int getMacd2() {
+        return MACD_2;
+    }
+
+    public static int getSignalEma() {
+        return SIGNAL_EMA;
+    }
+
+    public static int getTpSignalEma() {
+        return TP_SIGNAL_EMA;
+    }
+
+    public static int getATR() {
+        return ATR;
+    }
+
+    public static int getX() {
+        return x;
+    }
 
 
     public static void setLongEma(int longEma) {
@@ -254,6 +294,21 @@ public class MACDStrategy {
             setATR((int) solution.getValues().get(7));
             setX((int) solution.getValues().get(8));
         }
+    }
+
+    public static List<Pair<String, Integer>> getParameters() {
+
+        List<Pair<String, Integer>> parameters = new ArrayList<>();
+
+        parameters.add(new ImmutablePair<String, Integer>("LONG_EMA", getLongEma()));
+        parameters.add(new ImmutablePair<String, Integer>("SHORT_EMA", getShortEma()));
+        parameters.add(new ImmutablePair<String, Integer>("MACD_1", getMacd1()));
+        parameters.add(new ImmutablePair<String, Integer>("MACD_2", getMacd2()));
+        parameters.add(new ImmutablePair<String, Integer>("SIGNAL_EMA", getSignalEma()));
+        parameters.add(new ImmutablePair<String, Integer>("TP_SIGNAL_EMA", getSignalEma()));
+        parameters.add(new ImmutablePair<String, Integer>("x", getX()));
+
+        return parameters;
     }
 
     public int getVariables() {

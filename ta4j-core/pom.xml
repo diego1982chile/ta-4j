@@ -41,7 +41,7 @@
 
         <dependency>
             <groupId>cl.dsoto</groupId>
-            <artifactId>TradingPersistence</artifactId>
+            <artifactId>TradingDomain</artifactId>
             <version>1.0-SNAPSHOT</version>
             <!--scope>provided</scope-->
         </dependency>
