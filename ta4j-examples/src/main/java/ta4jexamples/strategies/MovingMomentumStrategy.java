@@ -24,8 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+
+import javafx.util.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -194,12 +194,12 @@ public class MovingMomentumStrategy {
 
         List<Pair<String, Integer>> parameters = new ArrayList<>();
 
-        parameters.add(new ImmutablePair<String, Integer>("SHORT_EMA", getShortEma()));
-        parameters.add(new ImmutablePair<String, Integer>("LONG_EMA", getLongEma()));
-        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC", getSTOCHASTIC()));
-        parameters.add(new ImmutablePair<String, Integer>("MACD_1", getMacd1()));
-        parameters.add(new ImmutablePair<String, Integer>("MACD_2", getMacd2()));
-        parameters.add(new ImmutablePair<String, Integer>("SIGNAL_EMA", getSignalEma()));
+        parameters.add(new Pair<>("SHORT_EMA", getShortEma()));
+        parameters.add(new Pair<>("LONG_EMA", getLongEma()));
+        parameters.add(new Pair<>("STOCHASTIC", getSTOCHASTIC()));
+        parameters.add(new Pair<>("MACD_1", getMacd1()));
+        parameters.add(new Pair<>("MACD_2", getMacd2()));
+        parameters.add(new Pair<>("SIGNAL_EMA", getSignalEma()));
 
         return parameters;
     }

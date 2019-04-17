@@ -24,8 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+
+import javafx.util.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.helpers.*;
@@ -127,7 +127,7 @@ public class GlobalExtremaStrategy {
 
         List<Pair<String, Integer>> parameters = new ArrayList<>();
 
-        parameters.add(new ImmutablePair<String, Integer>("NB_BARS_PER_WEEK", getNbBarsPerWeek()));
+        parameters.add(new Pair<>("NB_BARS_PER_WEEK", getNbBarsPerWeek()));
 
         return parameters;
     }

@@ -24,8 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+
+import javafx.util.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -51,11 +51,11 @@ public class ParabolicSARStrategy {
     private static int D = 5;
     */
 
-    private static int SAR_1 = 112;
-    private static int SAR_2 = 174;
-    private static int RSI = 193;
-    private static int K = 30;
-    private static int D = 50;
+    private static int SAR_1 = 86;
+    private static int SAR_2 = 92;
+    private static int RSI = 12;
+    private static int K = 138;
+    private static int D = 185;
 
     //124 64 32 13 2
     //4 150 39 4 26
@@ -192,11 +192,11 @@ public class ParabolicSARStrategy {
 
         List<Pair<String, Integer>> parameters = new ArrayList<>();
 
-        parameters.add(new ImmutablePair<String, Integer>("SAR_1", getSar1()));
-        parameters.add(new ImmutablePair<String, Integer>("SAR_2", getSar2()));
-        parameters.add(new ImmutablePair<String, Integer>("RSI", getRSI()));
-        parameters.add(new ImmutablePair<String, Integer>("K", getK()));
-        parameters.add(new ImmutablePair<String, Integer>("D", getD()));
+        parameters.add(new Pair<>("SAR_1", getSar1()));
+        parameters.add(new Pair<>("SAR_2", getSar2()));
+        parameters.add(new Pair<>("RSI", getRSI()));
+        parameters.add(new Pair<>("K", getK()));
+        parameters.add(new Pair<>("D", getD()));
 
         return parameters;
     }

@@ -24,8 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+
+import javafx.util.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.CCIIndicator;
@@ -52,8 +52,8 @@ public class CCICorrectionStrategy {
     private static int SHORT_CCI = 45;
     */
 
-    private static int LONG_CCI = 82;
-    private static int SHORT_CCI = 4;
+    private static int LONG_CCI = 73;
+    private static int SHORT_CCI = 7;
 
     //82 4
 
@@ -143,8 +143,8 @@ public class CCICorrectionStrategy {
 
         List<Pair<String, Integer>> parameters = new ArrayList<>();
 
-        parameters.add(new ImmutablePair<String, Integer>("LONG_CCI", getLongCci()));
-        parameters.add(new ImmutablePair<String, Integer>("SHORT_CCI", getShortCci()));
+        parameters.add(new Pair<>("LONG_CCI", getLongCci()));
+        parameters.add(new Pair<>("SHORT_CCI", getShortCci()));
 
         return parameters;
     }

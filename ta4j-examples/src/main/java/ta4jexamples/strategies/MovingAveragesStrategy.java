@@ -24,8 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+
+import javafx.util.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -53,10 +53,10 @@ public class MovingAveragesStrategy {
     private static int LONGER_EMA = 50;
     */
 
-    private static int SHORTER_EMA = 70;
-    private static int SHORT_EMA = 19;
+    private static int SHORTER_EMA = 17;
+    private static int SHORT_EMA = 65;
     private static int LONG_EMA = 1;
-    private static int LONGER_EMA = 12;
+    private static int LONGER_EMA = 94;
 
     //70 24 1 88
     //164 159 87 148
@@ -168,10 +168,10 @@ public class MovingAveragesStrategy {
 
         List<Pair<String, Integer>> parameters = new ArrayList<>();
 
-        parameters.add(new ImmutablePair<String, Integer>("SHORTER_EMA", getShorterEma()));
-        parameters.add(new ImmutablePair<String, Integer>("SHORT_EMA", getShortEma()));
-        parameters.add(new ImmutablePair<String, Integer>("LONG_EMA", getLongEma()));
-        parameters.add(new ImmutablePair<String, Integer>("LONGER_EMA", getLongerEma()));
+        parameters.add(new Pair<>("SHORTER_EMA", getShorterEma()));
+        parameters.add(new Pair<>("SHORT_EMA", getShortEma()));
+        parameters.add(new Pair<>("LONG_EMA", getLongEma()));
+        parameters.add(new Pair<>("LONGER_EMA", getLongerEma()));
 
         return parameters;
     }

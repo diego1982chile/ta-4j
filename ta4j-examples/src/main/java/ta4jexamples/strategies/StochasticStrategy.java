@@ -24,8 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+
+import javafx.util.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -54,13 +54,13 @@ public class StochasticStrategy {
     private static int LONG_EMA = 200;
     */
 
-    private static int SMA = 54;
-    private static int EMA = 16;
-    private static int RSI = 154;
-    private static int K = 116;
-    private static int D = 10;
-    private static int SHORT_EMA = 199;
-    private static int LONG_EMA = 44;
+    private static int SMA = 8;
+    private static int EMA = 9;
+    private static int RSI = 158;
+    private static int K = 157;
+    private static int D = 56;
+    private static int SHORT_EMA = 131;
+    private static int LONG_EMA = 153;
 
     //59 1 69 49 67 124 64
 
@@ -217,13 +217,13 @@ public class StochasticStrategy {
 
         List<Pair<String, Integer>> parameters = new ArrayList<>();
 
-        parameters.add(new ImmutablePair<String, Integer>("SMA", getSMA()));
-        parameters.add(new ImmutablePair<String, Integer>("EMA", getEMA()));
-        parameters.add(new ImmutablePair<String, Integer>("RSI", getRSI()));
-        parameters.add(new ImmutablePair<String, Integer>("K", getK()));
-        parameters.add(new ImmutablePair<String, Integer>("D", getD()));
-        parameters.add(new ImmutablePair<String, Integer>("SHORT_EMA", getShortEma()));
-        parameters.add(new ImmutablePair<String, Integer>("LONG_EMA", getLongEma()));
+        parameters.add(new Pair<>("SMA", getSMA()));
+        parameters.add(new Pair<>("EMA", getEMA()));
+        parameters.add(new Pair<>("RSI", getRSI()));
+        parameters.add(new Pair<>("K", getK()));
+        parameters.add(new Pair<>("D", getD()));
+        parameters.add(new Pair<>("SHORT_EMA", getShortEma()));
+        parameters.add(new Pair<>("LONG_EMA", getLongEma()));
 
         return parameters;
     }

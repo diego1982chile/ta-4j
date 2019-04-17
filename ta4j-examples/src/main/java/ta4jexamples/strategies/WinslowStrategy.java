@@ -24,8 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+
+import javafx.util.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.*;
@@ -56,16 +56,16 @@ public class WinslowStrategy {
     private static int STOCHASTIC_D = 3;
     */
 
-    private static int EMA_800 = 150;
-    private static int EMA_200 = 188;
-    private static int EMA_144 = 142;
-    private static int EMA_62 = 4;
-    private static int MACD_1 = 3;
-    private static int MACD_2 = 99;
-    private static int SIGNAL = 162;
-    private static int STOCHASTIC_R = 74;
-    private static int STOCHASTIC_K = 100;
-    private static int STOCHASTIC_D = 135;
+    private static int EMA_800 = 64;
+    private static int EMA_200 = 140;
+    private static int EMA_144 = 121;
+    private static int EMA_62 = 5;
+    private static int MACD_1 = 54;
+    private static int MACD_2 = 150;
+    private static int SIGNAL = 24;
+    private static int STOCHASTIC_R = 70;
+    private static int STOCHASTIC_K = 111;
+    private static int STOCHASTIC_D = 95;
 
     //150 188 142 4 3 99 162 74 100 135
 
@@ -257,16 +257,16 @@ public class WinslowStrategy {
 
         List<Pair<String, Integer>> parameters = new ArrayList<>();
 
-        parameters.add(new ImmutablePair<String, Integer>("EMA_800", getEma800()));
-        parameters.add(new ImmutablePair<String, Integer>("EMA_200", getEma200()));
-        parameters.add(new ImmutablePair<String, Integer>("EMA_144", getEma144()));
-        parameters.add(new ImmutablePair<String, Integer>("EMA_62", getEma62()));
-        parameters.add(new ImmutablePair<String, Integer>("MACD_1", getMacd1()));
-        parameters.add(new ImmutablePair<String, Integer>("MACD_2", getMacd2()));
-        parameters.add(new ImmutablePair<String, Integer>("SIGNAL", getSIGNAL()));
-        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC_R", getStochasticR()));
-        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC_K", getStochasticK()));
-        parameters.add(new ImmutablePair<String, Integer>("STOCHASTIC_D", getStochasticD()));
+        parameters.add(new Pair<>("EMA_800", getEma800()));
+        parameters.add(new Pair<>("EMA_200", getEma200()));
+        parameters.add(new Pair<>("EMA_144", getEma144()));
+        parameters.add(new Pair<>("EMA_62", getEma62()));
+        parameters.add(new Pair<>("MACD_1", getMacd1()));
+        parameters.add(new Pair<>("MACD_2", getMacd2()));
+        parameters.add(new Pair<>("SIGNAL", getSIGNAL()));
+        parameters.add(new Pair<>("STOCHASTIC_R", getStochasticR()));
+        parameters.add(new Pair<>("STOCHASTIC_K", getStochasticK()));
+        parameters.add(new Pair<>("STOCHASTIC_D", getStochasticD()));
 
         return parameters;
     }

@@ -24,8 +24,8 @@ package ta4jexamples.strategies;
 
 import cl.dsoto.trading.model.Optimization;
 import cl.dsoto.trading.model.Solution;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+
+import javafx.util.Pair;
 import org.ta4j.core.*;
 import org.ta4j.core.analysis.criteria.TotalProfitCriterion;
 import org.ta4j.core.indicators.EMAIndicator;
@@ -51,9 +51,9 @@ public class BagovinoStrategy {
     private static int RSI = 21;
     */
 
-    private static int SHORT_EMA = 64;
-    private static int LONG_EMA = 16;
-    private static int RSI = 33;
+    private static int SHORT_EMA = 197;
+    private static int LONG_EMA = 130;
+    private static int RSI = 123;
 
     //63 11 35
     //47 45 172
@@ -82,7 +82,6 @@ public class BagovinoStrategy {
     public static int getRSI() {
         return RSI;
     }
-
 
     /**
      * @param series a time series
@@ -163,9 +162,9 @@ public class BagovinoStrategy {
 
         List<Pair<String, Integer>> parameters = new ArrayList<>();
 
-        parameters.add(new ImmutablePair<String, Integer>("SHORT_EMA", getShortEma()));
-        parameters.add(new ImmutablePair<String, Integer>("LONG_EMA", getLongEma()));
-        parameters.add(new ImmutablePair<String, Integer>("RSI", getRSI()));
+        parameters.add(new Pair<>("SHORT_EMA", getShortEma()));
+        parameters.add(new Pair<>("LONG_EMA", getLongEma()));
+        parameters.add(new Pair<>("RSI", getRSI()));
 
         return parameters;
     }
