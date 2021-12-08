@@ -61,6 +61,7 @@ public class LiveTestingTimeSeries {
         System.out.print("Initial bar count: " + series.getBarCount());
         // Limitating the number of bars to maxBarCount
         series.setMaximumBarCount(maxBarCount);
+        //series.setMaximumBarCount(series.getBarCount());
         LAST_BAR_CLOSE_PRICE = series.getBar(series.getEndIndex()).getClosePrice();
         System.out.println(" (limited to " + maxBarCount + "), close price = " + LAST_BAR_CLOSE_PRICE);
 

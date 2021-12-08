@@ -58,15 +58,16 @@ public class MACDStrategy {
     private static int x = 6;
     */
 
-    private static int LONG_EMA = 102;
-    private static int SHORT_EMA = 96;
-    private static int SHORTER_EMA = 87;
-    private static int MACD_1 = 4;
-    private static int MACD_2 = 5;
-    private static int SIGNAL_EMA = 23;
-    private static int TP_SIGNAL_EMA = 23;
-    private static int ATR = 151;
-    private static int x = 19;
+    private static int LONG_EMA = 27;
+    private static int SHORT_EMA = 17;
+    private static int SHORTER_EMA = 16;
+    private static int MACD_1 = 60;
+    private static int MACD_2 = 72;
+    private static int SIGNAL_EMA = 57;
+
+    private static int TP_SIGNAL_EMA = 57;
+    private static int ATR = 21;
+    private static int x = 51;
 
     //45 45 6 1 2 88 37 150 67
     //140 74 7 2 8 158 62 6 129
@@ -174,15 +175,16 @@ public class MACDStrategy {
 
         ATRIndicator atr = new ATRIndicator(series, ATR);
 
-        /*
+
         Rule entryRule = new OverIndicatorRule(closePrice, ema21)
                 .and(new OverIndicatorRule(macd, signal))
-                .and(new CrossedUpIndicatorRule(closePrice, ema50));
-                //.and(new CrossedUpIndicatorRule(ema3, ema21));
-                //.and(new CrossedUpIndicatorRule(ema3, ema50));
-                //.and(new OverIndicatorRule(macd, zeroLine));
-        */
+                .and(new CrossedUpIndicatorRule(closePrice, ema50))
+                .and(new OverIndicatorRule(ema3, ema21))
+                .and(new CrossedUpIndicatorRule(ema3, ema50))
+                .and(new OverIndicatorRule(macd, zeroLine));
 
+
+        /*
         Rule entryRule = //new CrossedUpIndicatorRule(closePrice, ema3)
                 new CrossedUpIndicatorRule(macd, signal)
                 .and(new OverIndicatorRule(ema3, ema21))
@@ -192,29 +194,19 @@ public class MACDStrategy {
                 .and(new OverIndicatorRule(macd, signal))
                 .and(new OverIndicatorRule(macd, tpSignal));
                 //.and(new OverIndicatorRule(tpSignal, signal));
-                /*.and(new IsRisingRule(macd, 5))
-                .and(new IsRisingRule(signal, 5))*/
+                //.and(new IsRisingRule(macd, 5))
+                //.and(new IsRisingRule(signal, 5))
                 //.and(new UnderIndicatorRule(macd, Decimal.valueOf(0.005)))
                 //.and(new OverIndicatorRule(macd, Decimal.valueOf(0)))
                 //.and(new OverIndicatorRule(signal, Decimal.valueOf(0)));
+        */
 
-
-        Rule exitRule;
-
-        exitRule = //new CrossedDownIndicatorRule(closePrice, ema3)
-                    new CrossedDownIndicatorRule(macd, signal)
-                    .and(new UnderIndicatorRule(macd, signal))
-                    .and(new UnderIndicatorRule(ema3, ema21))
-                    .and(new UnderIndicatorRule(ema3, ema50))
-                    //.and(new IsFallingRule(ema50, 5))
-                    //.and(new IsFallingRule(ema21, 5))
-                    //.and(new IsFallingRule(macd, 5))
-                    //.and(new IsFallingRule(signal, 5))
-                    .and(new UnderIndicatorRule(macd, signal))
-                    .and(new UnderIndicatorRule(macd, tpSignal));
-                    //.and(new OverIndicatorRule(macd, Decimal.valueOf(-0.005)))
-                    //.and(new UnderIndicatorRule(macd, Decimal.valueOf(0)))
-                    //.and(new UnderIndicatorRule(signal, Decimal.valueOf(0)));
+        Rule exitRule = new UnderIndicatorRule(closePrice, ema21)
+                .and(new UnderIndicatorRule(macd, signal))
+                .and(new CrossedDownIndicatorRule(closePrice, ema50))
+                .and(new UnderIndicatorRule(ema3, ema21))
+                .and(new CrossedDownIndicatorRule(ema3, ema50))
+                .and(new UnderIndicatorRule(macd, zeroLine));
 
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
@@ -224,7 +216,9 @@ public class MACDStrategy {
 
         exitRule = tpRule;
 
-        exitRule = exitRule.xor(atrRule).xor(stopGain).xor(stopLoss);
+        //exitRule = exitRule.xor(atrRule).xor(stopGain).xor(stopLoss);
+
+        exitRule = exitRule.or(stopGain).or(stopLoss);
 
         //exitRule = exitRule.xor(stopLoss);
 

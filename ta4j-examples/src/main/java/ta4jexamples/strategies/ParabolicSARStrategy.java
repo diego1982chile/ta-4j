@@ -51,12 +51,11 @@ public class ParabolicSARStrategy {
     private static int D = 43;
     */
 
-
-    private static int SAR_1 = 34;
-    private static int SAR_2 = 103;
-    private static int RSI = 35;
-    private static int K = 5;
-    private static int D = 153;
+    private static int SAR_1 = 32;
+    private static int SAR_2 = 164;
+    private static int RSI = 14;
+    private static int K = 59;
+    private static int D = 37;
 
 
     //124 64 32 13 2
@@ -127,29 +126,29 @@ public class ParabolicSARStrategy {
 
 
         Rule entryRule = new OverIndicatorRule(closePrice, sar)
-                //.and(new CrossedUpIndicatorRule(ac, Decimal.valueOf(0)))
+                .and(new CrossedUpIndicatorRule(ac, Decimal.valueOf(0)))
                 //.and(new CrossedUpIndicatorRule(ao, Decimal.valueOf(0)))
                 .and(new IsRisingRule(ac,5))
                 .and(new IsRisingRule(ao,5))
-                .and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
-                //.and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(20)));
-                //.and(new OverIndicatorRule(stochasticD, Decimal.valueOf(20)));
+                //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD))
+                .and(new OverIndicatorRule(stochasticK, Decimal.valueOf(20)))
+                .and(new OverIndicatorRule(stochasticD, Decimal.valueOf(20)));
                 //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
 
         Rule exitRule = new UnderIndicatorRule(closePrice, sar)
-                //.and(new CrossedDownIndicatorRule(ac, Decimal.valueOf(0)))
+                .and(new CrossedDownIndicatorRule(ac, Decimal.valueOf(0)))
                 //.and(new CrossedDownIndicatorRule(ao, Decimal.valueOf(0)));
                 .and(new IsFallingRule(ac,5))
                 .and(new IsFallingRule(ao,5))
-                .and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
-                //.and(new OverIndicatorRule(stochasticK, Decimal.valueOf(80)));
-                //.and(new UnderIndicatorRule(stochasticD, Decimal.valueOf(80)));
+                .and(new CrossedDownIndicatorRule(stochasticK, stochasticD))
+                .and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(80)))
+                .and(new UnderIndicatorRule(stochasticD, Decimal.valueOf(80)));
                 //.and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
 
-        exitRule = exitRule.xor(stopGain).xor(stopLoss);
+        exitRule = exitRule.or(stopGain).or(stopLoss);
 
         return new BaseStrategy("ParabolicSARStrategy", entryRule, exitRule);
     }

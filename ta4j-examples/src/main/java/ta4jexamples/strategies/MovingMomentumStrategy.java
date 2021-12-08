@@ -56,12 +56,12 @@ public class MovingMomentumStrategy {
     private static int SIGNAL_EMA = 18;
     */
 
-    private static int SHORT_EMA = 125;
-    private static int LONG_EMA = 198;
-    private static int STOCHASTIC = 13;
-    private static int MACD_1 = 73;
-    private static int MACD_2 = 134;
-    private static int SIGNAL_EMA = 58;
+    private static int SHORT_EMA = 157;
+    private static int LONG_EMA = 11;
+    private static int STOCHASTIC = 23;
+    private static int MACD_1 = 64;
+    private static int MACD_2 = 65;
+    private static int SIGNAL_EMA = 48;
 
     //168 116 8 46 159 3
 

@@ -53,12 +53,12 @@ public class TunnelStrategy {
 
     //private static int PERIOD = 50;
 
-    private static int PERIOD = 70;
+    private static int PERIOD = 180;
 
-    private static int MACD_1 = 112;
-    private static int MACD_2 = 169;
-    private static int SIGNAL_EMA = 54;
-    private static int TP_SIGNAL_EMA = 19;
+    private static int MACD_1 = 70;
+    private static int MACD_2 = 71;
+    private static int SIGNAL_EMA = 19;
+    private static int TP_SIGNAL_EMA = 7;
 
     //6 65 133 150 191
 

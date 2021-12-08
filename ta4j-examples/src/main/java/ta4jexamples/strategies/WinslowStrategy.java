@@ -56,16 +56,16 @@ public class WinslowStrategy {
     private static int STOCHASTIC_D = 3;
     */
 
-    private static int EMA_800 = 97;
-    private static int EMA_200 = 124;
-    private static int EMA_144 = 40;
-    private static int EMA_62 = 28;
-    private static int MACD_1 = 111;
-    private static int MACD_2 = 187;
-    private static int SIGNAL = 66;
-    private static int STOCHASTIC_R = 127;
-    private static int STOCHASTIC_K = 165;
-    private static int STOCHASTIC_D = 62;
+    private static int EMA_800 = 160;
+    private static int EMA_200 = 181;
+    private static int EMA_144 = 108;
+    private static int EMA_62 = 5;
+    private static int MACD_1 = 97;
+    private static int MACD_2 = 192;
+    private static int SIGNAL = 24;
+    private static int STOCHASTIC_R = 160;
+    private static int STOCHASTIC_K = 92;
+    private static int STOCHASTIC_D = 69;
 
     //150 188 142 4 3 99 162 74 100 135
 

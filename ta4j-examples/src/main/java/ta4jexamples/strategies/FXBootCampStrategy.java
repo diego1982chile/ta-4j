@@ -59,17 +59,17 @@ public class FXBootCampStrategy {
     private static int STOCHASTIC_D = 5;
     */
 
-    private static int EMA_5 = 18;
-    private static int SMA_8 = 41;
-    private static int EMA_21 = 112;
-    private static int EMA_55 = 109;
-    private static int EMA_200 = 4;
-    private static int MACD_1 = 15;
-    private static int MACD_2 = 184;
-    private static int EMA_8 = 42;
-    private static int STOCHASTIC_R = 37;
-    private static int STOCHASTIC_K = 38;
-    private static int STOCHASTIC_D = 111;
+    private static int EMA_5 = 45;
+    private static int SMA_8 = 148;
+    private static int EMA_21 = 171;
+    private static int EMA_55 = 164;
+    private static int EMA_200 =77;
+    private static int MACD_1 = 83;
+    private static int MACD_2 = 84;
+    private static int EMA_8 = 30;
+    private static int STOCHASTIC_R = 67;
+    private static int STOCHASTIC_K = 5;
+    private static int STOCHASTIC_D = 23;
 
     //34 123 116 101 35 4 159 164 90 160 5
 
@@ -200,15 +200,15 @@ public class FXBootCampStrategy {
 
         Rule exitRule = new UnderIndicatorRule(ema21, ema55)
                 .and(new UnderIndicatorRule(ema21, ema200))
-                //.and(new UnderIndicatorRule(ema55, ema200))
-                .and(new CrossedDownIndicatorRule(ema5, sma8));
-                //.and(new CrossedDownIndicatorRule(macd, ema8));
-                //.and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
+                .and(new UnderIndicatorRule(ema55, ema200))
+                .and(new CrossedDownIndicatorRule(ema5, sma8))
+                .and(new UnderIndicatorRule(macd, ema8))
+                .and(new UnderIndicatorRule(stochasticK, stochasticD));
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
 
-        exitRule = exitRule.xor(stopGain).xor(stopLoss);
+        exitRule = exitRule.or(stopGain).or(stopLoss);
 
         return new BaseStrategy("FXBootCampStrategy", entryRule, exitRule);
     }

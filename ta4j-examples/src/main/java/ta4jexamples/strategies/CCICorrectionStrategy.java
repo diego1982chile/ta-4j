@@ -52,8 +52,8 @@ public class CCICorrectionStrategy {
     private static int SHORT_CCI = 45;
     */
 
-    private static int LONG_CCI = 124;
-    private static int SHORT_CCI = 3;
+    private static int LONG_CCI = 4;
+    private static int SHORT_CCI = 23;
 
     //82 4
 
@@ -98,7 +98,7 @@ public class CCICorrectionStrategy {
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
 
-        exitRule = exitRule.xor(stopGain).xor(stopLoss);
+        exitRule = exitRule.or(stopGain).or(stopLoss);
         
         Strategy strategy = new BaseStrategy("CCICorrectionStrategy", entryRule, exitRule);
         strategy.setUnstablePeriod(5);

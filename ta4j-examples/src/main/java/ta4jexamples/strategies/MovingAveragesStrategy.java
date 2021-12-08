@@ -53,10 +53,10 @@ public class MovingAveragesStrategy {
     private static int LONGER_EMA = 50;
     */
 
-    private static int SHORTER_EMA = 150;
-    private static int SHORT_EMA = 129;
-    private static int LONG_EMA = 114;
-    private static int LONGER_EMA = 104;
+    private static int SHORTER_EMA = 1;
+    private static int SHORT_EMA = 4;
+    private static int LONG_EMA = 148;
+    private static int LONGER_EMA = 108;
 
     //70 24 1 88
     //164 159 87 148
@@ -112,18 +112,18 @@ public class MovingAveragesStrategy {
         EMAIndicator ema21  = new EMAIndicator(closePrice,LONG_EMA);
         EMAIndicator ema50  = new EMAIndicator(closePrice,LONGER_EMA);
 
-        Rule entryRule = //new OverIndicatorRule(closePrice, ema50).
-                        new CrossedUpIndicatorRule(ema5, ema21).
-                        and(new CrossedUpIndicatorRule(ema14, ema21));
+        Rule entryRule = new OverIndicatorRule(closePrice, ema50).
+                        and(new CrossedUpIndicatorRule(ema5, ema21).
+                        or(new CrossedUpIndicatorRule(ema14, ema21)));
 
-        Rule exitRule = //new UnderIndicatorRule(closePrice, ema50).
-                        new CrossedDownIndicatorRule(ema5, ema21).
-                        and(new CrossedDownIndicatorRule(ema14, ema21));
+        Rule exitRule = new UnderIndicatorRule(closePrice, ema50).
+                        and(new CrossedDownIndicatorRule(ema5, ema21).
+                        or(new CrossedDownIndicatorRule(ema14, ema21)));
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
 
-        exitRule = exitRule.xor(stopGain).xor(stopLoss);
+        exitRule = exitRule.or(stopGain).or(stopLoss);
 
         return new BaseStrategy("MovingAveragesStrategy", entryRule, exitRule);
     }

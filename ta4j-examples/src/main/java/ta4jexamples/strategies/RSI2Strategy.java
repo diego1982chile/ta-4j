@@ -54,10 +54,10 @@ public class RSI2Strategy {
     private static int SMA_2 = 4;
     */
 
-    private static int RSI = 135;
+    private static int RSI = 73;
     private static int EMA = 42;
-    private static int SMA_1 = 53;
-    private static int SMA_2 = 31;
+    private static int SMA_1 = 157;
+    private static int SMA_2 = 113;
 
     //185 63 10 145
 
@@ -117,19 +117,22 @@ public class RSI2Strategy {
         
         // Entry rule
         // The long-term trend is up when a security is above its 200-period SMA.
-        Rule entryRule = new OverIndicatorRule(sma4, sma7) // Trend
-                .and(new OverIndicatorRule(rsi, Decimal.valueOf(5))) // Signal 1
+        Rule entryRule = new OverIndicatorRule(rsi, Decimal.valueOf(50)) // Signal 1
                 .and(new IsRisingRule(rsi, 3)) // Signal 1
+                .and(new OverIndicatorRule(sma4, sma7)) // Signal 1
                 .and(new CrossedUpIndicatorRule(closePrice, ema21)); // Signal 2
         
         // Exit rule
         // The long-term trend is down when a security is below its 200-period SMA.
-        Rule exitRule = new CrossedDownIndicatorRule(closePrice, ema21);
+        Rule exitRule = new UnderIndicatorRule(rsi, Decimal.valueOf(50)) // Signal 1
+                .and(new IsFallingRule(rsi, 3)) // Signal 1
+                .and(new UnderIndicatorRule(sma4, sma7)) // Signal 1
+                .and(new CrossedDownIndicatorRule(closePrice, ema21)); // Signal 2
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
 
-        exitRule = exitRule.xor(stopGain).xor(stopLoss);
+        exitRule = exitRule.or(stopGain).or(stopLoss);
         
         return new BaseStrategy("RSI2Strategy", entryRule, exitRule);
     }
@@ -163,9 +166,9 @@ public class RSI2Strategy {
 
         for (Solution solution : optimization.getSolutions()) {
             setRSI((int) solution.getValues().get(0));
-            setEMA((int) solution.getValues().get(1));
-            setSma1((int) solution.getValues().get(2));
-            setSma2((int) solution.getValues().get(3));
+            setSma1((int) solution.getValues().get(1));
+            setSma2((int) solution.getValues().get(2));
+            setEMA((int) solution.getValues().get(3));
         }
     }
 

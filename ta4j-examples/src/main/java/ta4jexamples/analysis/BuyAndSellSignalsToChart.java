@@ -34,6 +34,7 @@ import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.CandlestickRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.general.SeriesException;
 import org.jfree.data.time.Minute;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -179,7 +180,7 @@ public class BuyAndSellSignalsToChart {
         /**
          * Displaying the chart
          */
-        //displayChart(chart);
+        displayChart(chart);
 
         return chart;
     }
@@ -264,10 +265,14 @@ public class BuyAndSellSignalsToChart {
         ClosePriceIndicator indicator = new ClosePriceIndicator(series);
         TimeSeriesCollection dataset = new TimeSeriesCollection();
         org.jfree.data.time.TimeSeries chartTimeSeries = new org.jfree.data.time.TimeSeries("Btc price");
-        for (int i = 0; i < series.getBarCount(); i++) {
+        for (int i = series.getRemovedBarsCount(); i < series.getBarCount() + series.getRemovedBarsCount(); i++) {
             Bar tick = series.getBar(i);
-
-            chartTimeSeries.add(new Second(Date.from(tick.getEndTime().toInstant())), indicator.getValue(i).toDouble());
+            try {
+                chartTimeSeries.add(new Second(Date.from(tick.getEndTime().toInstant())), indicator.getValue(i).toDouble());
+            }
+            catch(SeriesException e) {
+                //chartTimeSeries.addOrUpdate(new Second(Date.from(tick.getEndTime().toInstant())), indicator.getValue(i).toDouble());
+            }
         }
         dataset.addSeries(chartTimeSeries);
         return dataset;

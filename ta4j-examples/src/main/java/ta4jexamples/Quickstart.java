@@ -56,7 +56,7 @@ public class Quickstart {
 
         // Getting a time series (from any provider: CSV, web service, etc.)
         //TimeSeries series = CsvTradesLoader.loadBitstampSeries();
-        TimeSeries series = CsvTicksLoader.load("2020_D.csv");
+        TimeSeries series = CsvTicksLoader.load("2009_2014.csv");
 
         // Getting the close price of the bars
         Decimal firstClosePrice = series.getBar(0).getClosePrice();
@@ -110,14 +110,14 @@ public class Quickstart {
         List<Strategy> strategies = new ArrayList<>();
 
         //strategies.add(CCICorrectionStrategy.buildStrategy(series));
-        strategies.add(GlobalExtremaStrategy.buildStrategy(series));
+        //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
         //strategies.add(MovingMomentumStrategy.buildStrategy(series));
         strategies.add(RSI2Strategy.buildStrategy(series));
         //strategies.add(MACDStrategy.buildStrategy(series));
-        strategies.add(StochasticStrategy.buildStrategy(series));
-        strategies.add(ParabolicSARStrategy.buildStrategy(series));
-        strategies.add(MovingAveragesStrategy.buildStrategy(series));
-        strategies.add(BagovinoStrategy.buildStrategy(series));
+        //strategies.add(StochasticStrategy.buildStrategy(series));
+        //strategies.add(ParabolicSARStrategy.buildStrategy(series));
+        //strategies.add(MovingAveragesStrategy.buildStrategy(series));
+        //strategies.add(BagovinoStrategy.buildStrategy(series));
         //strategies.add(FXBootCampStrategy.buildStrategy(series));
         //strategies.add(TunnelStrategy.buildStrategy(series));
         //strategies.add(WinslowStrategy.buildStrategy(series));

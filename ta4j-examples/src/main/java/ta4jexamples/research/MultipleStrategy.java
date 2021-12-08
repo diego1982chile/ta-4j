@@ -54,16 +54,16 @@ public class MultipleStrategy {
         Rule exitRule = new BooleanRule(false);
 
         for(int i = 0; i < strategies.size(); i++) {
-            entryRule = entryRule.xor(strategies.get(i).getEntryRule());
-            exitRule = exitRule.xor(strategies.get(i).getExitRule());
+            entryRule = entryRule.or(strategies.get(i).getEntryRule());
+            exitRule = exitRule.or(strategies.get(i).getExitRule());
         }
 
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
 
-        //entryRule = entryRule.xor(stopLoss).xor(stopGain);
-        //exitRule = exitRule.xor(stopLoss).xor(stopGain);
+        entryRule = entryRule.or(stopLoss).or(stopGain);
+        exitRule = exitRule.or(stopLoss).or(stopGain).or(new WaitForRule(Order.OrderType.BUY, 20));
 
         Strategy strategy = new BaseStrategy(entryRule, exitRule);
         //strategy.setUnstablePeriod(5);
