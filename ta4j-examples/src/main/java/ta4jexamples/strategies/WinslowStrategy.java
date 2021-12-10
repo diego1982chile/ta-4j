@@ -193,20 +193,21 @@ public class WinslowStrategy {
 
         Rule flagStaff = new BooleanRule(true);
 
-        Rule exitRule = new IsEqualRule(closePrice, ema200)
-                .and(new OverIndicatorRule(ema200, ema144))
-                .and(new OverIndicatorRule(ema144, ema62))
-                .and(new OverIndicatorRule(ema200, ema62))
-                .and(new OverIndicatorRule(ema800, ema200))
-                .and(new OverIndicatorRule(ema800, ema144))
-                .and(new OverIndicatorRule(ema800, ema62));
+        Rule exitRule = new CrossedDownIndicatorRule(closePrice, ema200)
+                .and(new UnderIndicatorRule(ema200, ema144))
+                .and(new UnderIndicatorRule(ema144, ema62))
+                .and(new UnderIndicatorRule(ema200, ema62))
+                //.and(new UnderIndicatorRule(ema800, ema200))
+                //.and(new UnderIndicatorRule(ema800, ema144))
+                //.and(new UnderIndicatorRule(ema800, ema62));
+                .and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(0.60)));
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
 
-        Rule entryRule = yuma.xor(tucson).xor(flagStaff);
+        Rule entryRule = yuma;
 
-        exitRule = exitRule.xor(stopGain).xor(stopLoss);
+        exitRule = exitRule.or(stopGain).or(stopLoss);
 
         return new BaseStrategy("WinslowStrategy", entryRule, exitRule);
     }

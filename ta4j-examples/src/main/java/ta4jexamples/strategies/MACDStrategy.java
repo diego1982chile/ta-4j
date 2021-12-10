@@ -284,9 +284,9 @@ public class MACDStrategy {
             setMacd1((int) solution.getValues().get(3));
             setMacd2((int) solution.getValues().get(4));
             setSignalEma((int) solution.getValues().get(5));
-            setTpSignalEma((int) solution.getValues().get(6));
-            setATR((int) solution.getValues().get(7));
-            setX((int) solution.getValues().get(8));
+            //setTpSignalEma((int) solution.getValues().get(6));
+            //setATR((int) solution.getValues().get(7));
+            //setX((int) solution.getValues().get(8));
         }
     }
 
@@ -300,9 +300,9 @@ public class MACDStrategy {
         parameters.add(new Pair<>("MACD_1", getMacd1()));
         parameters.add(new Pair<>("MACD_2", getMacd2()));
         parameters.add(new Pair<>("SIGNAL_EMA", getSignalEma()));
-        parameters.add(new Pair<>("TP_SIGNAL_EMA", getSignalEma()));
-        parameters.add(new Pair<>("ATR", getATR()));
-        parameters.add(new Pair<>("x", getX()));
+        //parameters.add(new Pair<>("TP_SIGNAL_EMA", getSignalEma()));
+        //parameters.add(new Pair<>("ATR", getATR()));
+        //parameters.add(new Pair<>("x", getX()));
 
         return parameters;
     }

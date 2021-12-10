@@ -124,25 +124,27 @@ public class ParabolicSARStrategy {
         Indicator stochasticK = new SMAIndicator(sr, K);
         Indicator stochasticD = new SMAIndicator(stochasticK, D);
 
+        System.out.println(Decimal.valueOf(20));
+
 
         Rule entryRule = new OverIndicatorRule(closePrice, sar)
-                .and(new CrossedUpIndicatorRule(ac, Decimal.valueOf(0)))
+                //.and(new CrossedUpIndicatorRule(ac, Decimal.valueOf(0)))
                 //.and(new CrossedUpIndicatorRule(ao, Decimal.valueOf(0)))
                 .and(new IsRisingRule(ac,5))
                 .and(new IsRisingRule(ao,5))
-                //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD))
-                .and(new OverIndicatorRule(stochasticK, Decimal.valueOf(20)))
-                .and(new OverIndicatorRule(stochasticD, Decimal.valueOf(20)));
+                .and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
+                //.and(new OverIndicatorRule(stochasticK, Decimal.valueOf(0.2)));
+                //.and(new OverIndicatorRule(stochasticD, Decimal.valueOf(0.2)));
                 //.and(new CrossedUpIndicatorRule(stochasticK, stochasticD));
 
         Rule exitRule = new UnderIndicatorRule(closePrice, sar)
-                .and(new CrossedDownIndicatorRule(ac, Decimal.valueOf(0)))
+                //.and(new CrossedDownIndicatorRule(ac, Decimal.valueOf(0)))
                 //.and(new CrossedDownIndicatorRule(ao, Decimal.valueOf(0)));
                 .and(new IsFallingRule(ac,5))
                 .and(new IsFallingRule(ao,5))
-                .and(new CrossedDownIndicatorRule(stochasticK, stochasticD))
-                .and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(80)))
-                .and(new UnderIndicatorRule(stochasticD, Decimal.valueOf(80)));
+                .and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
+                //.and(new UnderIndicatorRule(stochasticK, Decimal.valueOf(0.8)));
+                //.and(new UnderIndicatorRule(stochasticD, Decimal.valueOf(0.8)));
                 //.and(new CrossedDownIndicatorRule(stochasticK, stochasticD));
 
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));

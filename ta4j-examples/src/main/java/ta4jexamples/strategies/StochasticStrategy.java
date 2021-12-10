@@ -170,7 +170,7 @@ public class StochasticStrategy {
         Rule stopLoss = new StopLossRule(closePrice, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrice, Decimal.valueOf(1));
 
-        exitRule = exitRule.xor(stopGain).xor(stopLoss);
+        exitRule = exitRule.or(stopGain).or(stopLoss);
 
         return new BaseStrategy("StochasticStrategy", entryRule, exitRule);
     }
