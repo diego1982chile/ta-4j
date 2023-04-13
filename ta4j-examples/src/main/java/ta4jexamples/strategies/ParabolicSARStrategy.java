@@ -51,11 +51,11 @@ public class ParabolicSARStrategy {
     private static int D = 43;
     */
 
-    private static int SAR_1 = 32;
-    private static int SAR_2 = 164;
-    private static int RSI = 14;
-    private static int K = 59;
-    private static int D = 37;
+    private static int SAR_1 = 185;
+    private static int SAR_2 = 3;
+    private static int RSI = 4;
+    private static int K = 150;
+    private static int D = 5;
 
 
     //124 64 32 13 2

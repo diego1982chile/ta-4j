@@ -59,17 +59,17 @@ public class FXBootCampStrategy {
     private static int STOCHASTIC_D = 5;
     */
 
-    private static int EMA_5 = 45;
-    private static int SMA_8 = 148;
-    private static int EMA_21 = 171;
-    private static int EMA_55 = 164;
-    private static int EMA_200 =77;
-    private static int MACD_1 = 83;
-    private static int MACD_2 = 84;
-    private static int EMA_8 = 30;
-    private static int STOCHASTIC_R = 67;
-    private static int STOCHASTIC_K = 5;
-    private static int STOCHASTIC_D = 23;
+    private static int EMA_5 = 34;
+    private static int SMA_8 = 146;
+    private static int EMA_21 = 137;
+    private static int EMA_55 = 78;
+    private static int EMA_200 = 69;
+    private static int MACD_1 = 68;
+    private static int MACD_2 = 69;
+    private static int EMA_8 = 143;
+    private static int STOCHASTIC_R = 76;
+    private static int STOCHASTIC_K =183;
+    private static int STOCHASTIC_D = 27;
 
     //34 123 116 101 35 4 159 164 90 160 5
 

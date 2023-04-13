@@ -46,19 +46,21 @@ import java.util.List;
 public class TunnelStrategy {
 
     /*
-    private static int SHORT_EMA = 5;
-    private static int LONG_EMA = 12;
-    private static int RSI = 21;
+    private static int PERIOD = 50;
+    private static int MACD_1 = 12;
+    private static int MACD_2 = 26;
+    private static int SIGNAL_EMA = 9;
+    private static int TP_SIGNAL_EMA = 30;
     */
 
     //private static int PERIOD = 50;
 
-    private static int PERIOD = 180;
 
-    private static int MACD_1 = 70;
-    private static int MACD_2 = 71;
-    private static int SIGNAL_EMA = 19;
-    private static int TP_SIGNAL_EMA = 7;
+    private static int PERIOD = 92;
+    private static int MACD_1 = 119;
+    private static int MACD_2 = 120;
+    private static int SIGNAL_EMA = 97;
+    private static int TP_SIGNAL_EMA = 141;
 
     //6 65 133 150 191
 

@@ -53,10 +53,10 @@ public class MovingAveragesStrategy {
     private static int LONGER_EMA = 50;
     */
 
-    private static int SHORTER_EMA = 1;
-    private static int SHORT_EMA = 4;
-    private static int LONG_EMA = 148;
-    private static int LONGER_EMA = 108;
+    private static int SHORTER_EMA = 174;
+    private static int SHORT_EMA = 134;
+    private static int LONG_EMA = 194;
+    private static int LONGER_EMA = 56;
 
     //70 24 1 88
     //164 159 87 148

@@ -51,9 +51,10 @@ public class BagovinoStrategy {
     private static int RSI = 21;
     */
 
-    private static int SHORT_EMA = 54;
-    private static int LONG_EMA = 43;
-    private static int RSI = 17;
+    private static int SHORT_EMA = 107;
+    private static int LONG_EMA = 21;
+    private static int RSI = 194;
+
 
     //63 11 35
     //47 45 172

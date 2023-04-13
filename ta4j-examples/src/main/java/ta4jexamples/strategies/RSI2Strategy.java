@@ -46,6 +46,7 @@ import java.util.List;
  */
 public class RSI2Strategy {
 
+
     /*
     private static int RSI = 14;
 
@@ -54,10 +55,12 @@ public class RSI2Strategy {
     private static int SMA_2 = 4;
     */
 
-    private static int RSI = 73;
-    private static int EMA = 42;
-    private static int SMA_1 = 157;
-    private static int SMA_2 = 113;
+
+    private static int RSI = 7;
+    private static int EMA = 11;
+    private static int SMA_1 = 54;
+    private static int SMA_2 = 16;
+
 
     //185 63 10 145
 

@@ -46,7 +46,8 @@ public class GlobalExtremaStrategy {
     // We assume that there were at least one trade every 5 minutes during the whole week
     //private static int NB_BARS_PER_WEEK = 12 * 24 * 7;
 
-    private static int NB_BARS_PER_WEEK = 14;
+    private static int NB_BARS_PER_WEEK = 162;
+
 
     public static int getNbBarsPerWeek() {
         return NB_BARS_PER_WEEK;
@@ -85,7 +86,7 @@ public class GlobalExtremaStrategy {
         Rule stopLoss = new StopLossRule(closePrices, Decimal.valueOf(1));
         Rule stopGain = new StopGainRule(closePrices, Decimal.valueOf(1));
 
-        sellingRule = sellingRule.xor(stopGain).xor(stopLoss);
+        sellingRule = sellingRule.or(stopGain).or(stopLoss);
 
         return new BaseStrategy("GlobalExtremaStrategy", buyingRule, sellingRule);
     }

@@ -58,16 +58,17 @@ public class MACDStrategy {
     private static int x = 6;
     */
 
-    private static int LONG_EMA = 27;
-    private static int SHORT_EMA = 17;
-    private static int SHORTER_EMA = 16;
-    private static int MACD_1 = 60;
-    private static int MACD_2 = 72;
-    private static int SIGNAL_EMA = 57;
+    private static int LONG_EMA = 49;
+    private static int SHORT_EMA = 48;
+    private static int SHORTER_EMA = 22;
+    private static int MACD_1 = 30;
+    private static int MACD_2 = 31;
+    private static int SIGNAL_EMA = 97;
 
     private static int TP_SIGNAL_EMA = 57;
     private static int ATR = 21;
     private static int x = 51;
+
 
     //45 45 6 1 2 88 37 150 67
     //140 74 7 2 8 158 62 6 129
@@ -214,7 +215,7 @@ public class MACDStrategy {
         Rule tpRule = new CrossedDownIndicatorRule(macd, tpSignal);
         Rule atrRule = new CrossedDownIndicatorRule(closePrice, new DifferenceIndicator(closePrice, new MultiplierIndicator(atr, Decimal.valueOf(x))));
 
-        exitRule = tpRule;
+        //exitRule = tpRule;
 
         //exitRule = exitRule.xor(atrRule).xor(stopGain).xor(stopLoss);
 

@@ -52,8 +52,8 @@ public class CCICorrectionStrategy {
     private static int SHORT_CCI = 45;
     */
 
-    private static int LONG_CCI = 4;
-    private static int SHORT_CCI = 23;
+|    private static int LONG_CCI = 126;
+    private static int SHORT_CCI = 11;
 
     //82 4
 

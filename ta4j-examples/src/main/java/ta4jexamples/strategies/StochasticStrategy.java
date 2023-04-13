@@ -54,13 +54,14 @@ public class StochasticStrategy {
     private static int LONG_EMA = 200;
     */
 
-    private static int SMA = 174;
-    private static int EMA = 7;
-    private static int RSI = 29;
-    private static int K = 8;
-    private static int D = 10;
-    private static int SHORT_EMA = 166;
-    private static int LONG_EMA = 96;
+    private static int SMA = 6;
+    private static int EMA = 57;
+    private static int RSI = 184;
+    private static int K = 62;
+    private static int D = 196;
+    private static int SHORT_EMA = 71;
+    private static int LONG_EMA = 119;
+
 
     //59 1 69 49 67 124 64
 
