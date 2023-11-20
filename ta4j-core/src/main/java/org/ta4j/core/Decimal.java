@@ -22,6 +22,8 @@
  */
 package org.ta4j.core;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -56,6 +58,7 @@ public final class Decimal
     public static final Decimal HUNDRED = valueOf(100);
     public static final Decimal THOUSAND = valueOf(1000);
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING)
     private final BigDecimal delegate;
 
     /**

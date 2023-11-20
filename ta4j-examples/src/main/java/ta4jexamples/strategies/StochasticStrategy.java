@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class StochasticStrategy {
 
-    /*
+
     private static int SMA = 21;
     private static int EMA = 5;
     private static int RSI = 8;
@@ -52,8 +52,9 @@ public class StochasticStrategy {
     private static int D = 5;
     private static int SHORT_EMA = 100;
     private static int LONG_EMA = 200;
-    */
 
+
+    /*
     private static int SMA = 6;
     private static int EMA = 57;
     private static int RSI = 184;
@@ -61,6 +62,7 @@ public class StochasticStrategy {
     private static int D = 196;
     private static int SHORT_EMA = 71;
     private static int LONG_EMA = 119;
+    */
 
 
     //59 1 69 49 67 124 64

@@ -47,13 +47,15 @@ import java.util.List;
  */
 public class CCICorrectionStrategy {
 
-    /*
+
     private static int LONG_CCI = 47;
     private static int SHORT_CCI = 45;
-    */
 
-|    private static int LONG_CCI = 126;
-    private static int SHORT_CCI = 11;
+
+    /*
+    private static int LONG_CCI = 6;
+    private static int SHORT_CCI = 116;
+    */
 
     //82 4
 

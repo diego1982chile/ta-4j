@@ -43,20 +43,21 @@ import java.util.List;
  */
 public class ParabolicSARStrategy {
 
-    /*
+
     private static int SAR_1 = 76;
     private static int SAR_2 = 100;
     private static int RSI = 10;
     private static int K = 6;
     private static int D = 43;
+
+
+    /*
+    private static int SAR_1 = 117;
+    private static int SAR_2 = 46;
+    private static int RSI = 17;
+    private static int K = 17;
+    private static int D = 17;
     */
-
-    private static int SAR_1 = 185;
-    private static int SAR_2 = 3;
-    private static int RSI = 4;
-    private static int K = 150;
-    private static int D = 5;
-
 
     //124 64 32 13 2
     //4 150 39 4 26

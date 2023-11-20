@@ -45,15 +45,17 @@ import java.util.List;
  */
 public class BagovinoStrategy {
 
-    /*
+
     private static int SHORT_EMA = 5;
     private static int LONG_EMA = 12;
     private static int RSI = 21;
-    */
 
+
+    /*
     private static int SHORT_EMA = 107;
     private static int LONG_EMA = 21;
     private static int RSI = 194;
+    */
 
 
     //63 11 35

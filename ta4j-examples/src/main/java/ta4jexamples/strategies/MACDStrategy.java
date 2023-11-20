@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class MACDStrategy {
 
-    /*
+
     private static int LONG_EMA = 50;
     private static int SHORT_EMA = 21;
     private static int SHORTER_EMA = 3;
@@ -56,18 +56,20 @@ public class MACDStrategy {
     private static int ATR = 12;
 
     private static int x = 6;
-    */
 
-    private static int LONG_EMA = 49;
-    private static int SHORT_EMA = 48;
-    private static int SHORTER_EMA = 22;
-    private static int MACD_1 = 30;
-    private static int MACD_2 = 31;
-    private static int SIGNAL_EMA = 97;
+
+    /*
+    private static int LONG_EMA = 9;
+    private static int SHORT_EMA = 8;
+    private static int SHORTER_EMA = 7;
+    private static int MACD_1 = 11;
+    private static int MACD_2 = 14;
+    private static int SIGNAL_EMA = 38;
 
     private static int TP_SIGNAL_EMA = 57;
     private static int ATR = 21;
     private static int x = 51;
+    */
 
 
     //45 45 6 1 2 88 37 150 67

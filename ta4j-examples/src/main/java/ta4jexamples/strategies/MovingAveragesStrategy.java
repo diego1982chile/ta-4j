@@ -46,17 +46,19 @@ import java.util.List;
  */
 public class MovingAveragesStrategy {
 
-    /*
+
     private static int SHORTER_EMA = 5;
     private static int SHORT_EMA = 14;
     private static int LONG_EMA = 21;
     private static int LONGER_EMA = 50;
-    */
 
-    private static int SHORTER_EMA = 174;
-    private static int SHORT_EMA = 134;
-    private static int LONG_EMA = 194;
-    private static int LONGER_EMA = 56;
+
+    /*
+    private static int SHORTER_EMA = 7;
+    private static int SHORT_EMA = 32;
+    private static int LONG_EMA = 24;
+    private static int LONGER_EMA = 74;
+    */
 
     //70 24 1 88
     //164 159 87 148

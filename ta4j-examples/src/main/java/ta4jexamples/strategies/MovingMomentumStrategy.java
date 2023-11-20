@@ -46,7 +46,7 @@ import java.util.List;
  */
 public class MovingMomentumStrategy {
 
-    /*
+
     private static int SHORT_EMA = 9;
     private static int LONG_EMA = 26;
 
@@ -54,14 +54,16 @@ public class MovingMomentumStrategy {
     private static int MACD_1 = 9;
     private static int MACD_2 = 26;
     private static int SIGNAL_EMA = 18;
-    */
 
+
+    /*
     private static int SHORT_EMA = 195;
     private static int LONG_EMA = 24;
     private static int STOCHASTIC = 177;
     private static int MACD_1 = 1;
     private static int MACD_2 = 75;
     private static int SIGNAL_EMA = 133;
+    */
 
 
     //168 116 8 46 159 3

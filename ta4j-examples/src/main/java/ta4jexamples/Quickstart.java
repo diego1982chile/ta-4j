@@ -109,18 +109,19 @@ public class Quickstart {
 
         List<Strategy> strategies = new ArrayList<>();
 
-        strategies.add(CCICorrectionStrategy.buildStrategy(series));
+        //strategies.add(CCICorrectionStrategy.buildStrategy(series));
         //strategies.add(GlobalExtremaStrategy.buildStrategy(series));
         //strategies.add(MovingMomentumStrategy.buildStrategy(series));
-        strategies.add(RSI2Strategy.buildStrategy(series));
-        strategies.add(MACDStrategy.buildStrategy(series));
-        //strategies.add(StochasticStrategy.buildStrategy(series));
+        //strategies.add(RSI2Strategy.buildStrategy(series));
+        //strategies.add(MACDStrategy.buildStrategy(series));
+        strategies.add(StochasticStrategy.buildStrategy(series));
         //strategies.add(ParabolicSARStrategy.buildStrategy(series));
-        //strategies.add(MovingAveragesStrategy.buildStrategy(series));
+        strategies.add(MovingAveragesStrategy.buildStrategy(series));
         //strategies.add(BagovinoStrategy.buildStrategy(series));
         //strategies.add(FXBootCampStrategy.buildStrategy(series));
-        strategies.add(TunnelStrategy.buildStrategy(series));
+        //strategies.add(TunnelStrategy.buildStrategy(series));
         strategies.add(WinslowStrategy.buildStrategy(series));
+        strategies.add(ADXStrategy.buildStrategy(series));
 
 
         //strategies.add(FibonacciStrategy.buildStrategy(series));

@@ -43,7 +43,7 @@ import java.util.List;
  */
 public class WinslowStrategy {
 
-    /*
+
     private static int EMA_800 = 800;
     private static int EMA_200 = 200;
     private static int EMA_144 = 144;
@@ -54,8 +54,9 @@ public class WinslowStrategy {
     private static int STOCHASTIC_R = 9;
     private static int STOCHASTIC_K = 14;
     private static int STOCHASTIC_D = 3;
-    */
 
+
+    /*
     private static int EMA_800 = 81;
     private static int EMA_200 = 188;
     private static int EMA_144 = 170;
@@ -66,6 +67,7 @@ public class WinslowStrategy {
     private static int STOCHASTIC_R = 102;
     private static int STOCHASTIC_K = 123;
     private static int STOCHASTIC_D = 97;
+    */
 
 
     //150 188 142 4 3 99 162 74 100 135

@@ -45,7 +45,7 @@ import java.util.List;
  */
 public class FXBootCampStrategy {
 
-    /*
+
     private static int EMA_5 = 5;
     private static int SMA_8 = 8;
     private static int EMA_21 = 21;
@@ -57,8 +57,9 @@ public class FXBootCampStrategy {
     private static int STOCHASTIC_R = 8;
     private static int STOCHASTIC_K = 35;
     private static int STOCHASTIC_D = 5;
-    */
 
+
+    /*
     private static int EMA_5 = 34;
     private static int SMA_8 = 146;
     private static int EMA_21 = 137;
@@ -70,6 +71,7 @@ public class FXBootCampStrategy {
     private static int STOCHASTIC_R = 76;
     private static int STOCHASTIC_K =183;
     private static int STOCHASTIC_D = 27;
+    */
 
     //34 123 116 101 35 4 159 164 90 160 5
 
